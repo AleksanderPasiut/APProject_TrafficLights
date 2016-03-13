@@ -206,11 +206,11 @@ double ComputeGreenLightTime(const vector<INPUT*>& new_set, const vector<INPUT*>
 	for (auto it = inputs.begin(); it != inputs.end(); it++)
 		all_sum += (*it)->RetIntensity();
 
-	return min(max(udv.RetTWrn()*set_sum/all_sum, udv.RetTMin()), udv.RetTMax());
+	return min(max(udv.RetTMed()*set_sum/all_sum, udv.RetTMin()), udv.RetTMax());
 }
 void WriteLog(double t, const vector<INPUT*>& new_set, const vector<INPUT*>& inputs)
 {
-	cout << setw(10) << t;
+	cout << setw(6) << t;
 
 	for (auto it = inputs.begin(); it != inputs.end(); it++)
 	{
@@ -223,7 +223,10 @@ void WriteLog(double t, const vector<INPUT*>& new_set, const vector<INPUT*>& inp
 				break;
 			}
 
-		cout << (iins ? " + " : " - ");
+		cout.precision(3);
+		if (iins)
+			cout << setw(5) << (*it)->RetAwaitingTime();
+		else cout << " --- ";
 	}
 	cout << endl;
 }
@@ -231,13 +234,13 @@ void Proceed(const vector<INPUT*>& new_set, const vector<INPUT*>& inputs)
 {
 	double t = ComputeGreenLightTime(new_set, inputs);
 
+	WriteLog(t, new_set, inputs);
+
 	for (auto it = inputs.begin(); it != inputs.end(); it++)
 		(*it)->SetAwaitingTime((*it)->RetAwaitingTime()+t);
 
 	for (auto it = new_set.begin(); it != new_set.end(); it++)
 		(*it)->SetAwaitingTime(0.0);
-
-	WriteLog(t, new_set, inputs);
 }
 
 void Algorithm(const vector<INPUT*>& inputs, const vector<CPAIR>& cpairs)

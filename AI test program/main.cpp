@@ -8,8 +8,6 @@ using namespace std;
 
 #include "main_functions.h"
 
-
-
 int main()
 {
     cout << "Traffic lights AI test program" << endl;
@@ -26,8 +24,13 @@ int main()
 	vector<CPAIR> cpairs; // all pair of inputs which collide with each other
 	SetCollisions(cpairs, inputs);
 
-	for(int i = 0; i < 10; i++)
+	cout << endl;
+	cout << "traffic lights steering pattern" << endl;
+
+	for(int i = 0; i < 30; i++)
 		Algorithm(inputs, cpairs);
+
+
 
     return 0;
 }
