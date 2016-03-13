@@ -18,6 +18,15 @@ on start
 on timer mainTimer
 {
   $ExampleData::Counter = sin(counter);
+  putValue(var, sin(counter));
+  
   counter += 0.01;
   SetTimer(mainTimer, 1);
+  
+  
+}
+
+on envVar var
+{
+  Write("value cahnged");
 }

@@ -41,6 +41,8 @@ BO_ 77 ExampleData: 8 ECU1
 
 
 
+EV_ var: 1 [0|0] "" 0 1 DUMMY_NODE_VECTOR3 Vector__XXX;
+
 BA_DEF_  "BusType" STRING ;
 BA_DEF_DEF_  "BusType" "";
 SIG_VALTYPE_ 77 Counter : 2;
