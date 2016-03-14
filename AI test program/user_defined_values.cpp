@@ -8,6 +8,7 @@ USER_DEFINED_VALUES::USER_DEFINED_VALUES() :
 	t_max(20.0),
 	t_wrn(50.0),
 	t_med(30.0),
+	t_ylw(2.5),
 	v_min(2.0) {}
 
 void USER_DEFINED_VALUES::write() 
@@ -17,5 +18,6 @@ void USER_DEFINED_VALUES::write()
     cout << " - maximum green light time: " << t_max << "s" << endl;
     cout << " - warning time: " << t_wrn << "s" << endl;
 	cout << " - medium time: " << t_med << "s" << endl;
+	cout << " - yellow light time: " << t_ylw << "s" << endl;
     cout << " - mininum detected traffic intensity: " << v_min << "cars/min" << endl;
 }

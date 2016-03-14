@@ -12,14 +12,18 @@ protected:
 	unsigned id;
 	bool awaiting; // are there any pedestrians or cars awaiting?
 	double awaiting_time; // time that pedestrians or cars await on this input (in seconds)
+	double total_green_light_time;
 
 public:
 	INPUT(unsigned id, bool default_awaiting);
 	void SetAwaiting(bool arg) { awaiting = arg; }
 	void SetAwaitingTime(double arg) { awaiting_time = arg; }
+	void IncTotalGreenLightTime(double arg) { total_green_light_time += arg; }
 
+	unsigned RetId() const { return id; }
 	bool RetAwaiting() const { return awaiting; }
 	double RetAwaitingTime() const { return awaiting_time; }
+	double RetTotalGreenLightTime() const { return total_green_light_time; }
 	virtual double RetIntensity() const = 0;
 	virtual bool AreOutputsBlocked() const = 0;
 };

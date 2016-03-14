@@ -12,4 +12,7 @@ void LoadOutputs(vector<CAR_OUTPUT*>& outputs);
 void LoadInputs(vector<INPUT*>& inputs, const vector<CAR_OUTPUT*>& outputs);
 void SetCollisions(vector<CPAIR>& cpairs, const vector<INPUT*>& inputs);
 
-void Algorithm(const vector<INPUT*>& inputs, const vector<CPAIR>& cpairs);
+void Algorithm(const vector<INPUT*>& inputs, const vector<CPAIR>& cpairs, double&);
+
+void TotalTrafficIntensity(const vector<INPUT*>& inputs);
+void InputsDetails(const vector<INPUT*>& inputs);

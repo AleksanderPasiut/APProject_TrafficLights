@@ -25,12 +25,17 @@ int main()
 	SetCollisions(cpairs, inputs);
 
 	cout << endl;
-	cout << "traffic lights steering pattern" << endl;
+	cout << "Traffic lights steering pattern: " << endl;
+
+	double tst = 0.0;
 
 	for(int i = 0; i < 30; i++)
-		Algorithm(inputs, cpairs);
+		Algorithm(inputs, cpairs, tst);
 
-
+	cout << endl;
+	cout << "Total simulation time: " << tst << "s" << endl;
+	TotalTrafficIntensity(inputs);
+	InputsDetails(inputs);
 
     return 0;
 }

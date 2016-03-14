@@ -15,15 +15,15 @@ void LoadInputs(vector<INPUT*>& inputs, const vector<CAR_OUTPUT*>& outputs)
 	CAR_INPUT* ptr;
 
 	ptr = new CAR_INPUT(0, true, 20.0); pb; apt(2); apt(3); 
-	ptr = new CAR_INPUT(1, true, 40.0); pb; apt(2); 
+	ptr = new CAR_INPUT(1, true, 30.0); pb; apt(2); 
 	ptr = new CAR_INPUT(2, true, 30.0); pb; apt(1);
-	ptr = new CAR_INPUT(3, true, 10.0); pb; apt(0); apt(3);
-	ptr = new CAR_INPUT(4, true, 10.0); pb; apt(3);
+	ptr = new CAR_INPUT(3, true, 15.0); pb; apt(0); apt(3);
+	ptr = new CAR_INPUT(4, true, 15.0); pb; apt(3);
 	ptr = new CAR_INPUT(5, true, 20.0); pb; apt(0); apt(1);
-	ptr = new CAR_INPUT(6, true, 40.0); pb; apt(0);
+	ptr = new CAR_INPUT(6, true, 30.0); pb; apt(0);
 	ptr = new CAR_INPUT(7, true, 30.0); pb; apt(3);
-	ptr = new CAR_INPUT(8, true, 10.0); pb; apt(1); apt(2);
-	ptr = new CAR_INPUT(9, true, 10.0); pb; apt(1);
+	ptr = new CAR_INPUT(8, true, 15.0); pb; apt(1); apt(2);
+	ptr = new CAR_INPUT(9, true, 15.0); pb; apt(1);
 
 	for (int i = 0; i < 4; i++)
 		inputs.push_back(new PEDESTRIAN_CROSSING(10+i, true)); 
@@ -85,6 +85,7 @@ void NoExceededTime(vector<INPUT*>& out, const vector<INPUT*>& inputs)
 {
 	for (auto it = inputs.begin(); it != inputs.end(); it++)
 		if ((*it)->RetAwaiting() &&
+			(*it)->AreOutputsBlocked() == false &&
 			(*it)->RetAwaitingTime() <= udv.RetTWrn())
 			out.push_back(*it);
 	return;
@@ -93,6 +94,7 @@ void ExceededTime(vector<INPUT*>& out, const vector<INPUT*>& inputs)
 {
 	for (auto it = inputs.begin(); it != inputs.end(); it++)
 		if ((*it)->RetAwaiting() &&
+			(*it)->AreOutputsBlocked() == false &&
 			(*it)->RetAwaitingTime() > udv.RetTWrn())
 			out.push_back(*it);
 	return;
@@ -162,7 +164,8 @@ double ComputePriority(const vector<INPUT*>& set)
 {
 	double ret = 0.0;
 	for (auto it = set.begin(); it != set.end(); it++)
-		if ((*it)->RetAwaiting())
+		if ((*it)->RetAwaiting() &&
+			(*it)->AreOutputsBlocked() == false)
 			ret += (*it)->RetAwaitingTime()*(*it)->RetIntensity();
 
 	return ret;
@@ -230,20 +233,25 @@ void WriteLog(double t, const vector<INPUT*>& new_set, const vector<INPUT*>& inp
 	}
 	cout << endl;
 }
-void Proceed(const vector<INPUT*>& new_set, const vector<INPUT*>& inputs)
+void Proceed(const vector<INPUT*>& new_set, const vector<INPUT*>& inputs, double& tst)
 {
 	double t = ComputeGreenLightTime(new_set, inputs);
 
 	WriteLog(t, new_set, inputs);
 
 	for (auto it = inputs.begin(); it != inputs.end(); it++)
-		(*it)->SetAwaitingTime((*it)->RetAwaitingTime()+t);
+		(*it)->SetAwaitingTime((*it)->RetAwaitingTime()+t+udv.RetTYlw());
 
 	for (auto it = new_set.begin(); it != new_set.end(); it++)
-		(*it)->SetAwaitingTime(0.0);
+	{
+		(*it)->SetAwaitingTime(udv.RetTYlw());
+		(*it)->IncTotalGreenLightTime(t);
+	}
+
+	tst += t+udv.RetTYlw();
 }
 
-void Algorithm(const vector<INPUT*>& inputs, const vector<CPAIR>& cpairs)
+void Algorithm(const vector<INPUT*>& inputs, const vector<CPAIR>& cpairs, double& tst)
 {
 	// wybieram wloty o nieprzekroczonym czasie oczekiwania
 	vector<INPUT*> no_exceeded_time;
@@ -279,5 +287,24 @@ void Algorithm(const vector<INPUT*>& inputs, const vector<CPAIR>& cpairs)
 	}
 
 	// przeprowadzanie zmiany œwiate³
-	Proceed(no_exceeded_time, inputs);
+	Proceed(no_exceeded_time, inputs, tst);
+}
+
+void TotalTrafficIntensity(const vector<INPUT*>& inputs)
+{
+	double tti = 0.0;
+	for (auto it = inputs.begin(); it != inputs.end(); it++)
+		tti += (*it)->RetIntensity();
+
+	cout << "Total traffic intensity: " << tti << "cars/min" << endl;
+	return;
+}
+void InputsDetails(const vector<INPUT*>& inputs)
+{
+	for (auto it = inputs.begin(); it != inputs.end(); it++)
+	{
+		cout << setw(3) << (*it)->RetId() << " ";
+		cout.precision(4);
+		cout << (*it)->RetTotalGreenLightTime() << endl;
+	}
 }
