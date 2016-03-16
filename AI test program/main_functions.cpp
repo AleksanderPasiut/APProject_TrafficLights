@@ -15,15 +15,15 @@ void LoadInputs(vector<INPUT*>& inputs, const vector<CAR_OUTPUT*>& outputs)
 	CAR_INPUT* ptr;
 
 	ptr = new CAR_INPUT(0, true, 20.0); pb; apt(2); apt(3); 
-	ptr = new CAR_INPUT(1, true, 30.0); pb; apt(2); 
-	ptr = new CAR_INPUT(2, true, 30.0); pb; apt(1);
-	ptr = new CAR_INPUT(3, true, 15.0); pb; apt(0); apt(3);
-	ptr = new CAR_INPUT(4, true, 15.0); pb; apt(3);
+	ptr = new CAR_INPUT(1, true, 20.0); pb; apt(2); 
+	ptr = new CAR_INPUT(2, true, 20.0); pb; apt(1);
+	ptr = new CAR_INPUT(3, true, 20.0); pb; apt(0); apt(3);
+	ptr = new CAR_INPUT(4, true, 20.0); pb; apt(3);
 	ptr = new CAR_INPUT(5, true, 20.0); pb; apt(0); apt(1);
-	ptr = new CAR_INPUT(6, true, 30.0); pb; apt(0);
-	ptr = new CAR_INPUT(7, true, 30.0); pb; apt(3);
-	ptr = new CAR_INPUT(8, true, 15.0); pb; apt(1); apt(2);
-	ptr = new CAR_INPUT(9, true, 15.0); pb; apt(1);
+	ptr = new CAR_INPUT(6, true, 20.0); pb; apt(0);
+	ptr = new CAR_INPUT(7, true, 20.0); pb; apt(3);
+	ptr = new CAR_INPUT(8, true, 20.0); pb; apt(1); apt(2);
+	ptr = new CAR_INPUT(9, true, 20.0); pb; apt(1);
 
 	for (int i = 0; i < 4; i++)
 		inputs.push_back(new PEDESTRIAN_CROSSING(10+i, true)); 
@@ -166,7 +166,7 @@ double ComputePriority(const vector<INPUT*>& set)
 	for (auto it = set.begin(); it != set.end(); it++)
 		if ((*it)->RetAwaiting() &&
 			(*it)->AreOutputsBlocked() == false)
-			ret += (*it)->RetAwaitingTime()*(*it)->RetIntensity();
+			ret += (1-exp(-(*it)->RetAwaitingTime()))*(*it)->RetIntensity();
 
 	return ret;
 }
@@ -285,6 +285,9 @@ void Algorithm(const vector<INPUT*>& inputs, const vector<CPAIR>& cpairs, double
 		// wybór najlepszego zestawu spoœród no_exceeded_time
 		Choose(no_exceeded_time, cpairs);
 	}
+
+	no_exceeded_time = inputs;
+	Choose(no_exceeded_time, cpairs);
 
 	// przeprowadzanie zmiany œwiate³
 	Proceed(no_exceeded_time, inputs, tst);

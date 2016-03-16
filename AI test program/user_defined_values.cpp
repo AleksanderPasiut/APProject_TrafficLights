@@ -6,7 +6,7 @@ using namespace std;
 USER_DEFINED_VALUES::USER_DEFINED_VALUES() :
 	t_min(5.0),
 	t_max(20.0),
-	t_wrn(50.0),
+	t_wrn(20.0),
 	t_med(30.0),
 	t_ylw(2.5),
 	v_min(2.0) {}
