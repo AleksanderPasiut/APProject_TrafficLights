@@ -33,10 +33,10 @@ NS_ :
 
 BS_:
 
-BU_: master_node ECU1
+BU_: slave master
 
 
-BO_ 77 ExampleData: 8 ECU1
+BO_ 77 ExampleData: 8 master
  SG_ Counter : 0|64@1- (1,0) [0|0] "" Vector__XXX
 
 

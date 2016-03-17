@@ -6,16 +6,6 @@ includes
 
 variables
 {
-  msTimer uTimer;
+  
 }
 
-on start
-{
-  SetTimer(uTimer, 1000);
-}
-
-on timer uTimer
-{
-  Write("%lf", $ExampleData::Counter);
-  SetTimer(uTimer, 1000);
-}
