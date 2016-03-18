@@ -36,6 +36,49 @@ BS_:
 BU_: slave master
 
 
+BO_ 3221225472 VECTOR__INDEPENDENT_SIG_MSG: 0 Vector__XXX
+ SG_ output18 : 0|1@1+ (1,0) [0|1] "" Vector__XXX
+
+BO_ 0 TrafficLightsControl: 8 slave
+ SG_ output17 : 37|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ output16 : 36|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ output15 : 35|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ output14 : 34|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ output13 : 33|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ output9_yellow : 29|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ output9_green : 27|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ output8_green : 24|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ output8_yellow : 26|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ output7_yellow : 23|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ output7_green : 21|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ output6_yellow : 20|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ output6_green : 18|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ output5_green : 15|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ output5_yellow : 17|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ output4_yellow : 14|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ output3_yellow : 11|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ output4_green : 12|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ output3_green : 9|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ output2_yellow : 8|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ output2_green : 6|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ output1_yellow : 5|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ output1_green : 3|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ output0_yellow : 2|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ output0_green : 0|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ output12 : 32|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ output11 : 31|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ output10 : 30|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ output7_red : 22|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ output9_red : 28|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ output8_red : 25|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ output6_red : 19|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ output5_red : 16|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ output4_red : 13|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ output3_red : 10|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ output2_red : 7|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ output1_red : 4|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ output0_red : 1|1@1+ (1,0) [0|1] "" Vector__XXX
+
 BO_ 77 CyclePhase: 8 master
  SG_ input9 : 17|1@1+ (1,0) [0|1] "" Vector__XXX
  SG_ input8 : 16|1@1+ (1,0) [0|1] "" Vector__XXX
@@ -65,6 +108,7 @@ EV_ Tmax: 1 [0|0] "" 20 2 DUMMY_NODE_VECTOR3 Vector__XXX;
 
 EV_ Tmin: 1 [0|0] "" 5 3 DUMMY_NODE_VECTOR3 Vector__XXX;
 
+CM_ BO_ 3221225472 "This is a message for not used signals, created by Vector CANdb++ DBC OLE DB Provider.";
 CM_ SG_ 77 time "Okreœla czas trwania danej fazy.";
 CM_ EV_ Tyellow "Czas œwiat³a ¿ó³tego.";
 CM_ EV_ Tmax "Maksymalny czas œwiat³a zielonego.";
