@@ -1,10 +1,28 @@
 <?xml version="1.0"?>
 <Panel Type="Vector.CANalyzer.Panels.PanelSerializer, Vector.CANalyzer.Panels.Serializer, Version=8.5.98.0, Culture=neutral, PublicKeyToken=null">
   <Object Type="Vector.CANalyzer.Panels.Runtime.Panel, Vector.CANalyzer.Panels.Common, Version=8.5.98.0, Culture=neutral, PublicKeyToken=null" Name="Panel" Children="Controls" ControlName="Sygnalizacja">
+    <Object Type="Vector.CANalyzer.Panels.Design.StaticTextControl, Vector.CANalyzer.Panels.CommonControls, Version=8.5.98.0, Culture=neutral, PublicKeyToken=null" Name="StaticTextControl23" Children="Controls" ControlName="Static Text 2">
+      <Property Name="Name">StaticTextControl23</Property>
+      <Property Name="Size">152, 24</Property>
+      <Property Name="Location">328, 269</Property>
+      <Property Name="BackColor">DarkGray</Property>
+      <Property Name="Font">Microsoft Sans Serif, 14pt</Property>
+      <Property Name="Text">Czas trwania fazy</Property>
+    </Object>
+    <Object Type="Vector.CANalyzer.Panels.Design.LCDControl, Vector.CANalyzer.Panels.CommonControls, Version=8.5.98.0, Culture=neutral, PublicKeyToken=null" Name="LCDControl1" ControlName="LCD Control">
+      <Property Name="Name">LCDControl1</Property>
+      <Property Name="Size">115, 62</Property>
+      <Property Name="Location">343, 299</Property>
+      <Property Name="NumberIntDigits">2</Property>
+      <Property Name="DecimalPlaces">0</Property>
+      <Property Name="ColorOn">Lime</Property>
+      <Property Name="SegmentStrength">4</Property>
+      <Property Name="SymbolConfiguration">4;2;db;master;CyclePhase;time;2;CAN;;-1</Property>
+    </Object>
     <Object Type="Vector.CANalyzer.Panels.Design.StaticTextControl, Vector.CANalyzer.Panels.CommonControls, Version=8.5.98.0, Culture=neutral, PublicKeyToken=null" Name="StaticTextControl22" Children="Controls" ControlName="Static Text">
       <Property Name="Name">StaticTextControl22</Property>
       <Property Name="Size">24, 26</Property>
-      <Property Name="Location">92, 257</Property>
+      <Property Name="Location">88, 257</Property>
       <Property Name="BackColor">DarkGray</Property>
       <Property Name="Font">Microsoft Sans Serif, 16pt</Property>
       <Property Name="Text">0</Property>
@@ -13,7 +31,7 @@
     <Object Type="Vector.CANalyzer.Panels.Design.StaticTextControl, Vector.CANalyzer.Panels.CommonControls, Version=8.5.98.0, Culture=neutral, PublicKeyToken=null" Name="StaticTextControl21" Children="Controls" ControlName="Static Text">
       <Property Name="Name">StaticTextControl21</Property>
       <Property Name="Size">24, 26</Property>
-      <Property Name="Location">434, 45</Property>
+      <Property Name="Location">430, 45</Property>
       <Property Name="BackColor">DarkGray</Property>
       <Property Name="Font">Microsoft Sans Serif, 16pt</Property>
       <Property Name="Text">1</Property>
@@ -22,7 +40,7 @@
     <Object Type="Vector.CANalyzer.Panels.Design.StaticTextControl, Vector.CANalyzer.Panels.CommonControls, Version=8.5.98.0, Culture=neutral, PublicKeyToken=null" Name="StaticTextControl20" Children="Controls" ControlName="Static Text">
       <Property Name="Name">StaticTextControl20</Property>
       <Property Name="Size">24, 26</Property>
-      <Property Name="Location">736, 367</Property>
+      <Property Name="Location">732, 367</Property>
       <Property Name="BackColor">DarkGray</Property>
       <Property Name="Font">Microsoft Sans Serif, 16pt</Property>
       <Property Name="Text">2</Property>
@@ -31,7 +49,7 @@
     <Object Type="Vector.CANalyzer.Panels.Design.StaticTextControl, Vector.CANalyzer.Panels.CommonControls, Version=8.5.98.0, Culture=neutral, PublicKeyToken=null" Name="StaticTextControl19" Children="Controls" ControlName="Static Text">
       <Property Name="Name">StaticTextControl19</Property>
       <Property Name="Size">24, 26</Property>
-      <Property Name="Location">328, 602</Property>
+      <Property Name="Location">324, 602</Property>
       <Property Name="BackColor">DarkGray</Property>
       <Property Name="Font">Microsoft Sans Serif, 16pt</Property>
       <Property Name="Text">3</Property>
@@ -64,7 +82,7 @@
     <Object Type="Vector.CANalyzer.Panels.Design.StaticTextControl, Vector.CANalyzer.Panels.CommonControls, Version=8.5.98.0, Culture=neutral, PublicKeyToken=null" Name="StaticTextControl15" Children="Controls" ControlName="Static Text">
       <Property Name="Name">StaticTextControl15</Property>
       <Property Name="Size">36, 26</Property>
-      <Property Name="Location">179, 146</Property>
+      <Property Name="Location">175, 146</Property>
       <Property Name="BackColor">LightGray</Property>
       <Property Name="Font">Microsoft Sans Serif, 16pt</Property>
       <Property Name="Text">11</Property>
@@ -72,7 +90,7 @@
     <Object Type="Vector.CANalyzer.Panels.Design.StaticTextControl, Vector.CANalyzer.Panels.CommonControls, Version=8.5.98.0, Culture=neutral, PublicKeyToken=null" Name="StaticTextControl14" Children="Controls" ControlName="Static Text">
       <Property Name="Name">StaticTextControl14</Property>
       <Property Name="Size">36, 26</Property>
-      <Property Name="Location">242, 83</Property>
+      <Property Name="Location">238, 83</Property>
       <Property Name="BackColor">LightGray</Property>
       <Property Name="Font">Microsoft Sans Serif, 16pt</Property>
       <Property Name="Text">12</Property>
@@ -96,7 +114,7 @@
     <Object Type="Vector.CANalyzer.Panels.Design.StaticTextControl, Vector.CANalyzer.Panels.CommonControls, Version=8.5.98.0, Culture=neutral, PublicKeyToken=null" Name="StaticTextControl11" Children="Controls" ControlName="Static Text">
       <Property Name="Name">StaticTextControl11</Property>
       <Property Name="Size">36, 28</Property>
-      <Property Name="Location">500, 81</Property>
+      <Property Name="Location">496, 81</Property>
       <Property Name="BackColor">Gainsboro</Property>
       <Property Name="Font">Microsoft Sans Serif, 16pt</Property>
       <Property Name="Text">13</Property>
@@ -120,7 +138,7 @@
     <Object Type="Vector.CANalyzer.Panels.Design.StaticTextControl, Vector.CANalyzer.Panels.CommonControls, Version=8.5.98.0, Culture=neutral, PublicKeyToken=null" Name="StaticTextControl8" Children="Controls" ControlName="Static Text">
       <Property Name="Name">StaticTextControl8</Property>
       <Property Name="Size">24, 26</Property>
-      <Property Name="Location">436, 602</Property>
+      <Property Name="Location">404, 602</Property>
       <Property Name="BackColor">DarkGray</Property>
       <Property Name="Font">Microsoft Sans Serif, 16pt</Property>
       <Property Name="Text">9</Property>
@@ -128,7 +146,7 @@
     <Object Type="Vector.CANalyzer.Panels.Design.StaticTextControl, Vector.CANalyzer.Panels.CommonControls, Version=8.5.98.0, Culture=neutral, PublicKeyToken=null" Name="StaticTextControl7" Children="Controls" ControlName="Static Text">
       <Property Name="Name">StaticTextControl7</Property>
       <Property Name="Size">24, 26</Property>
-      <Property Name="Location">408, 602</Property>
+      <Property Name="Location">434, 602</Property>
       <Property Name="BackColor">DarkGray</Property>
       <Property Name="Font">Microsoft Sans Serif, 16pt</Property>
       <Property Name="Text">8</Property>
@@ -136,7 +154,7 @@
     <Object Type="Vector.CANalyzer.Panels.Design.StaticTextControl, Vector.CANalyzer.Panels.CommonControls, Version=8.5.98.0, Culture=neutral, PublicKeyToken=null" Name="StaticTextControl6" Children="Controls" ControlName="Static Text">
       <Property Name="Name">StaticTextControl6</Property>
       <Property Name="Size">36, 26</Property>
-      <Property Name="Location">500, 534</Property>
+      <Property Name="Location">496, 534</Property>
       <Property Name="BackColor">LightGray</Property>
       <Property Name="Font">Microsoft Sans Serif, 16pt</Property>
       <Property Name="Text">16</Property>
@@ -144,7 +162,7 @@
     <Object Type="Vector.CANalyzer.Panels.Design.StaticTextControl, Vector.CANalyzer.Panels.CommonControls, Version=8.5.98.0, Culture=neutral, PublicKeyToken=null" Name="StaticTextControl5" Children="Controls" ControlName="Static Text">
       <Property Name="Name">StaticTextControl5</Property>
       <Property Name="Size">36, 26</Property>
-      <Property Name="Location">588, 453</Property>
+      <Property Name="Location">584, 453</Property>
       <Property Name="BackColor">LightGray</Property>
       <Property Name="Font">Microsoft Sans Serif, 16pt</Property>
       <Property Name="Text">15</Property>
@@ -152,7 +170,7 @@
     <Object Type="Vector.CANalyzer.Panels.Design.StaticTextControl, Vector.CANalyzer.Panels.CommonControls, Version=8.5.98.0, Culture=neutral, PublicKeyToken=null" Name="StaticTextControl4" Children="Controls" ControlName="Static Text">
       <Property Name="Name">StaticTextControl4</Property>
       <Property Name="Size">36, 26</Property>
-      <Property Name="Location">242, 534</Property>
+      <Property Name="Location">238, 534</Property>
       <Property Name="BackColor">LightGray</Property>
       <Property Name="Font">Microsoft Sans Serif, 16pt</Property>
       <Property Name="Text">17</Property>
@@ -160,7 +178,7 @@
     <Object Type="Vector.CANalyzer.Panels.Design.StaticTextControl, Vector.CANalyzer.Panels.CommonControls, Version=8.5.98.0, Culture=neutral, PublicKeyToken=null" Name="StaticTextControl3" Children="Controls" ControlName="Static Text">
       <Property Name="Name">StaticTextControl3</Property>
       <Property Name="Size">36, 26</Property>
-      <Property Name="Location">179, 460</Property>
+      <Property Name="Location">175, 460</Property>
       <Property Name="BackColor">LightGray</Property>
       <Property Name="Font">Microsoft Sans Serif, 16pt</Property>
       <Property Name="Text">10</Property>
@@ -168,7 +186,7 @@
     <Object Type="Vector.CANalyzer.Panels.Design.StaticTextControl, Vector.CANalyzer.Panels.CommonControls, Version=8.5.98.0, Culture=neutral, PublicKeyToken=null" Name="StaticTextControl2" Children="Controls" ControlName="Static Text">
       <Property Name="Name">StaticTextControl2</Property>
       <Property Name="Size">36, 26</Property>
-      <Property Name="Location">588, 157</Property>
+      <Property Name="Location">584, 157</Property>
       <Property Name="BackColor">DimGray</Property>
       <Property Name="Font">Microsoft Sans Serif, 16pt</Property>
       <Property Name="Text">14</Property>
@@ -404,7 +422,7 @@
     <Object Type="Vector.CANalyzer.Panels.Design.LEDControl, Vector.CANalyzer.Panels.CommonControls, Version=8.5.98.0, Culture=neutral, PublicKeyToken=null" Name="LEDControl22" ControlName="LED Control">
       <Property Name="Name">LEDControl22</Property>
       <Property Name="Size">24, 24</Property>
-      <Property Name="Location">434, 512</Property>
+      <Property Name="Location">404, 512</Property>
       <Property Name="UsedLEDColorOff">Gray</Property>
       <Property Name="SymbolConfiguration">4;2;db;slave;TrafficLightsControl;output9_red;1;CAN;;-1</Property>
       <Property Name="TabIndex">23</Property>
@@ -412,7 +430,7 @@
     <Object Type="Vector.CANalyzer.Panels.Design.LEDControl, Vector.CANalyzer.Panels.CommonControls, Version=8.5.98.0, Culture=neutral, PublicKeyToken=null" Name="LEDControl23" ControlName="LED Control">
       <Property Name="Name">LEDControl23</Property>
       <Property Name="Size">24, 24</Property>
-      <Property Name="Location">434, 572</Property>
+      <Property Name="Location">404, 572</Property>
       <Property Name="UsedLEDColorOn">Lime</Property>
       <Property Name="UsedLEDColorOff">Gray</Property>
       <Property Name="SymbolConfiguration">4;2;db;slave;TrafficLightsControl;output9_green;1;CAN;;-1</Property>
@@ -421,7 +439,7 @@
     <Object Type="Vector.CANalyzer.Panels.Design.LEDControl, Vector.CANalyzer.Panels.CommonControls, Version=8.5.98.0, Culture=neutral, PublicKeyToken=null" Name="LEDControl24" ControlName="LED Control">
       <Property Name="Name">LEDControl24</Property>
       <Property Name="Size">24, 24</Property>
-      <Property Name="Location">434, 542</Property>
+      <Property Name="Location">404, 542</Property>
       <Property Name="UsedLEDColorOn">Gold</Property>
       <Property Name="UsedLEDColorOff">Gray</Property>
       <Property Name="SymbolConfiguration">4;2;db;slave;TrafficLightsControl;output9_yellow;1;CAN;;-1</Property>
@@ -430,7 +448,7 @@
     <Object Type="Vector.CANalyzer.Panels.Design.LEDControl, Vector.CANalyzer.Panels.CommonControls, Version=8.5.98.0, Culture=neutral, PublicKeyToken=null" Name="LEDControl19" ControlName="LED Control">
       <Property Name="Name">LEDControl19</Property>
       <Property Name="Size">24, 24</Property>
-      <Property Name="Location">404, 512</Property>
+      <Property Name="Location">434, 512</Property>
       <Property Name="UsedLEDColorOff">Gray</Property>
       <Property Name="SymbolConfiguration">4;2;db;slave;TrafficLightsControl;output8_red;1;CAN;;-1</Property>
       <Property Name="TabIndex">20</Property>
@@ -438,7 +456,7 @@
     <Object Type="Vector.CANalyzer.Panels.Design.LEDControl, Vector.CANalyzer.Panels.CommonControls, Version=8.5.98.0, Culture=neutral, PublicKeyToken=null" Name="LEDControl20" ControlName="LED Control">
       <Property Name="Name">LEDControl20</Property>
       <Property Name="Size">24, 24</Property>
-      <Property Name="Location">404, 572</Property>
+      <Property Name="Location">434, 572</Property>
       <Property Name="UsedLEDColorOn">Lime</Property>
       <Property Name="UsedLEDColorOff">Gray</Property>
       <Property Name="SymbolConfiguration">4;2;db;slave;TrafficLightsControl;output8_green;1;CAN;;-1</Property>
@@ -447,7 +465,7 @@
     <Object Type="Vector.CANalyzer.Panels.Design.LEDControl, Vector.CANalyzer.Panels.CommonControls, Version=8.5.98.0, Culture=neutral, PublicKeyToken=null" Name="LEDControl21" ControlName="LED Control">
       <Property Name="Name">LEDControl21</Property>
       <Property Name="Size">24, 24</Property>
-      <Property Name="Location">404, 542</Property>
+      <Property Name="Location">434, 542</Property>
       <Property Name="UsedLEDColorOn">Gold</Property>
       <Property Name="UsedLEDColorOff">Gray</Property>
       <Property Name="SymbolConfiguration">4;2;db;slave;TrafficLightsControl;output8_yellow;1;CAN;;-1</Property>

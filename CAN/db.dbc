@@ -102,14 +102,134 @@ BO_ 77 CyclePhase: 8 master
 
 
 
-EV_ Tyellow: 1 [0|0] "" 3 1 DUMMY_NODE_VECTOR0 Vector__XXX;
+EV_ Frequency17: 0 [0|0] "" 0 1 DUMMY_NODE_VECTOR3  master;
 
-EV_ Tmax: 1 [0|0] "" 20 2 DUMMY_NODE_VECTOR3 Vector__XXX;
+EV_ Frequency16: 0 [0|0] "" 0 2 DUMMY_NODE_VECTOR3  master;
 
-EV_ Tmin: 1 [0|0] "" 5 3 DUMMY_NODE_VECTOR3 Vector__XXX;
+EV_ Frequency15: 0 [0|0] "" 0 3 DUMMY_NODE_VECTOR3  master;
+
+EV_ Frequency14: 0 [0|0] "" 0 4 DUMMY_NODE_VECTOR3  master;
+
+EV_ Frequency13: 0 [0|0] "" 0 5 DUMMY_NODE_VECTOR3  master;
+
+EV_ Frequency12: 0 [0|0] "" 0 6 DUMMY_NODE_VECTOR3  master;
+
+EV_ Frequency11: 0 [0|0] "" 0 7 DUMMY_NODE_VECTOR3  master;
+
+EV_ Frequency10: 0 [0|0] "" 0 8 DUMMY_NODE_VECTOR3  master;
+
+EV_ Frequency9: 0 [0|0] "" 0 9 DUMMY_NODE_VECTOR3  master;
+
+EV_ Frequency8: 0 [0|0] "" 0 10 DUMMY_NODE_VECTOR3  master;
+
+EV_ Frequency7: 0 [0|0] "" 0 11 DUMMY_NODE_VECTOR3  master;
+
+EV_ Frequency6: 0 [0|0] "" 0 12 DUMMY_NODE_VECTOR3  master;
+
+EV_ Frequency5: 0 [0|0] "" 0 13 DUMMY_NODE_VECTOR3  master;
+
+EV_ Frequency4: 0 [0|0] "" 0 14 DUMMY_NODE_VECTOR3  master;
+
+EV_ Frequency3: 0 [0|0] "" 0 15 DUMMY_NODE_VECTOR3  master;
+
+EV_ Frequency2: 0 [0|0] "" 0 16 DUMMY_NODE_VECTOR3  master;
+
+EV_ Frequency1: 0 [0|0] "" 0 17 DUMMY_NODE_VECTOR3  master;
+
+EV_ Frequency0: 0 [0|0] "" 0 18 DUMMY_NODE_VECTOR3  master;
+
+EV_ Check_Input0: 0 [0|0] "" 0 19 DUMMY_NODE_VECTOR3  master;
+
+EV_ Check_Input10: 0 [0|0] "" 0 20 DUMMY_NODE_VECTOR3  master;
+
+EV_ Check_Input11: 0 [0|0] "" 0 21 DUMMY_NODE_VECTOR3  master;
+
+EV_ Check_Input12: 0 [0|0] "" 0 22 DUMMY_NODE_VECTOR3  master;
+
+EV_ Check_Input13: 0 [0|0] "" 0 23 DUMMY_NODE_VECTOR3  master;
+
+EV_ Check_Input14: 0 [0|0] "" 0 24 DUMMY_NODE_VECTOR3  master;
+
+EV_ Check_Input15: 0 [0|0] "" 0 25 DUMMY_NODE_VECTOR3  master;
+
+EV_ Check_Input16: 0 [0|0] "" 0 26 DUMMY_NODE_VECTOR3  master;
+
+EV_ Check_Input5: 0 [0|0] "" 0 27 DUMMY_NODE_VECTOR3  master;
+
+EV_ Check_Input6: 0 [0|0] "" 0 28 DUMMY_NODE_VECTOR3  master;
+
+EV_ Check_Input7: 0 [0|0] "" 0 29 DUMMY_NODE_VECTOR3  master;
+
+EV_ Check_Input8: 0 [0|0] "" 0 30 DUMMY_NODE_VECTOR3  master;
+
+EV_ Check_Input9: 0 [0|0] "" 0 31 DUMMY_NODE_VECTOR3  master;
+
+EV_ Check_Input4: 0 [0|0] "" 0 32 DUMMY_NODE_VECTOR3  master;
+
+EV_ Check_Input3: 0 [0|0] "" 0 33 DUMMY_NODE_VECTOR3  master;
+
+EV_ Check_Input2: 0 [0|0] "" 0 34 DUMMY_NODE_VECTOR3  master;
+
+EV_ Check_Input1: 0 [0|0] "" 0 35 DUMMY_NODE_VECTOR3  master;
+
+EV_ Check_Input17: 0 [0|0] "" 0 36 DUMMY_NODE_VECTOR3  master;
+
+EV_ Check_Output0: 0 [0|0] "" 0 37 DUMMY_NODE_VECTOR3  master;
+
+EV_ Check_Output3: 0 [0|0] "" 0 38 DUMMY_NODE_VECTOR3  master;
+
+EV_ Check_Output2: 0 [0|0] "" 0 39 DUMMY_NODE_VECTOR3  master;
+
+EV_ Check_Output1: 0 [0|0] "" 0 40 DUMMY_NODE_VECTOR3  master;
+
+EV_ Tyellow: 1 [0|0] "" 3 41 DUMMY_NODE_VECTOR0 Vector__XXX;
+
+EV_ Tmax: 1 [0|0] "" 20 42 DUMMY_NODE_VECTOR3 Vector__XXX;
+
+EV_ Tmin: 1 [0|0] "" 5 43 DUMMY_NODE_VECTOR3 Vector__XXX;
 
 CM_ BO_ 3221225472 "This is a message for not used signals, created by Vector CANdb++ DBC OLE DB Provider.";
 CM_ SG_ 77 time "Okreœla czas trwania danej fazy.";
+CM_ EV_ Frequency17 "Czujnik natê¿enia ruchu na wlocie";
+CM_ EV_ Frequency16 "Czujnik natê¿enia ruchu na wlocie";
+CM_ EV_ Frequency15 "Czujnik natê¿enia ruchu na wlocie";
+CM_ EV_ Frequency14 "Czujnik natê¿enia ruchu na wlocie";
+CM_ EV_ Frequency13 "Czujnik natê¿enia ruchu na wlocie";
+CM_ EV_ Frequency12 "Czujnik natê¿enia ruchu na wlocie";
+CM_ EV_ Frequency11 "Czujnik natê¿enia ruchu na wlocie";
+CM_ EV_ Frequency10 "Czujnik natê¿enia ruchu na wlocie";
+CM_ EV_ Frequency9 "Czujnik natê¿enia ruchu na wlocie";
+CM_ EV_ Frequency8 "Czujnik natê¿enia ruchu na wlocie";
+CM_ EV_ Frequency7 "Czujnik natê¿enia ruchu na wlocie";
+CM_ EV_ Frequency6 "Czujnik natê¿enia ruchu na wlocie";
+CM_ EV_ Frequency5 "Czujnik natê¿enia ruchu na wlocie";
+CM_ EV_ Frequency4 "Czujnik natê¿enia ruchu na wlocie";
+CM_ EV_ Frequency3 "Czujnik natê¿enia ruchu na wlocie";
+CM_ EV_ Frequency2 "Czujnik natê¿enia ruchu na wlocie";
+CM_ EV_ Frequency1 "Czujnik natê¿enia ruchu na wlocie";
+CM_ EV_ Frequency0 "Czujnik natê¿enia ruchu na wlocie";
+CM_ EV_ Check_Input0 "Sprawdzanie obecnoœci samochodów na wlocie";
+CM_ EV_ Check_Input10 "Czujnik obecnoœci pieszych na wlocie";
+CM_ EV_ Check_Input11 "Czujnikobecnoœci pieszych na wlocie";
+CM_ EV_ Check_Input12 "Czujnik obecnoœci pieszych na wlocie";
+CM_ EV_ Check_Input13 "Czujnik obecnoœci pieszych na wlocie";
+CM_ EV_ Check_Input14 "Czujnik obecnoœci pieszych na wlocie";
+CM_ EV_ Check_Input15 "Czujnik obecnoœci pieszych na wlocie";
+CM_ EV_ Check_Input16 "Czujnik obecnoœci pieszych na wlocie";
+CM_ EV_ Check_Input5 "Czujnik obecnoœci samochodów na wlocie";
+CM_ EV_ Check_Input6 "Czujnik obecnoœci samochodów na wlocie";
+CM_ EV_ Check_Input7 "Czujnik obecnoœci samochodów na wlocie";
+CM_ EV_ Check_Input8 "Czujnik obecnoœci samochodów na wlocie";
+CM_ EV_ Check_Input9 "Czujnikobecnoœci samochodów na wlocie";
+CM_ EV_ Check_Input4 "Czujnik obecnoœci samochodów na wlocie";
+CM_ EV_ Check_Input3 "Czujnik obecnoœci samochodów na wlocie";
+CM_ EV_ Check_Input2 "Czujnik obecnoœci samochodów na wlocie";
+CM_ EV_ Check_Input1 "Czujnik obecnoœci samochodów na wlocie";
+CM_ EV_ Check_Input17 "Czujnik obecnoœci pieszych na wlocie";
+CM_ EV_ Check_Output0 "Blokada wylotu 0";
+CM_ EV_ Check_Output3 "Blokada wylotu 3";
+CM_ EV_ Check_Output2 "Blokada wylotu 2";
+CM_ EV_ Check_Output1 "Blokada wylotu 1";
 CM_ EV_ Tyellow "Czas œwiat³a ¿ó³tego.";
 CM_ EV_ Tmax "Maksymalny czas œwiat³a zielonego.";
 CM_ EV_ Tmin "Minimalny czas œwiat³a zielonego.";
