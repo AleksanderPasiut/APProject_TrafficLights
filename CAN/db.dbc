@@ -36,14 +36,24 @@ BS_:
 BU_: slave master
 
 
-BO_ 77 ExampleData: 8 master
- SG_ Counter : 0|64@1- (1,0) [0|0] "" Vector__XXX
+BO_ 77 CyclePhase: 8 master
+ SG_ time : 32|32@1- (1,0) [0|0] "" Vector__XXX
+ SG_ inputs : 0|18@1+ (1,0) [0|262143] "" Vector__XXX
 
 
 
-EV_ var: 1 [0|0] "" 0 1 DUMMY_NODE_VECTOR3 Vector__XXX;
+EV_ Tyellow: 1 [0|0] "" 3 1 DUMMY_NODE_VECTOR0 Vector__XXX;
 
+EV_ Tmax: 1 [0|0] "" 20 2 DUMMY_NODE_VECTOR3 Vector__XXX;
+
+EV_ Tmin: 1 [0|0] "" 5 3 DUMMY_NODE_VECTOR3 Vector__XXX;
+
+CM_ SG_ 77 time "Okreœla czas trwania danej fazy.";
+CM_ SG_ 77 inputs "Okreœla poprzez flagi logiczne, które wloty maj¹ byæ otwarte.";
+CM_ EV_ Tyellow "Czas œwiat³a ¿ó³tego.";
+CM_ EV_ Tmax "Maksymalny czas œwiat³a zielonego.";
+CM_ EV_ Tmin "Minimalny czas œwiat³a zielonego.";
 BA_DEF_  "BusType" STRING ;
 BA_DEF_DEF_  "BusType" "";
-SIG_VALTYPE_ 77 Counter : 2;
+SIG_VALTYPE_ 77 time : 1;
 
