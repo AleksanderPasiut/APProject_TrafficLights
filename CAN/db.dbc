@@ -102,94 +102,97 @@ BO_ 77 CyclePhase: 8 master
 
 
 
-EV_ Frequency17: 0 [0|0] "" 0 1 DUMMY_NODE_VECTOR3  master;
+EV_ Tcycle: 1 [0|0] "" 60 1 DUMMY_NODE_VECTOR3 Vector__XXX;
 
-EV_ Frequency16: 0 [0|0] "" 0 2 DUMMY_NODE_VECTOR3  master;
+EV_ Frequency17: 0 [0|0] "" 0 2 DUMMY_NODE_VECTOR3  master;
 
-EV_ Frequency15: 0 [0|0] "" 0 3 DUMMY_NODE_VECTOR3  master;
+EV_ Frequency16: 0 [0|0] "" 0 3 DUMMY_NODE_VECTOR3  master;
 
-EV_ Frequency14: 0 [0|0] "" 0 4 DUMMY_NODE_VECTOR3  master;
+EV_ Frequency15: 0 [0|0] "" 0 4 DUMMY_NODE_VECTOR3  master;
 
-EV_ Frequency13: 0 [0|0] "" 0 5 DUMMY_NODE_VECTOR3  master;
+EV_ Frequency14: 0 [0|0] "" 0 5 DUMMY_NODE_VECTOR3  master;
 
-EV_ Frequency12: 0 [0|0] "" 0 6 DUMMY_NODE_VECTOR3  master;
+EV_ Frequency13: 0 [0|0] "" 0 6 DUMMY_NODE_VECTOR3  master;
 
-EV_ Frequency11: 0 [0|0] "" 0 7 DUMMY_NODE_VECTOR3  master;
+EV_ Frequency12: 0 [0|0] "" 0 7 DUMMY_NODE_VECTOR3  master;
 
-EV_ Frequency10: 0 [0|0] "" 0 8 DUMMY_NODE_VECTOR3  master;
+EV_ Frequency11: 0 [0|0] "" 0 8 DUMMY_NODE_VECTOR3  master;
 
-EV_ Frequency9: 0 [0|0] "" 0 9 DUMMY_NODE_VECTOR3  master;
+EV_ Frequency10: 0 [0|0] "" 0 9 DUMMY_NODE_VECTOR3  master;
 
-EV_ Frequency8: 0 [0|0] "" 0 10 DUMMY_NODE_VECTOR3  master;
+EV_ Frequency9: 0 [0|0] "" 0 10 DUMMY_NODE_VECTOR3  master;
 
-EV_ Frequency7: 0 [0|0] "" 0 11 DUMMY_NODE_VECTOR3  master;
+EV_ Frequency8: 0 [0|0] "" 0 11 DUMMY_NODE_VECTOR3  master;
 
-EV_ Frequency6: 0 [0|0] "" 0 12 DUMMY_NODE_VECTOR3  master;
+EV_ Frequency7: 0 [0|0] "" 0 12 DUMMY_NODE_VECTOR3  master;
 
-EV_ Frequency5: 0 [0|0] "" 0 13 DUMMY_NODE_VECTOR3  master;
+EV_ Frequency6: 0 [0|0] "" 0 13 DUMMY_NODE_VECTOR3  master;
 
-EV_ Frequency4: 0 [0|0] "" 0 14 DUMMY_NODE_VECTOR3  master;
+EV_ Frequency5: 0 [0|0] "" 0 14 DUMMY_NODE_VECTOR3  master;
 
-EV_ Frequency3: 0 [0|0] "" 0 15 DUMMY_NODE_VECTOR3  master;
+EV_ Frequency4: 0 [0|0] "" 0 15 DUMMY_NODE_VECTOR3  master;
 
-EV_ Frequency2: 0 [0|0] "" 0 16 DUMMY_NODE_VECTOR3  master;
+EV_ Frequency3: 0 [0|0] "" 0 16 DUMMY_NODE_VECTOR3  master;
 
-EV_ Frequency1: 0 [0|0] "" 0 17 DUMMY_NODE_VECTOR3  master;
+EV_ Frequency2: 0 [0|0] "" 0 17 DUMMY_NODE_VECTOR3  master;
 
-EV_ Frequency0: 0 [0|0] "" 0 18 DUMMY_NODE_VECTOR3  master;
+EV_ Frequency1: 0 [0|0] "" 0 18 DUMMY_NODE_VECTOR3  master;
 
-EV_ Check_Input0: 0 [0|0] "" 0 19 DUMMY_NODE_VECTOR3  master;
+EV_ Frequency0: 0 [0|0] "" 0 19 DUMMY_NODE_VECTOR3  master;
 
-EV_ Check_Input10: 0 [0|0] "" 0 20 DUMMY_NODE_VECTOR3  master;
+EV_ Check_Input0: 0 [0|0] "" 0 20 DUMMY_NODE_VECTOR3  master;
 
-EV_ Check_Input11: 0 [0|0] "" 0 21 DUMMY_NODE_VECTOR3  master;
+EV_ Check_Input10: 0 [0|0] "" 0 21 DUMMY_NODE_VECTOR3  master;
 
-EV_ Check_Input12: 0 [0|0] "" 0 22 DUMMY_NODE_VECTOR3  master;
+EV_ Check_Input11: 0 [0|0] "" 0 22 DUMMY_NODE_VECTOR3  master;
 
-EV_ Check_Input13: 0 [0|0] "" 0 23 DUMMY_NODE_VECTOR3  master;
+EV_ Check_Input12: 0 [0|0] "" 0 23 DUMMY_NODE_VECTOR3  master;
 
-EV_ Check_Input14: 0 [0|0] "" 0 24 DUMMY_NODE_VECTOR3  master;
+EV_ Check_Input13: 0 [0|0] "" 0 24 DUMMY_NODE_VECTOR3  master;
 
-EV_ Check_Input15: 0 [0|0] "" 0 25 DUMMY_NODE_VECTOR3  master;
+EV_ Check_Input14: 0 [0|0] "" 0 25 DUMMY_NODE_VECTOR3  master;
 
-EV_ Check_Input16: 0 [0|0] "" 0 26 DUMMY_NODE_VECTOR3  master;
+EV_ Check_Input15: 0 [0|0] "" 0 26 DUMMY_NODE_VECTOR3  master;
 
-EV_ Check_Input5: 0 [0|0] "" 0 27 DUMMY_NODE_VECTOR3  master;
+EV_ Check_Input16: 0 [0|0] "" 0 27 DUMMY_NODE_VECTOR3  master;
 
-EV_ Check_Input6: 0 [0|0] "" 0 28 DUMMY_NODE_VECTOR3  master;
+EV_ Check_Input5: 0 [0|0] "" 0 28 DUMMY_NODE_VECTOR3  master;
 
-EV_ Check_Input7: 0 [0|0] "" 0 29 DUMMY_NODE_VECTOR3  master;
+EV_ Check_Input6: 0 [0|0] "" 0 29 DUMMY_NODE_VECTOR3  master;
 
-EV_ Check_Input8: 0 [0|0] "" 0 30 DUMMY_NODE_VECTOR3  master;
+EV_ Check_Input7: 0 [0|0] "" 0 30 DUMMY_NODE_VECTOR3  master;
 
-EV_ Check_Input9: 0 [0|0] "" 0 31 DUMMY_NODE_VECTOR3  master;
+EV_ Check_Input8: 0 [0|0] "" 0 31 DUMMY_NODE_VECTOR3  master;
 
-EV_ Check_Input4: 0 [0|0] "" 0 32 DUMMY_NODE_VECTOR3  master;
+EV_ Check_Input9: 0 [0|0] "" 0 32 DUMMY_NODE_VECTOR3  master;
 
-EV_ Check_Input3: 0 [0|0] "" 0 33 DUMMY_NODE_VECTOR3  master;
+EV_ Check_Input4: 0 [0|0] "" 0 33 DUMMY_NODE_VECTOR3  master;
 
-EV_ Check_Input2: 0 [0|0] "" 0 34 DUMMY_NODE_VECTOR3  master;
+EV_ Check_Input3: 0 [0|0] "" 0 34 DUMMY_NODE_VECTOR3  master;
 
-EV_ Check_Input1: 0 [0|0] "" 0 35 DUMMY_NODE_VECTOR3  master;
+EV_ Check_Input2: 0 [0|0] "" 0 35 DUMMY_NODE_VECTOR3  master;
 
-EV_ Check_Input17: 0 [0|0] "" 0 36 DUMMY_NODE_VECTOR3  master;
+EV_ Check_Input1: 0 [0|0] "" 0 36 DUMMY_NODE_VECTOR3  master;
 
-EV_ Check_Output0: 0 [0|0] "" 0 37 DUMMY_NODE_VECTOR3  master;
+EV_ Check_Input17: 0 [0|0] "" 0 37 DUMMY_NODE_VECTOR3  master;
 
-EV_ Check_Output3: 0 [0|0] "" 0 38 DUMMY_NODE_VECTOR3  master;
+EV_ Check_Output0: 0 [0|0] "" 0 38 DUMMY_NODE_VECTOR3  master;
 
-EV_ Check_Output2: 0 [0|0] "" 0 39 DUMMY_NODE_VECTOR3  master;
+EV_ Check_Output3: 0 [0|0] "" 0 39 DUMMY_NODE_VECTOR3  master;
 
-EV_ Check_Output1: 0 [0|0] "" 0 40 DUMMY_NODE_VECTOR3  master;
+EV_ Check_Output2: 0 [0|0] "" 0 40 DUMMY_NODE_VECTOR3  master;
 
-EV_ Tyellow: 1 [0|0] "" 3 41 DUMMY_NODE_VECTOR0 Vector__XXX;
+EV_ Check_Output1: 0 [0|0] "" 0 41 DUMMY_NODE_VECTOR3  master;
 
-EV_ Tmax: 1 [0|0] "" 20 42 DUMMY_NODE_VECTOR3 Vector__XXX;
+EV_ Tyellow: 1 [0|0] "" 3 42 DUMMY_NODE_VECTOR3 Vector__XXX;
 
-EV_ Tmin: 1 [0|0] "" 5 43 DUMMY_NODE_VECTOR3 Vector__XXX;
+EV_ Tmax: 1 [0|0] "" 20 43 DUMMY_NODE_VECTOR3 Vector__XXX;
+
+EV_ Tmin: 1 [0|0] "" 5 44 DUMMY_NODE_VECTOR3 Vector__XXX;
 
 CM_ BO_ 3221225472 "This is a message for not used signals, created by Vector CANdb++ DBC OLE DB Provider.";
 CM_ SG_ 77 time "Okreœla czas trwania danej fazy.";
+CM_ EV_ Tcycle "Ca³kowity czas cyklu.";
 CM_ EV_ Frequency17 "Czujnik natê¿enia ruchu na wlocie";
 CM_ EV_ Frequency16 "Czujnik natê¿enia ruchu na wlocie";
 CM_ EV_ Frequency15 "Czujnik natê¿enia ruchu na wlocie";

@@ -229,20 +229,31 @@ double Proceed(
   return sqrt(deltaV);
 }
 
+void LoadSensorData(double v[])
+{
+  int i;
+  for (i = 0; i < inputsAmount; i++)
+    v[i] = 20;
+}
+
 void ChooseBestCycle()
 {
   int i, j, k;
   double tmp;
   
-  double Tc = 60; // czas ca³kowity cyklu
-  double Tp = 3; // czas ¿ó³tego œwiat³a
-  double x_min = 5; // minimalny czas zielonego œwiat³a
-  double x_max = 20; // maksymalny czas zielonego œwiat³a
+  double Tc; // czas ca³kowity cyklu
+  double Tp; // czas ¿ó³tego œwiat³a
+  double x_min; // minimalny czas zielonego œwiat³a
+  double x_max; // maksymalny czas zielonego œwiat³a
   double deltaV = 10000000; // niedok³adnoœæ
   double v[inputsAmount]; // wektor natê¿eñ ruchu
   
-  for (i = 0; i < inputsAmount; i++)
-    v[i] = 20;
+  Tc = getValue(Tcycle);
+  Tp = getValue(Tyellow);
+  x_min = getValue(Tmin);
+  x_max = getValue(Tmax);
+  
+  LoadSensorData(v);
   
   currentCycle = 0;
   
