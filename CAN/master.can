@@ -1,3 +1,577 @@
+<<<<<<< .mine
+/*@!Encoding:1250*/
+includes
+{
+  
+}
+
+variables
+{
+  // g³ówny zegar
+  msTimer mainTimer;
+  
+  // sta³e
+  const int inputsAmount = 18; // liczba wlotów (przejœcia dla pieszych traktowane jako wloty)
+  const int outputsAmount = 4; // liczba wylotów
+  const int cyclesAmount = 4; // liczba dostêpnych wariantów cykli
+  const int maxCyclePhases = 4; // maksymalna liczba faz w cyklu
+  
+  // macierze cykli
+  double B[cyclesAmount][inputsAmount][maxCyclePhases];
+  double invB[cyclesAmount][maxCyclePhases][maxCyclePhases];
+  
+  // zmienne cyklu
+  int currentCycle; // identyfikator wybranego cyklu
+  int currentCyclePhases; // liczba faz w aktualnym cyklu
+  int currentPhase; // aktualna faza cyklu
+  double x[maxCyclePhases]; // wektor wyjœciowy (czasy poszczególnych faz cyklu)
+}
+
+on start
+{
+  currentPhase = 0;
+  PrepareCycles();
+  
+  SetTimer(mainTimer, 0);
+}
+
+on timer mainTimer
+{
+  if (currentPhase == 0)
+    ChooseBestCycle();
+  
+  TranslateCycleToMessage();
+  SetTimer(mainTimer, (int)(1000.0*x[currentPhase]));
+  
+  
+  currentPhase = (currentPhase+1) % maxCyclePhases; 
+}
+
+void PrepareCycles()
+{
+  // przygotowanie macierzy reprezentuj¹cych cykle
+  
+  // wyzerowanie wszystkich macierzy
+  int i, j, k;
+  for (i = 0; i < cyclesAmount; i++)
+    for (j = 0; j < inputsAmount; j++)
+      for (k = 0; k < maxCyclePhases; k++)
+        B[i][j][k] = 0;
+  
+  // zrównowa¿ony
+  B[0][0][0] = B[0][1][0] = B[0][5][0] = B[0][6][0] = B[0][12][0] = B[0][13][0] = B[0][16][0] = B[0][17][0] = 1;
+  B[0][2][1] = B[0][7][1] = B[0][12][1] = B[0][16][1] = 1;
+  B[0][3][2] = B[0][4][2] = B[0][8][2] = B[0][9][2] = B[0][10][2] = B[0][11][2] = B[0][14][2] = B[0][15][2] = 1;
+  B[0][4][3] = B[0][9][3] = B[0][10][3] = B[0][14][3] = 1;
+      
+  // asymetryczny na g³ównej
+  B[1][0][0] = B[1][1][0] = B[1][2][0] = B[1][12][0] = B[1][16][0] = B[1][17][0] = 1;
+  B[1][5][1] = B[1][6][1] = B[1][7][1] = B[1][12][1] = B[1][13][1] = B[1][16][1] = 1;
+  B[1][3][2] = B[1][4][2] = B[1][8][2] = B[1][9][2] = B[1][10][2] = B[1][11][2] = B[1][14][2] = B[1][15][2] = 1;
+  B[1][4][3] = B[1][9][3] = B[1][10][3] = B[1][14][3] = 1;
+      
+  // asymetryczny na podrzêdnej
+  B[2][0][0] = B[2][1][0] = B[2][5][0] = B[2][6][0] = B[2][12][0] = B[2][13][0] = B[2][16][0] = B[2][17][0] = 1;
+  B[2][2][1] = B[2][7][1] = B[2][12][1] = B[2][16][1] = 1;
+  B[2][3][2] = B[2][4][2] = B[2][10][2] = B[2][11][2] = B[2][13][2] = B[2][14][2] = B[2][16][2] = 1;
+  B[2][8][3] = B[2][9][3] = B[2][10][3] = B[2][12][3] = B[2][14][3] = B[2][15][3] = B[2][17][3] = 1;
+      
+  // asymetryczny zupe³ny
+  B[3][0][0] = B[3][1][0] = B[3][2][0] = B[3][11][0] = B[3][12][0] = B[3][14][0] = B[3][16][0] = 1;
+  B[3][3][1] = B[3][4][1] = B[3][10][1] = B[3][13][1] = B[3][14][1] = B[3][16][1] = 1;
+  B[3][5][2] = B[3][6][2] = B[3][7][2] = B[3][9][2] = B[3][10][2] = B[3][12][2] = B[3][15][2] = B[3][16][2] = 1;
+  B[3][8][3] = B[3][9][3] = B[3][10][3] = B[3][12][3] = B[3][14][3] = B[3][17][3] = 1;
+  
+  for (i = 0; i < cyclesAmount; i++)
+    PrepareInversedMatrix(i);
+}
+
+void PrepareInversedMatrix(int mat)
+{
+  // iteratory
+  int i, j, k;
+  double t;
+  
+  // dla u³atwienia
+  const int m = maxCyclePhases;
+  
+  // macierz do odwrócenia
+  double tmpM[m][m];
+  
+  // wype³nienie macierzy do odwrócenia
+  for (i = 0; i < m; i++)
+    for (j = 0; j < m; j++)
+    {
+      tmpM[i][j] = 0;
+      
+      for (k = 0; k < inputsAmount; k++)
+        tmpM[i][j] += B[mat][k][i]*B[mat][k][j];
+    }
+  
+  // przygotowanie macierzy jednostkowej
+  for (i = 0; i < m; i++)
+    for (j = 0; j < m; j++)
+      invB[mat][i][j] = (i == j ? 1 : 0);
+    
+  // odwracanie macierzy metod¹ eliminacji Gaussa
+  for (i = 0; i+1 < m; i++)
+  {
+    if (tmpM[i][i] == 0)
+      for (j = i+1; j < m; j++)
+        if (tmpM[j][i] != 0)
+          for (k = 0; k < m; k++)
+          {
+            t = tmpM[i][k];
+            tmpM[i][k] = tmpM[j][k];
+            tmpM[j][k] = t;
+            t = invB[mat][i][k];
+            invB[mat][i][k] = invB[mat][j][k];
+            invB[mat][j][k] = t;
+          }
+          
+     if (tmpM[i][i] != 0)
+      for (j = i+1; j < m; j++)
+      {
+        t = tmpM[j][i]/tmpM[i][i];
+        
+        for (k = i; k < m; k++)
+          tmpM[j][k] -= tmpM[i][k]*t;
+        
+        for (k = 0; k < m; k++)
+          invB[mat][j][k] -= invB[mat][i][k]*t;
+      }
+  }
+  
+  for (i = m-1; i > 0; i--)
+    for (j = 0; j < i; j++)
+    {
+      t = tmpM[j][i]/tmpM[i][i];
+      
+      for (k = 0; k < m; k++)
+        invB[mat][j][k] -= t*invB[mat][i][k];
+    }
+    
+  for (i = 0; i < m; i++)
+    for (j = 0; j < m; j++)
+      invB[mat][i][j] /= tmpM[i][i];
+}
+
+double Proceed(
+  double v[], // wektor natê¿eñ ruchu
+  int mat,  // identyfikator sprawdzanej macierzy
+  double x[],
+  double x_min,
+  double x_max,
+  double Tc,
+  double Tp)
+{
+  // iteratory
+  int i, j, k;
+  
+  // skrócone nazwy dla u³atwienia
+  const int n = inputsAmount;
+  const int m = cyclesAmount;
+  
+  double tmp = 0.0;
+  double s = 0.0;
+  double deltaV;
+  
+  double vector[m];
+  double dv[n];
+  
+  // przygotowanie wektora wspó³czynników
+  for (i = 0; i < m; i++)
+  {
+    vector[i] = 0;
+    
+    for (j = 0; j < n; j++)
+      vector[i] += B[mat][j][i]*v[j];
+  }
+  
+  // x = invB*vector
+  for (i = 0; i < m; i++)
+  {
+    x[i] = 0;
+    
+    for (j = 0; j < m; j++)
+      x[i] += invB[mat][i][j]*vector[j];
+  }
+  
+  // obliczenie sta³ej s
+  tmp = 0.0;
+  for (i = 0; i < m; i++)
+    tmp += x[i];
+  s = (Tc-m*Tp)/tmp;
+  
+  // przeskalowanie wektora i uwzglêdnienie ograniczeñ
+  for (i = 0; i < m; i++)
+  {
+    x[i] *= s;
+    
+    if (x[i] < x_min)
+      x[i] = x_min;
+    if (x[i] > x_max)
+      x[i] = x_max;
+  }
+  
+  // obliczenie b³êdu
+  for (i = 0; i < n; i++)
+  {
+    dv[i] = 0;
+    
+    for (j = 0; j < m; j++)
+      dv[i] += B[mat][i][j]*x[j];
+    
+    dv[i] -= v[i]*s;
+  }
+  deltaV = 0;
+  for (i = 0; i < n; i++)
+    deltaV += dv[i]*dv[i];
+ 
+  return sqrt(deltaV);
+}
+
+void ChooseBestCycle()
+{
+  int i, j, k;
+  double tmp;
+  
+  double Tc = 60; // czas ca³kowity cyklu
+  double Tp = 3; // czas ¿ó³tego œwiat³a
+  double x_min = 5; // minimalny czas zielonego œwiat³a
+  double x_max = 20; // maksymalny czas zielonego œwiat³a
+  double deltaV = 10000000; // niedok³adnoœæ
+  double v[inputsAmount]; // wektor natê¿eñ ruchu
+  
+  for (i = 0; i < inputsAmount; i++)
+    v[i] = 20;
+  
+  currentCycle = 0;
+  
+  for (i = 0; i < cyclesAmount; i++)
+  {
+    tmp = Proceed(v, i, x, x_min, x_max, Tc, Tp);
+    
+    if (deltaV > tmp)
+    {
+      deltaV = tmp;
+      currentCycle = i;
+    }
+  }
+  
+  deltaV = Proceed(v, currentCycle, x, x_min, x_max, Tc, Tp);
+}
+
+void TranslateCycleToMessage()
+{
+  int i;
+  
+  $CyclePhase::time = x[currentPhase];
+  $CyclePhase::input0 = (int)B[currentCycle][0][currentPhase];
+  $CyclePhase::input1 = (int)B[currentCycle][1][currentPhase];
+  $CyclePhase::input2 = (int)B[currentCycle][2][currentPhase];
+  $CyclePhase::input3 = (int)B[currentCycle][3][currentPhase];
+  $CyclePhase::input4 = (int)B[currentCycle][4][currentPhase];
+  $CyclePhase::input5 = (int)B[currentCycle][5][currentPhase];
+  $CyclePhase::input6 = (int)B[currentCycle][6][currentPhase];
+  $CyclePhase::input7 = (int)B[currentCycle][7][currentPhase];
+  $CyclePhase::input8 = (int)B[currentCycle][8][currentPhase];
+  $CyclePhase::input9 = (int)B[currentCycle][9][currentPhase];
+  $CyclePhase::input10 = (int)B[currentCycle][10][currentPhase];
+  $CyclePhase::input11 = (int)B[currentCycle][11][currentPhase];
+  $CyclePhase::input12 = (int)B[currentCycle][12][currentPhase];
+  $CyclePhase::input13 = (int)B[currentCycle][13][currentPhase];
+  $CyclePhase::input14 = (int)B[currentCycle][14][currentPhase];
+  $CyclePhase::input15 = (int)B[currentCycle][15][currentPhase];
+  $CyclePhase::input16 = (int)B[currentCycle][16][currentPhase];
+  $CyclePhase::input17 = (int)B[currentCycle][17][currentPhase];
+||||||| .r13
+/*@!Encoding:1250*/
+includes
+{
+  
+}
+
+variables
+{
+  // g³ówny zegar
+  msTimer mainTimer;
+  
+  // sta³e
+  const int inputsAmount = 18; // liczba wlotów (przejœcia dla pieszych traktowane jako wloty)
+  const int outputsAmount = 4; // liczba wylotów
+  const int cyclesAmount = 4; // liczba dostêpnych wariantów cykli
+  const int maxCyclePhases = 4; // maksymalna liczba faz w cyklu
+  
+  // macierze cykli
+  double B[cyclesAmount][inputsAmount][maxCyclePhases];
+  double invB[cyclesAmount][maxCyclePhases][maxCyclePhases];
+  
+  // zmienne cyklu
+  int currentCycle; // identyfikator wybranego cyklu
+  int currentCyclePhases; // liczba faz w aktualnym cyklu
+  int currentPhase; // aktualna faza cyklu
+  double x[maxCyclePhases]; // wektor wyjœciowy (czasy poszczególnych faz cyklu)
+}
+
+on start
+{
+  currentPhase = 0;
+  PrepareCycles();
+  
+  SetTimer(mainTimer, 0);
+}
+
+on timer mainTimer
+{
+  if (currentPhase == 0)
+    ChooseBestCycle();
+  
+  TranslateCycleToMessage();
+  SetTimer(mainTimer, (int)(1000.0*x[currentPhase]));
+  
+  currentPhase = (currentPhase+1) % maxCyclePhases; 
+}
+
+void PrepareCycles()
+{
+  // przygotowanie macierzy reprezentuj¹cych cykle
+  
+  // wyzerowanie wszystkich macierzy
+  int i, j, k;
+  for (i = 0; i < cyclesAmount; i++)
+    for (j = 0; j < inputsAmount; j++)
+      for (k = 0; k < maxCyclePhases; k++)
+        B[i][j][k] = 0;
+  
+  // zrównowa¿ony
+  B[0][0][0] = B[0][1][0] = B[0][5][0] = B[0][6][0] = B[0][12][0] = B[0][13][0] = B[0][16][0] = B[0][17][0] = 1;
+  B[0][2][1] = B[0][7][1] = B[0][12][1] = B[0][16][1] = 1;
+  B[0][3][2] = B[0][4][2] = B[0][8][2] = B[0][9][2] = B[0][10][2] = B[0][11][2] = B[0][14][2] = B[0][15][2] = 1;
+  B[0][4][3] = B[0][9][3] = B[0][10][3] = B[0][14][3] = 1;
+      
+  // asymetryczny na g³ównej
+  B[1][0][0] = B[1][1][0] = B[1][2][0] = B[1][12][0] = B[1][16][0] = B[1][17][0] = 1;
+  B[1][5][1] = B[1][6][1] = B[1][7][1] = B[1][12][1] = B[1][13][1] = B[1][16][1] = 1;
+  B[1][3][2] = B[1][4][2] = B[1][8][2] = B[1][9][2] = B[1][10][2] = B[1][11][2] = B[1][14][2] = B[1][15][2] = 1;
+  B[1][4][3] = B[1][9][3] = B[1][10][3] = B[1][14][3] = 1;
+      
+  // asymetryczny na podrzêdnej
+  B[2][0][0] = B[2][1][0] = B[2][5][0] = B[2][6][0] = B[2][12][0] = B[2][13][0] = B[2][16][0] = B[2][17][0] = 1;
+  B[2][2][1] = B[2][7][1] = B[2][12][1] = B[2][16][1] = 1;
+  B[2][3][2] = B[2][4][2] = B[2][10][2] = B[2][11][2] = B[2][13][2] = B[2][14][2] = B[2][16][2] = 1;
+  B[2][8][3] = B[2][9][3] = B[2][10][3] = B[2][12][3] = B[2][14][3] = B[2][15][3] = B[2][17][3] = 1;
+      
+  // asymetryczny zupe³ny
+  B[3][0][0] = B[3][1][0] = B[3][2][0] = B[3][11][0] = B[3][12][0] = B[3][14][0] = B[3][16][0] = 1;
+  B[3][3][1] = B[3][4][1] = B[3][10][1] = B[3][13][1] = B[3][14][1] = B[3][16][1] = 1;
+  B[3][5][2] = B[3][6][2] = B[3][7][2] = B[3][9][2] = B[3][10][2] = B[3][12][2] = B[3][15][2] = B[3][16][2] = 1;
+  B[3][8][3] = B[3][9][3] = B[3][10][3] = B[3][12][3] = B[3][14][3] = B[3][17][3] = 1;
+  
+  for (i = 0; i < cyclesAmount; i++)
+    PrepareInversedMatrix(i);
+}
+
+void PrepareInversedMatrix(int mat)
+{
+  // iteratory
+  int i, j, k;
+  double t;
+  
+  // dla u³atwienia
+  const int m = maxCyclePhases;
+  
+  // macierz do odwrócenia
+  double tmpM[m][m];
+  
+  // wype³nienie macierzy do odwrócenia
+  for (i = 0; i < m; i++)
+    for (j = 0; j < m; j++)
+    {
+      tmpM[i][j] = 0;
+      
+      for (k = 0; k < inputsAmount; k++)
+        tmpM[i][j] += B[mat][k][i]*B[mat][k][j];
+    }
+  
+  // przygotowanie macierzy jednostkowej
+  for (i = 0; i < m; i++)
+    for (j = 0; j < m; j++)
+      invB[mat][i][j] = (i == j ? 1 : 0);
+    
+  // odwracanie macierzy metod¹ eliminacji Gaussa
+  for (i = 0; i+1 < m; i++)
+  {
+    if (tmpM[i][i] == 0)
+      for (j = i+1; j < m; j++)
+        if (tmpM[j][i] != 0)
+          for (k = 0; k < m; k++)
+          {
+            t = tmpM[i][k];
+            tmpM[i][k] = tmpM[j][k];
+            tmpM[j][k] = t;
+            t = invB[mat][i][k];
+            invB[mat][i][k] = invB[mat][j][k];
+            invB[mat][j][k] = t;
+          }
+          
+     if (tmpM[i][i] != 0)
+      for (j = i+1; j < m; j++)
+      {
+        t = tmpM[j][i]/tmpM[i][i];
+        
+        for (k = i; k < m; k++)
+          tmpM[j][k] -= tmpM[i][k]*t;
+        
+        for (k = 0; k < m; k++)
+          invB[mat][j][k] -= invB[mat][i][k]*t;
+      }
+  }
+  
+  for (i = m-1; i > 0; i--)
+    for (j = 0; j < i; j++)
+    {
+      t = tmpM[j][i]/tmpM[i][i];
+      
+      for (k = 0; k < m; k++)
+        invB[mat][j][k] -= t*invB[mat][i][k];
+    }
+    
+  for (i = 0; i < m; i++)
+    for (j = 0; j < m; j++)
+      invB[mat][i][j] /= tmpM[i][i];
+}
+
+double Proceed(
+  double v[], // wektor natê¿eñ ruchu
+  int mat,  // identyfikator sprawdzanej macierzy
+  double x[],
+  double x_min,
+  double x_max,
+  double Tc,
+  double Tp)
+{
+  // iteratory
+  int i, j, k;
+  
+  // skrócone nazwy dla u³atwienia
+  const int n = inputsAmount;
+  const int m = cyclesAmount;
+  
+  double tmp = 0.0;
+  double s = 0.0;
+  double deltaV;
+  
+  double vector[m];
+  double dv[n];
+  
+  // przygotowanie wektora wspó³czynników
+  for (i = 0; i < m; i++)
+  {
+    vector[i] = 0;
+    
+    for (j = 0; j < n; j++)
+      vector[i] += B[mat][j][i]*v[j];
+  }
+  
+  // x = invB*vector
+  for (i = 0; i < m; i++)
+  {
+    x[i] = 0;
+    
+    for (j = 0; j < m; j++)
+      x[i] += invB[mat][i][j]*vector[j];
+  }
+  
+  // obliczenie sta³ej s
+  tmp = 0.0;
+  for (i = 0; i < m; i++)
+    tmp += x[i];
+  s = (Tc-m*Tp)/tmp;
+  
+  // przeskalowanie wektora i uwzglêdnienie ograniczeñ
+  for (i = 0; i < m; i++)
+  {
+    x[i] *= s;
+    
+    if (x[i] < x_min)
+      x[i] = x_min;
+    if (x[i] > x_max)
+      x[i] = x_max;
+  }
+  
+  // obliczenie b³êdu
+  for (i = 0; i < n; i++)
+  {
+    dv[i] = 0;
+    
+    for (j = 0; j < m; j++)
+      dv[i] += B[mat][i][j]*x[j];
+    
+    dv[i] -= v[i]*s;
+  }
+  deltaV = 0;
+  for (i = 0; i < n; i++)
+    deltaV += dv[i]*dv[i];
+ 
+  return sqrt(deltaV);
+}
+
+void ChooseBestCycle()
+{
+  int i, j, k;
+  double tmp;
+  
+  double Tc = 60; // czas ca³kowity cyklu
+  double Tp = 3; // czas ¿ó³tego œwiat³a
+  double x_min = 5; // minimalny czas zielonego œwiat³a
+  double x_max = 20; // maksymalny czas zielonego œwiat³a
+  double deltaV = 10000000; // niedok³adnoœæ
+  double v[inputsAmount]; // wektor natê¿eñ ruchu
+  
+  for (i = 0; i < inputsAmount; i++)
+    v[i] = 20;
+  
+  currentCycle = 0;
+  
+  for (i = 0; i < cyclesAmount; i++)
+  {
+    tmp = Proceed(v, i, x, x_min, x_max, Tc, Tp);
+    
+    if (deltaV > tmp)
+    {
+      deltaV = tmp;
+      currentCycle = i;
+    }
+  }
+  
+  deltaV = Proceed(v, currentCycle, x, x_min, x_max, Tc, Tp);
+}
+
+void TranslateCycleToMessage()
+{
+  int i;
+  
+  $CyclePhase::time = x[currentPhase];
+  $CyclePhase::input0 = (int)B[currentCycle][0][currentPhase];
+  $CyclePhase::input1 = (int)B[currentCycle][1][currentPhase];
+  $CyclePhase::input2 = (int)B[currentCycle][2][currentPhase];
+  $CyclePhase::input3 = (int)B[currentCycle][3][currentPhase];
+  $CyclePhase::input4 = (int)B[currentCycle][4][currentPhase];
+  $CyclePhase::input5 = (int)B[currentCycle][5][currentPhase];
+  $CyclePhase::input6 = (int)B[currentCycle][6][currentPhase];
+  $CyclePhase::input7 = (int)B[currentCycle][7][currentPhase];
+  $CyclePhase::input8 = (int)B[currentCycle][8][currentPhase];
+  $CyclePhase::input9 = (int)B[currentCycle][9][currentPhase];
+  $CyclePhase::input10 = (int)B[currentCycle][10][currentPhase];
+  $CyclePhase::input11 = (int)B[currentCycle][11][currentPhase];
+  $CyclePhase::input12 = (int)B[currentCycle][12][currentPhase];
+  $CyclePhase::input13 = (int)B[currentCycle][13][currentPhase];
+  $CyclePhase::input14 = (int)B[currentCycle][14][currentPhase];
+  $CyclePhase::input15 = (int)B[currentCycle][15][currentPhase];
+  $CyclePhase::input16 = (int)B[currentCycle][16][currentPhase];
+  $CyclePhase::input17 = (int)B[currentCycle][17][currentPhase];
+=======
 /*@!Encoding:1250*/
 includes
 {
@@ -294,4 +868,5 @@ void TranslateCycleToMessage()
   $CyclePhase::input15 = (int)B[currentCycle][15][currentPhase];
   $CyclePhase::input16 = (int)B[currentCycle][16][currentPhase];
   $CyclePhase::input17 = (int)B[currentCycle][17][currentPhase];
+>>>>>>> .r15
 }

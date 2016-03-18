@@ -6,6 +6,206 @@ includes
 
 variables
 {
+  message TrafficLightsControl Traffic;
+  
+  
+  
+  int Inputs[18][2];
+  
+  int CarLights[10][3]; //red, yellow, green
+  int WalkerLights[8];
+  int future;
+  int present;
+}
+
+void SetYellows()
+{
+  int i, j, k;
+
+  for(i = 0; i < 10; ++i)
+  {
+    if(Inputs[i][0] != Inputs[i][1]) //present input, future input
+    {
+      if(Inputs[i][1] == 1) //zielone 
+      {
+        //red, yellow, green
+        CarLights[i][0] = 1; //ustawienie czerwonego i zoltego swiatla
+        CarLights[i][1] = 1;
+        CarLights[i][2] = 0;
+      }
+      
+      if(Inputs[i][1] == 0) //czerwone
+      {
+        //red, yellow, green
+        CarLights[i][0] = 0; //ustawienie zoltego swiatla
+        CarLights[i][1] = 1;
+        CarLights[i][2] = 0;
+      }
+    }
+    else
+    {
+        if(Inputs[i][1] == 1) //podtrzymanie zielonego
+        {
+          CarLights[i][0] = 0;
+          CarLights[i][1] = 0;
+          CarLights[i][2] = 1;
+        }
+        
+        if(Inputs[i][1] == 0) //podtrzymanie czerwonego
+        {
+          CarLights[i][0] = 1;
+          CarLights[i][1] = 0;
+          CarLights[i][2] = 0;
+        }
+    }
+  }
+  TranslateArray10ToMessage();
   
 }
 
+void SetGreenOrRed()
+{
+  int i;
+  
+  for(i = 0; i < 10; ++i)
+  {
+      if(Inputs[i][1] == 1) //zielone 
+      {
+        //red, yellow, green
+        CarLights[i][0] = 0; //ustawienie czerwonego i zoltego swiatla
+        CarLights[i][1] = 0;
+        CarLights[i][2] = 1;
+      }
+      
+      if(Inputs[i][1] == 0) //czerwone
+      {
+        //red, yellow, green
+        CarLights[i][0] = 1; //ustawienie zoltego swiatla
+        CarLights[i][1] = 0;
+        CarLights[i][2] = 0;
+      }
+   }
+
+  TranslateArray10ToMessage();
+}
+
+void SetWalkerLights()
+{
+  int i;
+  
+  for(i = 10; i < 18; ++i)
+  {
+     WalkerLights[i-10] = Inputs[i][1];
+  }
+
+  TranslateArray8ToMessage();
+}
+
+
+on message CyclePhase 
+{
+  TranslateMessageToArray();
+  
+  SetYellows();
+  
+  SetGreenOrRed();
+  
+  SetWalkerLights();
+}
+
+void TranslateMessageToArray()
+{
+    
+ 
+  Inputs[0][0] = $TrafficLightsControl::output0_green;
+  Inputs[1][0] = $TrafficLightsControl::output1_green;
+  Inputs[2][0] = $TrafficLightsControl::output2_green; 
+  Inputs[3][0] = $TrafficLightsControl::output3_green;
+  Inputs[4][0] = $TrafficLightsControl::output4_green;
+  Inputs[5][0] = $TrafficLightsControl::output5_green; 
+  Inputs[6][0] = $TrafficLightsControl::output6_green;
+  Inputs[7][0] = $TrafficLightsControl::output7_green;
+  Inputs[8][0] = $TrafficLightsControl::output8_green;
+  Inputs[9][0] = $TrafficLightsControl::output9_green;
+  Inputs[10][0] = $TrafficLightsControl::output10;
+  Inputs[11][0] = $TrafficLightsControl::output11;
+  Inputs[12][0] = $TrafficLightsControl::output12;
+  Inputs[13][0] = $TrafficLightsControl::output13;
+  Inputs[14][0] = $TrafficLightsControl::output14;
+  Inputs[15][0] = $TrafficLightsControl::output15;
+  Inputs[16][0] = $TrafficLightsControl::output16;
+  Inputs[17][0] = $TrafficLightsControl::output17;
+  
+  
+  Inputs[0][1] = $CyclePhase::input0;
+  Inputs[1][1] = $CyclePhase::input1;
+  Inputs[2][1] = $CyclePhase::input2; 
+  Inputs[3][1] = $CyclePhase::input3;
+  Inputs[4][1] = $CyclePhase::input4;
+  Inputs[5][1] = $CyclePhase::input5; 
+  Inputs[6][1] = $CyclePhase::input6;
+  Inputs[7][1] = $CyclePhase::input7;
+  Inputs[8][1] = $CyclePhase::input8;
+  Inputs[9][1] = $CyclePhase::input9;
+  Inputs[10][1] = $CyclePhase::input10;
+  Inputs[11][1] = $CyclePhase::input11;
+  Inputs[12][1] = $CyclePhase::input12;
+  Inputs[13][1] = $CyclePhase::input13;
+  Inputs[14][1] = $CyclePhase::input14;
+  Inputs[15][1] = $CyclePhase::input15;
+  Inputs[16][1] = $CyclePhase::input16;
+  Inputs[17][1] = $CyclePhase::input17;
+}
+
+void TranslateArray10ToMessage()
+{
+  $TrafficLightsControl::output0_green = CarLights[0][2];
+  $TrafficLightsControl::output1_green = CarLights[1][2];
+  $TrafficLightsControl::output2_green = CarLights[2][2]; 
+  $TrafficLightsControl::output3_green = CarLights[3][2];
+  $TrafficLightsControl::output4_green = CarLights[4][2];
+  $TrafficLightsControl::output5_green = CarLights[5][2]; 
+  $TrafficLightsControl::output6_green = CarLights[6][2];
+  $TrafficLightsControl::output7_green = CarLights[7][2];
+  $TrafficLightsControl::output8_green = CarLights[8][2];
+  $TrafficLightsControl::output9_green = CarLights[9][2];
+  
+  
+  
+  $TrafficLightsControl::output0_yellow = CarLights[0][1];
+  $TrafficLightsControl::output1_yellow = CarLights[1][1];
+  $TrafficLightsControl::output2_yellow = CarLights[2][1]; 
+  $TrafficLightsControl::output3_yellow = CarLights[3][1];
+  $TrafficLightsControl::output4_yellow = CarLights[4][1];
+  $TrafficLightsControl::output5_yellow = CarLights[5][1]; 
+  $TrafficLightsControl::output6_yellow = CarLights[6][1];
+  $TrafficLightsControl::output7_yellow = CarLights[7][1];
+  $TrafficLightsControl::output8_yellow = CarLights[8][1];
+  $TrafficLightsControl::output9_yellow = CarLights[9][1];
+  
+  
+  $TrafficLightsControl::output0_red = CarLights[0][0];
+  $TrafficLightsControl::output1_red = CarLights[1][0];
+  $TrafficLightsControl::output2_red = CarLights[2][0]; 
+  $TrafficLightsControl::output3_red = CarLights[3][0];
+  $TrafficLightsControl::output4_red = CarLights[4][0];
+  $TrafficLightsControl::output5_red = CarLights[5][0]; 
+  $TrafficLightsControl::output6_red = CarLights[6][0];
+  $TrafficLightsControl::output7_red = CarLights[7][0];
+  $TrafficLightsControl::output8_red = CarLights[8][0];
+  $TrafficLightsControl::output9_red = CarLights[9][0];
+
+}
+
+
+void TranslateArray8ToMessage()
+{
+  $TrafficLightsControl::output10 = WalkerLights[0];
+  $TrafficLightsControl::output11 = WalkerLights[1];
+  $TrafficLightsControl::output12 = WalkerLights[2];
+  $TrafficLightsControl::output13 = WalkerLights[3];
+  $TrafficLightsControl::output14 = WalkerLights[4];
+  $TrafficLightsControl::output15 = WalkerLights[5];
+  $TrafficLightsControl::output16 = WalkerLights[6];
+  $TrafficLightsControl::output17 = WalkerLights[7];
+}
