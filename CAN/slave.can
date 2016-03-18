@@ -106,7 +106,7 @@ on message CyclePhase
 {
   TranslateMessageToArray();
   
-  SetYellows();
+  SetYellows(); // tu powinno byæ opóŸnienie
   
   SetGreenOrRed();
   
