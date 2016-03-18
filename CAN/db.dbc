@@ -37,8 +37,25 @@ BU_: slave master
 
 
 BO_ 77 CyclePhase: 8 master
+ SG_ input9 : 17|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ input8 : 16|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ input7 : 15|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ input6 : 14|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ input5 : 13|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ input4 : 12|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ input3 : 11|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ input2 : 10|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ input17 : 9|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ input16 : 8|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ input15 : 7|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ input14 : 6|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ input13 : 5|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ input12 : 4|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ input11 : 3|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ input10 : 2|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ input1 : 1|1@1+ (1,0) [0|1] "" Vector__XXX
  SG_ time : 32|32@1- (1,0) [0|0] "" Vector__XXX
- SG_ inputs : 0|18@1+ (1,0) [0|262143] "" Vector__XXX
+ SG_ input0 : 0|1@1+ (1,0) [0|1] "" Vector__XXX
 
 
 
@@ -49,7 +66,6 @@ EV_ Tmax: 1 [0|0] "" 20 2 DUMMY_NODE_VECTOR3 Vector__XXX;
 EV_ Tmin: 1 [0|0] "" 5 3 DUMMY_NODE_VECTOR3 Vector__XXX;
 
 CM_ SG_ 77 time "Okreœla czas trwania danej fazy.";
-CM_ SG_ 77 inputs "Okreœla poprzez flagi logiczne, które wloty maj¹ byæ otwarte.";
 CM_ EV_ Tyellow "Czas œwiat³a ¿ó³tego.";
 CM_ EV_ Tmax "Maksymalny czas œwiat³a zielonego.";
 CM_ EV_ Tmin "Minimalny czas œwiat³a zielonego.";

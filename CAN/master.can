@@ -6,6 +6,9 @@ includes
 
 variables
 {
+  // g³ówny zegar
+  msTimer mainTimer;
+  
   // sta³e
   const int inputsAmount = 18; // liczba wlotów (przejœcia dla pieszych traktowane jako wloty)
   const int outputsAmount = 4; // liczba wylotów
@@ -17,15 +20,29 @@ variables
   double invB[cyclesAmount][maxCyclePhases][maxCyclePhases];
   
   // zmienne cyklu
+  int currentCycle; // identyfikator wybranego cyklu
   int currentCyclePhases; // liczba faz w aktualnym cyklu
-  int currentPhase; // aktualna faza cyklu (-1 = poprzedni cykl siê skoñczy³)
+  int currentPhase; // aktualna faza cyklu
+  double x[maxCyclePhases]; // wektor wyjœciowy (czasy poszczególnych faz cyklu)
 }
 
 on start
 {
-  currentPhase = -1;
+  currentPhase = 0;
   PrepareCycles();
-  ChooseBestCycle();
+  
+  SetTimer(mainTimer, 0);
+}
+
+on timer mainTimer
+{
+  if (currentPhase == 0)
+    ChooseBestCycle();
+  
+  TranslateCycleToMessage();
+  SetTimer(mainTimer, (int)(1000.0*x[currentPhase]));
+  
+  currentPhase = (currentPhase+1) % maxCyclePhases; 
 }
 
 void PrepareCycles()
@@ -179,11 +196,10 @@ double Proceed(
   }
   
   // obliczenie sta³ej s
+  tmp = 0.0;
   for (i = 0; i < m; i++)
     tmp += x[i];
   s = (Tc-m*Tp)/tmp;
-  
-  Write("S%lf", tmp);
   
   // przeskalowanie wektora i uwzglêdnienie ograniczeñ
   for (i = 0; i < m; i++)
@@ -202,18 +218,20 @@ double Proceed(
     dv[i] = 0;
     
     for (j = 0; j < m; j++)
-      dv[i] += B[mat][i][j]*x[j]-v[i]*s;
+      dv[i] += B[mat][i][j]*x[j];
+    
+    dv[i] -= v[i]*s;
   }
   deltaV = 0;
   for (i = 0; i < n; i++)
     deltaV += dv[i]*dv[i];
-  
+ 
   return sqrt(deltaV);
 }
 
 void ChooseBestCycle()
 {
-  int i,j;
+  int i, j, k;
   double tmp;
   
   double Tc = 60; // czas ca³kowity cyklu
@@ -222,37 +240,47 @@ void ChooseBestCycle()
   double x_max = 20; // maksymalny czas zielonego œwiat³a
   double deltaV = 10000000; // niedok³adnoœæ
   double v[inputsAmount]; // wektor natê¿eñ ruchu
-  double x[maxCyclePhases]; // wektor wyjœciowy (czasy poszczególnych faz cyklu)
-  
-  int mat = 0;
   
   for (i = 0; i < inputsAmount; i++)
     v[i] = 20;
   
+  currentCycle = 0;
+  
   for (i = 0; i < cyclesAmount; i++)
   {
     tmp = Proceed(v, i, x, x_min, x_max, Tc, Tp);
-    Write("cykl: %d - blad: %lf", i, tmp);
     
     if (deltaV > tmp)
     {
       deltaV = tmp;
-      mat = i;
+      currentCycle = i;
     }
   }
-  mat = 1;
-  Proceed(v, mat, x, x_min, x_max, Tc, Tp);
   
-  Write("wybrany cykl: %d", mat);
-  Write("blad: %lf", deltaV);
-  for (i = 0; i < cyclesAmount; i++)
-    Write("%lf ", x[i]);
-  for (i = 0; i < inputsAmount; i++)
-  {
-    tmp = 0;
-    for (j = 0; j < cyclesAmount; j++)
-      tmp += B[mat][i][j]*x[j];
-    
-    Write("input%d: %lf", i, tmp);
-  }
+  deltaV = Proceed(v, currentCycle, x, x_min, x_max, Tc, Tp);
+}
+
+void TranslateCycleToMessage()
+{
+  int i;
+  
+  $CyclePhase::time = x[currentPhase];
+  $CyclePhase::input0 = (int)B[currentCycle][0][currentPhase];
+  $CyclePhase::input1 = (int)B[currentCycle][1][currentPhase];
+  $CyclePhase::input2 = (int)B[currentCycle][2][currentPhase];
+  $CyclePhase::input3 = (int)B[currentCycle][3][currentPhase];
+  $CyclePhase::input4 = (int)B[currentCycle][4][currentPhase];
+  $CyclePhase::input5 = (int)B[currentCycle][5][currentPhase];
+  $CyclePhase::input6 = (int)B[currentCycle][6][currentPhase];
+  $CyclePhase::input7 = (int)B[currentCycle][7][currentPhase];
+  $CyclePhase::input8 = (int)B[currentCycle][8][currentPhase];
+  $CyclePhase::input9 = (int)B[currentCycle][9][currentPhase];
+  $CyclePhase::input10 = (int)B[currentCycle][10][currentPhase];
+  $CyclePhase::input11 = (int)B[currentCycle][11][currentPhase];
+  $CyclePhase::input12 = (int)B[currentCycle][12][currentPhase];
+  $CyclePhase::input13 = (int)B[currentCycle][13][currentPhase];
+  $CyclePhase::input14 = (int)B[currentCycle][14][currentPhase];
+  $CyclePhase::input15 = (int)B[currentCycle][15][currentPhase];
+  $CyclePhase::input16 = (int)B[currentCycle][16][currentPhase];
+  $CyclePhase::input17 = (int)B[currentCycle][17][currentPhase];
 }
