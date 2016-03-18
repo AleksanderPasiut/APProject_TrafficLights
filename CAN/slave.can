@@ -7,9 +7,8 @@ includes
 variables
 {
   message TrafficLightsControl Traffic;
-  
-  
-  
+  msTimer timerYellowsEnd;
+    
   int Inputs[18][2];
   
   int CarLights[10][3]; //red, yellow, green
@@ -106,10 +105,14 @@ on message CyclePhase
 {
   TranslateMessageToArray();
   
-  SetYellows(); // tu powinno byæ opóŸnienie
+  SetYellows();
   
+  setTimer(timerYellowsEnd, getValue(Tyellow)*1000);
+}
+
+on timer timerYellowsEnd
+{
   SetGreenOrRed();
-  
   SetWalkerLights();
 }
 
