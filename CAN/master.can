@@ -36,7 +36,8 @@ variables
 
 on start
 {
-  currentPhase = -1;
+  currentCycle = 0;
+  currentPhase = maxCyclePhases-1;
   anyone_awaiting = IsAnyoneAwaiting();
   PrepareCycles();
   
@@ -45,12 +46,13 @@ on start
 
 on timer mainTimer
 { 
-  currentPhase = (currentPhase+1) % maxCyclePhases; 
+  NooneAwaitingProcessing();
+  
+  if (IsAnyoneAwaitingOutsidePhase() || $CyclePhase::time == 0)
+    currentPhase = (currentPhase+1) % maxCyclePhases; 
   
   if (currentPhase == 0)
-    ChooseBestCycle();
-  
-  NooneAwaitingProcessing();
+    ChooseBestCycle();  
   
   if (IsAnyoneAwaitingInPhase())
   {
@@ -89,6 +91,19 @@ int IsAnyoneAwaitingInPhase()
   
   for (i = 0; i < inputsAmount; i++)
     if (B[currentCycle][i][currentPhase] != 0 && cI[i])
+      return 1;
+    
+  return 0;
+}
+
+int IsAnyoneAwaitingOutsidePhase()
+{
+  int i;
+  
+  LoadSensorDataKernel();
+  
+  for (i = 0; i < inputsAmount; i++)
+    if (B[currentCycle][i][currentPhase] == 0 && cI[i])
       return 1;
     
   return 0;
@@ -286,21 +301,21 @@ double max(double a, double b)
 
 void LoadSensorDataKernel()
 {
-  cO[0] = getValue(Check_Output0);
-  cO[1] = getValue(Check_Output1);
-  cO[2] = getValue(Check_Output2);
-  cO[3] = getValue(Check_Output3);
+  cO[0] = !getValue(Check_Output0);
+  cO[1] = !getValue(Check_Output1);
+  cO[2] = !getValue(Check_Output2);
+  cO[3] = !getValue(Check_Output3);
   
-  cI[0] = getValue(Check_Input0);
-  cI[1] = getValue(Check_Input1);
-  cI[2] = getValue(Check_Input2);
-  cI[3] = getValue(Check_Input3);
-  cI[4] = getValue(Check_Input4);
-  cI[5] = getValue(Check_Input5);
-  cI[6] = getValue(Check_Input6);
-  cI[7] = getValue(Check_Input7);
-  cI[8] = getValue(Check_Input8);
-  cI[9] = getValue(Check_Input9);
+  cI[0] = getValue(Check_Input0) && cO[2] && cO[3];
+  cI[1] = getValue(Check_Input1) && cO[2];
+  cI[2] = getValue(Check_Input2) && cO[1];
+  cI[3] = getValue(Check_Input3) && cO[0] && cO[3];
+  cI[4] = getValue(Check_Input4) && cO[2] && cO[3];
+  cI[5] = getValue(Check_Input5) && cO[0] && cO[1];
+  cI[6] = getValue(Check_Input6) && cO[0];
+  cI[7] = getValue(Check_Input7) && cO[3];
+  cI[8] = getValue(Check_Input8) && cO[1] && cO[2];
+  cI[9] = getValue(Check_Input9) && cO[0] && cO[1];
   cI[10] = getValue(Check_Input10);
   cI[11] = getValue(Check_Input11);
   cI[12] = getValue(Check_Input12);
@@ -339,7 +354,7 @@ void LoadSensorData(double v[])
   LoadSensorDataKernel();
 
   for (i = 0; i < inputsAmount; i++)
-    v[i] = max(vm, cF[i]);
+    v[i] = cI[i] ? max(vm, cF[i]) : 0;
 }
 
 void ChooseBestCycle()
@@ -384,24 +399,24 @@ void TranslateCycleToMessage()
   int i;
   
   $CyclePhase::time = x[currentPhase];
-  $CyclePhase::input0 = (int)B[currentCycle][0][currentPhase];
-  $CyclePhase::input1 = (int)B[currentCycle][1][currentPhase];
-  $CyclePhase::input2 = (int)B[currentCycle][2][currentPhase];
-  $CyclePhase::input3 = (int)B[currentCycle][3][currentPhase];
-  $CyclePhase::input4 = (int)B[currentCycle][4][currentPhase];
-  $CyclePhase::input5 = (int)B[currentCycle][5][currentPhase];
-  $CyclePhase::input6 = (int)B[currentCycle][6][currentPhase];
-  $CyclePhase::input7 = (int)B[currentCycle][7][currentPhase];
-  $CyclePhase::input8 = (int)B[currentCycle][8][currentPhase];
-  $CyclePhase::input9 = (int)B[currentCycle][9][currentPhase];
-  $CyclePhase::input10 = (int)B[currentCycle][10][currentPhase];
-  $CyclePhase::input11 = (int)B[currentCycle][11][currentPhase];
-  $CyclePhase::input12 = (int)B[currentCycle][12][currentPhase];
-  $CyclePhase::input13 = (int)B[currentCycle][13][currentPhase];
-  $CyclePhase::input14 = (int)B[currentCycle][14][currentPhase];
-  $CyclePhase::input15 = (int)B[currentCycle][15][currentPhase];
-  $CyclePhase::input16 = (int)B[currentCycle][16][currentPhase];
-  $CyclePhase::input17 = (int)B[currentCycle][17][currentPhase];
+  $CyclePhase::input0 = (int)B[currentCycle][0][currentPhase] && cI[0];
+  $CyclePhase::input1 = (int)B[currentCycle][1][currentPhase] && cI[1];
+  $CyclePhase::input2 = (int)B[currentCycle][2][currentPhase] && cI[2];
+  $CyclePhase::input3 = (int)B[currentCycle][3][currentPhase] && cI[3];
+  $CyclePhase::input4 = (int)B[currentCycle][4][currentPhase] && cI[4];
+  $CyclePhase::input5 = (int)B[currentCycle][5][currentPhase] && cI[5];
+  $CyclePhase::input6 = (int)B[currentCycle][6][currentPhase] && cI[6];
+  $CyclePhase::input7 = (int)B[currentCycle][7][currentPhase] && cI[7];
+  $CyclePhase::input8 = (int)B[currentCycle][8][currentPhase] && cI[8];
+  $CyclePhase::input9 = (int)B[currentCycle][9][currentPhase] && cI[9];
+  $CyclePhase::input10 = (int)B[currentCycle][10][currentPhase] && cI[10];
+  $CyclePhase::input11 = (int)B[currentCycle][11][currentPhase] && cI[11];
+  $CyclePhase::input12 = (int)B[currentCycle][12][currentPhase] && cI[12];
+  $CyclePhase::input13 = (int)B[currentCycle][13][currentPhase] && cI[13];
+  $CyclePhase::input14 = (int)B[currentCycle][14][currentPhase] && cI[14];
+  $CyclePhase::input15 = (int)B[currentCycle][15][currentPhase] && cI[15];
+  $CyclePhase::input16 = (int)B[currentCycle][16][currentPhase] && cI[16];
+  $CyclePhase::input17 = (int)B[currentCycle][17][currentPhase] && cI[17];
   
   Write("Cycle activated: %d", currentCycle);
 }
@@ -445,5 +460,3 @@ void SetRedLights()
   
   Write("No incoming traffic.");
 }
-
-void 
