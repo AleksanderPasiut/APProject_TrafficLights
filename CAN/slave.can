@@ -17,6 +17,19 @@ variables
   int present;
 }
 
+on start
+{
+  int i;
+  for (i = 0; i < 10; i++)
+  {
+    CarLights[i][0] = 1;
+    CarLights[i][1] = 0;
+    CarLights[i][2] = 0;
+  }    
+  
+  TranslateArray10ToMessage();
+}
+
 void SetYellows()
 {
   int i, j, k;
@@ -93,9 +106,7 @@ void SetWalkerLights()
   int i;
   
   for(i = 10; i < 18; ++i)
-  {
      WalkerLights[i-10] = Inputs[i][1];
-  }
 
   TranslateArray8ToMessage();
 }

@@ -186,7 +186,7 @@ EV_ Check_Output1: 0 [0|0] "" 0 41 DUMMY_NODE_VECTOR3  master;
 
 EV_ Tyellow: 1 [0|0] "" 3 42 DUMMY_NODE_VECTOR3 Vector__XXX;
 
-EV_ Tmax: 1 [0|0] "" 20 43 DUMMY_NODE_VECTOR3 Vector__XXX;
+EV_ Tmax: 1 [0|0] "" 30 43 DUMMY_NODE_VECTOR3 Vector__XXX;
 
 EV_ Tmin: 1 [0|0] "" 5 44 DUMMY_NODE_VECTOR3 Vector__XXX;
 
