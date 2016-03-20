@@ -184,11 +184,11 @@ EV_ Check_Output2: 0 [0|0] "" 0 40 DUMMY_NODE_VECTOR3  master;
 
 EV_ Check_Output1: 0 [0|0] "" 0 41 DUMMY_NODE_VECTOR3  master;
 
-EV_ Tyellow: 1 [0|0] "" 3 42 DUMMY_NODE_VECTOR3 Vector__XXX;
+EV_ Tyellow: 1 [0|0] "" 4 42 DUMMY_NODE_VECTOR3 Vector__XXX;
 
-EV_ Tmax: 1 [0|0] "" 30 43 DUMMY_NODE_VECTOR3 Vector__XXX;
+EV_ Tmax: 1 [0|0] "" 35 43 DUMMY_NODE_VECTOR3 Vector__XXX;
 
-EV_ Tmin: 1 [0|0] "" 5 44 DUMMY_NODE_VECTOR3 Vector__XXX;
+EV_ Tmin: 1 [0|0] "" 9 44 DUMMY_NODE_VECTOR3 Vector__XXX;
 
 CM_ BO_ 3221225472 "This is a message for not used signals, created by Vector CANdb++ DBC OLE DB Provider.";
 CM_ SG_ 77 time "Okreœla czas trwania danej fazy.";

@@ -48,19 +48,19 @@ on timer mainTimer
 { 
   NooneAwaitingProcessing();
   
-  if (IsAnyoneAwaitingOutsidePhase() || $CyclePhase::time == 0)
-    currentPhase = (currentPhase+1) % maxCyclePhases; 
-  
-  if (currentPhase == 0)
-    ChooseBestCycle();  
-  
-  if (IsAnyoneAwaitingInPhase())
+  if (anyone_awaiting)
   {
+    if (IsAnyoneAwaitingOutsidePhase() || $CyclePhase::time == 0)
+      currentPhase = (currentPhase+1) % maxCyclePhases; 
+    
+    if (currentPhase == 0)
+      ChooseBestCycle();  
+    
     TranslateCycleToMessage();
-    SetTimer(mainTimer, (int)(1000.0*x[currentPhase]));
+    SetTimer(mainTimer, 1000*(int)x[currentPhase]);
     SetTimer(auxTimer, 200);
   }
-  else SetTimer(mainTimer, 100);
+  else SetTimer(auxTimer, 100);
 }
 
 on timer auxTimer

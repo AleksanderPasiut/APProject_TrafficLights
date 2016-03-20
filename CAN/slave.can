@@ -7,7 +7,8 @@ includes
 variables
 {
   message TrafficLightsControl Traffic;
-  msTimer timerYellowsEnd;
+  msTimer timerYellowsEndPhase1;
+  msTimer timerYellowsEndPhase2;
     
   int Inputs[18][2];
   
@@ -30,22 +31,14 @@ on start
   TranslateArray10ToMessage();
 }
 
-void SetYellows()
+void SetYellowsPhase1()
 {
   int i, j, k;
 
   for(i = 0; i < 10; ++i)
   {
     if(Inputs[i][0] != Inputs[i][1]) //present input, future input
-    {
-      if(Inputs[i][1] == 1) //zielone 
-      {
-        //red, yellow, green
-        CarLights[i][0] = 1; //ustawienie czerwonego i zoltego swiatla
-        CarLights[i][1] = 1;
-        CarLights[i][2] = 0;
-      }
-      
+    {      
       if(Inputs[i][1] == 0) //czerwone
       {
         //red, yellow, green
@@ -71,11 +64,64 @@ void SetYellows()
         }
     }
   }
-  TranslateArray10ToMessage();
-  
+  TranslateArray10ToMessage();  
 }
 
-void SetGreenOrRed()
+void SetYellowsPhase2()
+{
+  int i, j, k;
+
+  for(i = 0; i < 10; ++i)
+  {
+    if(Inputs[i][0] != Inputs[i][1]) //present input, future input
+    {
+      if(Inputs[i][1] == 1) //zielone 
+      {
+        //red, yellow, green
+        CarLights[i][0] = 1; //ustawienie czerwonego i zoltego swiatla
+        CarLights[i][1] = 1;
+        CarLights[i][2] = 0;
+      }
+    }
+    else
+    {
+        if(Inputs[i][1] == 1) //podtrzymanie zielonego
+        {
+          CarLights[i][0] = 0;
+          CarLights[i][1] = 0;
+          CarLights[i][2] = 1;
+        }
+        
+        if(Inputs[i][1] == 0) //podtrzymanie czerwonego
+        {
+          CarLights[i][0] = 1;
+          CarLights[i][1] = 0;
+          CarLights[i][2] = 0;
+        }
+    }
+  }
+  TranslateArray10ToMessage();  
+}
+
+void SetRed()
+{
+  int i;
+  
+  for(i = 0; i < 10; ++i)
+  {
+      if(Inputs[i][1] == 0) //czerwone
+      {
+        //red, yellow, green
+        CarLights[i][0] = 1; //ustawienie zoltego swiatla
+        CarLights[i][1] = 0;
+        CarLights[i][2] = 0;
+      }
+   }
+
+  TranslateArray10ToMessage();
+}
+
+void SetGreen()
 {
   int i;
   
@@ -87,14 +133,6 @@ void SetGreenOrRed()
         CarLights[i][0] = 0; //ustawienie czerwonego i zoltego swiatla
         CarLights[i][1] = 0;
         CarLights[i][2] = 1;
-      }
-      
-      if(Inputs[i][1] == 0) //czerwone
-      {
-        //red, yellow, green
-        CarLights[i][0] = 1; //ustawienie zoltego swiatla
-        CarLights[i][1] = 0;
-        CarLights[i][2] = 0;
       }
    }
 
@@ -111,26 +149,31 @@ void SetWalkerLights()
   TranslateArray8ToMessage();
 }
 
-
 on message CyclePhase 
 {
   TranslateMessageToArray();
   
-  SetYellows();
-  
-  setTimer(timerYellowsEnd, getValue(Tyellow)*1000);
+  SetYellowsPhase1();  
+  setTimer(timerYellowsEndPhase1, 500*(int)getValue(Tyellow));
 }
 
-on timer timerYellowsEnd
+on timer timerYellowsEndPhase1
 {
-  SetGreenOrRed();
+  Write("Yellows phase 1 ended");
+  SetYellowsPhase2();
+  SetRed();
+  setTimer(timerYellowsEndPhase2, 500*(int)getValue(Tyellow));
+}
+
+on timer timerYellowsEndPhase2
+{
+  Write("Yellows phase 2 ended");
+  SetGreen();
   SetWalkerLights();
 }
 
 void TranslateMessageToArray()
 {
-    
- 
   Inputs[0][0] = $TrafficLightsControl::output0_green;
   Inputs[1][0] = $TrafficLightsControl::output1_green;
   Inputs[2][0] = $TrafficLightsControl::output2_green; 
@@ -149,7 +192,6 @@ void TranslateMessageToArray()
   Inputs[15][0] = $TrafficLightsControl::output15;
   Inputs[16][0] = $TrafficLightsControl::output16;
   Inputs[17][0] = $TrafficLightsControl::output17;
-  
   
   Inputs[0][1] = $CyclePhase::input0;
   Inputs[1][1] = $CyclePhase::input1;
@@ -184,8 +226,6 @@ void TranslateArray10ToMessage()
   $TrafficLightsControl::output8_green = CarLights[8][2];
   $TrafficLightsControl::output9_green = CarLights[9][2];
   
-  
-  
   $TrafficLightsControl::output0_yellow = CarLights[0][1];
   $TrafficLightsControl::output1_yellow = CarLights[1][1];
   $TrafficLightsControl::output2_yellow = CarLights[2][1]; 
@@ -197,7 +237,6 @@ void TranslateArray10ToMessage()
   $TrafficLightsControl::output8_yellow = CarLights[8][1];
   $TrafficLightsControl::output9_yellow = CarLights[9][1];
   
-  
   $TrafficLightsControl::output0_red = CarLights[0][0];
   $TrafficLightsControl::output1_red = CarLights[1][0];
   $TrafficLightsControl::output2_red = CarLights[2][0]; 
@@ -208,9 +247,7 @@ void TranslateArray10ToMessage()
   $TrafficLightsControl::output7_red = CarLights[7][0];
   $TrafficLightsControl::output8_red = CarLights[8][0];
   $TrafficLightsControl::output9_red = CarLights[9][0];
-
 }
-
 
 void TranslateArray8ToMessage()
 {
