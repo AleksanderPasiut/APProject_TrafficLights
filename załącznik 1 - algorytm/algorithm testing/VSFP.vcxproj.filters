@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\vsfp_core">
+      <UniqueIdentifier>{4e5fda19-09c9-4d42-9205-88c20a21c701}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\vsfp_core">
+      <UniqueIdentifier>{423e0274-3ca6-481e-a0c1-75c583b22ebc}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="MATRIX\matrix.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VSFP\vsfp_type.h">
+      <Filter>Header Files\vsfp_core</Filter>
+    </ClInclude>
+    <ClInclude Include="VSFP\vsfp_nbtn.h">
+      <Filter>Header Files\vsfp_core</Filter>
+    </ClInclude>
+    <ClInclude Include="VSFP\mantissa\vsfp_mantissa.h">
+      <Filter>Header Files\vsfp_core</Filter>
+    </ClInclude>
+    <ClInclude Include="vsfp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MATRIX\matrix_methods.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MATRIX\ios\matrix_ios.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VSFP\mantissa\ios\vsfp_mantissa_ios.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NLES\nles.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NLES\nles_methods_public.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NLES\nles_methods_protected.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MATRIX\SoLE\matrix_SoLE.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MATRIX\SoLE\matrix_SoLE_methods_protected.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MATRIX\SoLE\matrix_SoLE_methods_public.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="VSFP\vsfp_type.cpp">
+      <Filter>Source Files\vsfp_core</Filter>
+    </ClCompile>
+    <ClCompile Include="VSFP\mantissa\vsfp_mantissa.cpp">
+      <Filter>Source Files\vsfp_core</Filter>
+    </ClCompile>
+    <ClCompile Include="VSFP\mantissa\ios\vsfp_mantissa_ios.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tester2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
