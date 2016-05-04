@@ -383,7 +383,9 @@
       <Property Name="Name">TrackBarControl18</Property>
       <Property Name="Size">22, 79</Property>
       <Property Name="Location">532, 341</Property>
+      <Property Name="Maximum">20</Property>
       <Property Name="Orientation">Vertical</Property>
+      <Property Name="MaximumDouble">20</Property>
       <Property Name="DisplayValue">True</Property>
       <Property Name="SymbolConfiguration">4;1;db;;;Frequency15;1;;;-1</Property>
       <Property Name="TabIndex">19</Property>
@@ -392,7 +394,9 @@
       <Property Name="Name">TrackBarControl17</Property>
       <Property Name="Size">22, 86</Property>
       <Property Name="Location">532, 242</Property>
+      <Property Name="Maximum">20</Property>
       <Property Name="Orientation">Vertical</Property>
+      <Property Name="MaximumDouble">20</Property>
       <Property Name="DisplayValue">True</Property>
       <Property Name="SymbolConfiguration">4;1;db;;;Frequency14;1;;;-1</Property>
       <Property Name="TabIndex">18</Property>
@@ -401,7 +405,9 @@
       <Property Name="Name">TrackBarControl3</Property>
       <Property Name="Size">22, 86</Property>
       <Property Name="Location">245, 333</Property>
+      <Property Name="Maximum">20</Property>
       <Property Name="Orientation">Vertical</Property>
+      <Property Name="MaximumDouble">20</Property>
       <Property Name="DisplayValue">True</Property>
       <Property Name="SymbolConfiguration">4;1;db;;;Frequency10;1;;;-1</Property>
       <Property Name="TabIndex">17</Property>
@@ -410,16 +416,20 @@
       <Property Name="Name">TrackBarControl2</Property>
       <Property Name="Size">22, 85</Property>
       <Property Name="Location">245, 238</Property>
+      <Property Name="Maximum">20</Property>
       <Property Name="Orientation">Vertical</Property>
+      <Property Name="MaximumDouble">20</Property>
       <Property Name="DisplayValue">True</Property>
       <Property Name="SymbolConfiguration">4;1;db;;;Frequency11;1;;;-1</Property>
       <Property Name="TabIndex">16</Property>
     </Object>
     <Object Type="Vector.CANalyzer.Panels.Design.TrackBarControl, Vector.CANalyzer.Panels.CommonControls, Version=8.5.98.0, Culture=neutral, PublicKeyToken=null" Name="TrackBarControl16" Children="Controls" ControlName="Track Bar">
       <Property Name="Name">TrackBarControl16</Property>
-      <Property Name="Size">22, 89</Property>
+      <Property Name="Size">23, 89</Property>
       <Property Name="Location">443, 536</Property>
+      <Property Name="Maximum">20</Property>
       <Property Name="Orientation">Vertical</Property>
+      <Property Name="MaximumDouble">20</Property>
       <Property Name="DisplayValue">True</Property>
       <Property Name="SymbolConfiguration">4;1;db;;;Frequency8;1;;;-1</Property>
       <Property Name="TabIndex">15</Property>
@@ -428,7 +438,9 @@
       <Property Name="Name">TrackBarControl15</Property>
       <Property Name="Size">22, 85</Property>
       <Property Name="Location">374, 38</Property>
+      <Property Name="Maximum">20</Property>
       <Property Name="Orientation">Vertical</Property>
+      <Property Name="MaximumDouble">20</Property>
       <Property Name="DisplayValue">True</Property>
       <Property Name="SymbolConfiguration">4;1;db;;;Frequency4;1;;;-1</Property>
       <Property Name="TabIndex">14</Property>
@@ -437,7 +449,9 @@
       <Property Name="Name">TrackBarControl14</Property>
       <Property Name="Size">22, 85</Property>
       <Property Name="Location">340, 38</Property>
+      <Property Name="Maximum">20</Property>
       <Property Name="Orientation">Vertical</Property>
+      <Property Name="MaximumDouble">20</Property>
       <Property Name="DisplayValue">True</Property>
       <Property Name="SymbolConfiguration">4;1;db;;;Frequency3;1;;;-1</Property>
       <Property Name="TabIndex">13</Property>
@@ -446,6 +460,8 @@
       <Property Name="Name">TrackBarControl13</Property>
       <Property Name="Size">108, 21</Property>
       <Property Name="Location">54, 355</Property>
+      <Property Name="Maximum">20</Property>
+      <Property Name="MaximumDouble">20</Property>
       <Property Name="DisplayValue">True</Property>
       <Property Name="SymbolConfiguration">4;1;db;;;Frequency1;1;;;-1</Property>
       <Property Name="TabIndex">12</Property>
@@ -454,6 +470,8 @@
       <Property Name="Name">TrackBarControl12</Property>
       <Property Name="Size">108, 22</Property>
       <Property Name="Location">53, 381</Property>
+      <Property Name="Maximum">20</Property>
+      <Property Name="MaximumDouble">20</Property>
       <Property Name="DisplayValue">True</Property>
       <Property Name="SymbolConfiguration">4;1;db;;;Frequency0;1;;;-1</Property>
       <Property Name="TabIndex">11</Property>
@@ -462,6 +480,8 @@
       <Property Name="Name">TrackBarControl11</Property>
       <Property Name="Size">108, 22</Property>
       <Property Name="Location">636, 256</Property>
+      <Property Name="Maximum">20</Property>
+      <Property Name="MaximumDouble">20</Property>
       <Property Name="DisplayValue">True</Property>
       <Property Name="SymbolConfiguration">4;1;db;;;Frequency5;1;;;-1</Property>
       <Property Name="TabIndex">10</Property>
@@ -470,14 +490,18 @@
       <Property Name="Name">TrackBarControl10</Property>
       <Property Name="Size">108, 22</Property>
       <Property Name="Location">636, 281</Property>
+      <Property Name="Maximum">20</Property>
+      <Property Name="MaximumDouble">20</Property>
       <Property Name="DisplayValue">True</Property>
       <Property Name="SymbolConfiguration">4;1;db;;;Frequency6;1;;;-1</Property>
       <Property Name="TabIndex">9</Property>
     </Object>
     <Object Type="Vector.CANalyzer.Panels.Design.TrackBarControl, Vector.CANalyzer.Panels.CommonControls, Version=8.5.98.0, Culture=neutral, PublicKeyToken=null" Name="TrackBarControl9" Children="Controls" ControlName="Track Bar">
       <Property Name="Name">TrackBarControl9</Property>
-      <Property Name="Size">108, 22</Property>
+      <Property Name="Size">108, 21</Property>
       <Property Name="Location">636, 307</Property>
+      <Property Name="Maximum">20</Property>
+      <Property Name="MaximumDouble">20</Property>
       <Property Name="DisplayValue">True</Property>
       <Property Name="SymbolConfiguration">4;1;db;;;Frequency7;1;;;-1</Property>
       <Property Name="TabIndex">8</Property>
@@ -486,7 +510,9 @@
       <Property Name="Name">TrackBarControl8</Property>
       <Property Name="Size">22, 85</Property>
       <Property Name="Location">408, 538</Property>
+      <Property Name="Maximum">20</Property>
       <Property Name="Orientation">Vertical</Property>
+      <Property Name="MaximumDouble">20</Property>
       <Property Name="DisplayValue">True</Property>
       <Property Name="SymbolConfiguration">4;1;db;;;Frequency9;1;;;-1</Property>
       <Property Name="TabIndex">7</Property>
@@ -495,6 +521,8 @@
       <Property Name="Name">TrackBarControl7</Property>
       <Property Name="Size">92, 22</Property>
       <Property Name="Location">307, 166</Property>
+      <Property Name="Maximum">20</Property>
+      <Property Name="MaximumDouble">20</Property>
       <Property Name="DisplayValue">True</Property>
       <Property Name="SymbolConfiguration">4;1;db;;;Frequency12;1;;;-1</Property>
       <Property Name="TabIndex">6</Property>
@@ -503,30 +531,38 @@
       <Property Name="Name">TrackBarControl6</Property>
       <Property Name="Size">91, 22</Property>
       <Property Name="Location">412, 166</Property>
+      <Property Name="Maximum">20</Property>
+      <Property Name="MaximumDouble">20</Property>
       <Property Name="DisplayValue">True</Property>
       <Property Name="SymbolConfiguration">4;1;db;;;Frequency13;1;;;-1</Property>
       <Property Name="TabIndex">5</Property>
     </Object>
     <Object Type="Vector.CANalyzer.Panels.Design.TrackBarControl, Vector.CANalyzer.Panels.CommonControls, Version=8.5.98.0, Culture=neutral, PublicKeyToken=null" Name="TrackBarControl5" Children="Controls" ControlName="Track Bar">
       <Property Name="Name">TrackBarControl5</Property>
-      <Property Name="Size">85, 21</Property>
+      <Property Name="Size">85, 22</Property>
       <Property Name="Location">306, 468</Property>
+      <Property Name="Maximum">20</Property>
+      <Property Name="MaximumDouble">20</Property>
       <Property Name="DisplayValue">True</Property>
       <Property Name="SymbolConfiguration">4;1;db;;;Frequency17;1;;;-1</Property>
       <Property Name="TabIndex">4</Property>
     </Object>
     <Object Type="Vector.CANalyzer.Panels.Design.TrackBarControl, Vector.CANalyzer.Panels.CommonControls, Version=8.5.98.0, Culture=neutral, PublicKeyToken=null" Name="TrackBarControl4" Children="Controls" ControlName="Track Bar">
       <Property Name="Name">TrackBarControl4</Property>
-      <Property Name="Size">82, 21</Property>
+      <Property Name="Size">82, 22</Property>
       <Property Name="Location">407, 468</Property>
+      <Property Name="Maximum">20</Property>
+      <Property Name="MaximumDouble">20</Property>
       <Property Name="DisplayValue">True</Property>
       <Property Name="SymbolConfiguration">4;1;db;;;Frequency16;1;;;-1</Property>
       <Property Name="TabIndex">3</Property>
     </Object>
     <Object Type="Vector.CANalyzer.Panels.Design.TrackBarControl, Vector.CANalyzer.Panels.CommonControls, Version=8.5.98.0, Culture=neutral, PublicKeyToken=null" Name="TrackBarControl1" Children="Controls" ControlName="Track Bar">
       <Property Name="Name">TrackBarControl1</Property>
-      <Property Name="Size">108, 22</Property>
+      <Property Name="Size">108, 21</Property>
       <Property Name="Location">54, 329</Property>
+      <Property Name="Maximum">20</Property>
+      <Property Name="MaximumDouble">20</Property>
       <Property Name="DisplayValue">True</Property>
       <Property Name="SymbolConfiguration">4;1;db;;;Frequency2;1;;;-1</Property>
       <Property Name="TabIndex">0</Property>
@@ -535,7 +571,7 @@
       <Property Name="Name">PictureBoxControl1</Property>
       <Property Name="Size">810, 653</Property>
       <Property Name="Location">0, 0</Property>
-      <Property Name="ImageFile">..\..\skrzyzowanie.JPG</Property>
+      <Property Name="ImageFile">..\skrzyzowanie_nowe.JPG</Property>
     </Object>
     <Property Name="Name">Panel</Property>
     <Property Name="Size">810, 653</Property>

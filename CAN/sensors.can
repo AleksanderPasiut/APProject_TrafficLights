@@ -1,0 +1,67 @@
+/*@!Encoding:1250*/
+includes
+{
+  
+}
+
+variables
+{
+  
+}
+
+
+on message RequestSensorsData
+{
+  write("Request Sensors Data");
+  LoadSensorDataR();
+  
+}
+
+void LoadSensorDataR()
+{
+  $SensorsData::OK = 1;
+  $SensorsData::C_Output0 = !getValue(Check_Output0);
+  $SensorsData::C_Output1 = !getValue(Check_Output1);
+  $SensorsData::C_Output2 = !getValue(Check_Output2);
+  $SensorsData::C_Output3 = !getValue(Check_Output3);
+  
+  $SensorsData::C_Input0  = getValue(Check_Input0);
+  $SensorsData::C_Input1  = getValue(Check_Input1);
+  $SensorsData::C_Input2  = getValue(Check_Input2);
+  $SensorsData::C_Input3  = getValue(Check_Input3);
+  $SensorsData::C_Input4  = getValue(Check_Input4);
+  $SensorsData::C_Input5  = getValue(Check_Input5);
+  $SensorsData::C_Input6  = getValue(Check_Input6);
+  $SensorsData::C_Input7  = getValue(Check_Input7);
+  $SensorsData::C_Input8  = getValue(Check_Input8);
+  $SensorsData::C_Input9  = getValue(Check_Input9);
+  $SensorsData::C_Input10 = getValue(Check_Input10);
+  $SensorsData::C_Input11 = getValue(Check_Input11);
+  $SensorsData::C_Input12 = getValue(Check_Input12);
+  $SensorsData::C_Input13 = getValue(Check_Input13);
+  $SensorsData::C_Input14 = getValue(Check_Input14);
+  $SensorsData::C_Input15 = getValue(Check_Input15);
+  $SensorsData::C_Input16 = getValue(Check_Input16);
+  $SensorsData::C_Input17 = getValue(Check_Input17);
+  
+  $SensorsData::C_Frequency0 = getValue(Frequency0);
+  $SensorsData::C_Frequency1 = getValue(Frequency1);
+  $SensorsData::C_Frequency2 = getValue(Frequency2);
+  $SensorsData::C_Frequency3 = getValue(Frequency3);
+  $SensorsData::C_Frequency4 = getValue(Frequency4);
+  $SensorsData::C_Frequency5 = getValue(Frequency5);
+  $SensorsData::C_Frequency6 = getValue(Frequency6);
+  $SensorsData::C_Frequency7 = getValue(Frequency7);
+  $SensorsData::C_Frequency8 = getValue(Frequency8);
+  $SensorsData::C_Frequency9 = getValue(Frequency9);
+  $SensorsData::C_Frequency10 = getValue(Frequency10);
+  $SensorsData::C_Frequency11 = getValue(Frequency11);
+  $SensorsData::C_Frequency12 = getValue(Frequency12);
+  $SensorsData::C_Frequency13 = getValue(Frequency13);
+  $SensorsData::C_Frequency14 = getValue(Frequency14);
+  $SensorsData::C_Frequency15 = getValue(Frequency15);
+  $SensorsData::C_Frequency16 = getValue(Frequency16);
+  $SensorsData::C_Frequency17 = getValue(Frequency17);
+}
+
+  

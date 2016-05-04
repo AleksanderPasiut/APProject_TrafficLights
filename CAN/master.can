@@ -32,6 +32,9 @@ variables
   int currentCycle; // identyfikator wybranego cyklu
   int currentPhase; // aktualna faza cyklu
   double x[maxCyclePhases]; // wektor wyjœciowy (czasy poszczególnych faz cyklu)
+  
+  message RequestSensorsData messege_ReqSensData;
+
 }
 
 on start
@@ -40,8 +43,8 @@ on start
   currentPhase = maxCyclePhases-1;
   anyone_awaiting = IsAnyoneAwaiting();
   PrepareCycles();
-  
   SetTimer(mainTimer, 100);
+  
 }
 
 on timer mainTimer
@@ -58,7 +61,8 @@ on timer mainTimer
     
     TranslateCycleToMessage();
     SetTimer(mainTimer, 1000*(int)x[currentPhase]);
-    SetTimer(auxTimer, 200);
+   // SetTimer(auxTimer, 200);
+    
   }
   else SetTimer(auxTimer, 100);
 }
@@ -69,6 +73,13 @@ on timer auxTimer
     SetTimer(mainTimer, 0);
   else SetTimer(auxTimer, 200);
 }
+
+on message SlaveConnectMaster
+{
+  if(this.Connect == 1)
+    SetTimer(mainTimer,0);
+}
+
 
 int IsAnyoneAwaiting()
 {
@@ -301,48 +312,98 @@ double max(double a, double b)
 
 void LoadSensorDataKernel()
 {
-  cO[0] = !getValue(Check_Output0);
-  cO[1] = !getValue(Check_Output1);
-  cO[2] = !getValue(Check_Output2);
-  cO[3] = !getValue(Check_Output3);
+  $RequestSensorsData::OK = 1;
+  //output(messege_ReqSensData);
+//  cO[0] = !getValue(Check_Output0);
+//  cO[1] = !getValue(Check_Output1);
+//  cO[2] = !getValue(Check_Output2);
+//  cO[3] = !getValue(Check_Output3);
+//  
+//  cI[0] = getValue(Check_Input0) && cO[2] && cO[3];
+//  cI[1] = getValue(Check_Input1) && cO[2];
+//  cI[2] = getValue(Check_Input2) && cO[1];
+//  cI[3] = getValue(Check_Input3) && cO[0] && cO[3];
+//  cI[4] = getValue(Check_Input4) && cO[2] && cO[3];
+//  cI[5] = getValue(Check_Input5) && cO[0] && cO[1];
+//  cI[6] = getValue(Check_Input6) && cO[0];
+//  cI[7] = getValue(Check_Input7) && cO[3];
+//  cI[8] = getValue(Check_Input8) && cO[1] && cO[2];
+//  cI[9] = getValue(Check_Input9) && cO[0] && cO[1];
+//  cI[10] = getValue(Check_Input10);
+//  cI[11] = getValue(Check_Input11);
+//  cI[12] = getValue(Check_Input12);
+//  cI[13] = getValue(Check_Input13);
+//  cI[14] = getValue(Check_Input14);
+//  cI[15] = getValue(Check_Input15);
+//  cI[16] = getValue(Check_Input16);
+//  cI[17] = getValue(Check_Input17);
+//  
+//  cF[0] = getValue(Frequency0);
+//  cF[1] = getValue(Frequency1);
+//  cF[2] = getValue(Frequency2);
+//  cF[3] = getValue(Frequency3);
+//  cF[4] = getValue(Frequency4);
+//  cF[5] = getValue(Frequency5);
+//  cF[6] = getValue(Frequency6);
+//  cF[7] = getValue(Frequency7);
+//  cF[8] = getValue(Frequency8);
+//  cF[9] = getValue(Frequency9);
+//  cF[10] = getValue(Frequency10);
+//  cF[11] = getValue(Frequency11);
+//  cF[12] = getValue(Frequency12);
+//  cF[13] = getValue(Frequency13);
+//  cF[14] = getValue(Frequency14);
+//  cF[15] = getValue(Frequency15);
+//  cF[16] = getValue(Frequency16);
+//  cF[17] = getValue(Frequency17);
+}
+
+on message SensorsData 
+{
+  Write("Data From Sensors");  
   
-  cI[0] = getValue(Check_Input0) && cO[2] && cO[3];
-  cI[1] = getValue(Check_Input1) && cO[2];
-  cI[2] = getValue(Check_Input2) && cO[1];
-  cI[3] = getValue(Check_Input3) && cO[0] && cO[3];
-  cI[4] = getValue(Check_Input4) && cO[2] && cO[3];
-  cI[5] = getValue(Check_Input5) && cO[0] && cO[1];
-  cI[6] = getValue(Check_Input6) && cO[0];
-  cI[7] = getValue(Check_Input7) && cO[3];
-  cI[8] = getValue(Check_Input8) && cO[1] && cO[2];
-  cI[9] = getValue(Check_Input9) && cO[0] && cO[1];
-  cI[10] = getValue(Check_Input10);
-  cI[11] = getValue(Check_Input11);
-  cI[12] = getValue(Check_Input12);
-  cI[13] = getValue(Check_Input13);
-  cI[14] = getValue(Check_Input14);
-  cI[15] = getValue(Check_Input15);
-  cI[16] = getValue(Check_Input16);
-  cI[17] = getValue(Check_Input17);
+  cO[0] = $SensorsData::C_Output0;
+  cO[1] = $SensorsData::C_Output1;
+  cO[2] = $SensorsData::C_Output2;
+  cO[3] = $SensorsData::C_Output3;
   
-  cF[0] = getValue(Frequency0);
-  cF[1] = getValue(Frequency1);
-  cF[2] = getValue(Frequency2);
-  cF[3] = getValue(Frequency3);
-  cF[4] = getValue(Frequency4);
-  cF[5] = getValue(Frequency5);
-  cF[6] = getValue(Frequency6);
-  cF[7] = getValue(Frequency7);
-  cF[8] = getValue(Frequency8);
-  cF[9] = getValue(Frequency9);
-  cF[10] = getValue(Frequency10);
-  cF[11] = getValue(Frequency11);
-  cF[12] = getValue(Frequency12);
-  cF[13] = getValue(Frequency13);
-  cF[14] = getValue(Frequency14);
-  cF[15] = getValue(Frequency15);
-  cF[16] = getValue(Frequency16);
-  cF[17] = getValue(Frequency17);
+  cI[0] = $SensorsData::C_Input0 && cO[2] && cO[3];
+  cI[1] = $SensorsData::C_Input1 && cO[2];
+  cI[2] = $SensorsData::C_Input2 && cO[1];
+  cI[3] = $SensorsData::C_Input3 && cO[0] && cO[3];
+  cI[4] = $SensorsData::C_Input4 && cO[2] && cO[3];
+  cI[5] = $SensorsData::C_Input5 && cO[0] && cO[1];
+  cI[6] = $SensorsData::C_Input6 && cO[0];
+  cI[7] = $SensorsData::C_Input7 && cO[3];
+  cI[8] = $SensorsData::C_Input8 && cO[1] && cO[2];
+  cI[9] = $SensorsData::C_Input9 && cO[0] && cO[1];
+  cI[10] = $SensorsData::C_Input10;
+  cI[11] = $SensorsData::C_Input11;
+  cI[12] = $SensorsData::C_Input12;
+  cI[13] = $SensorsData::C_Input13;
+  cI[14] = $SensorsData::C_Input14;
+  cI[15] = $SensorsData::C_Input15;
+  cI[16] = $SensorsData::C_Input16;
+  cI[17] = $SensorsData::C_Input17;
+  
+  cF[0] = $SensorsData::C_Frequency0;
+  cF[1] = $SensorsData::C_Frequency1;
+  cF[2] = $SensorsData::C_Frequency2;
+  cF[3] = $SensorsData::C_Frequency3;
+  cF[4] = $SensorsData::C_Frequency4;
+  cF[5] = $SensorsData::C_Frequency5;
+  cF[6] = $SensorsData::C_Frequency6;
+  cF[7] = $SensorsData::C_Frequency7;
+  cF[8] = $SensorsData::C_Frequency8;
+  cF[9] = $SensorsData::C_Frequency9;
+  cF[10] = $SensorsData::C_Frequency10;
+  cF[11] = $SensorsData::C_Frequency11;
+  cF[12] = $SensorsData::C_Frequency12;
+  cF[13] = $SensorsData::C_Frequency13;
+  cF[14] = $SensorsData::C_Frequency14;
+  cF[15] = $SensorsData::C_Frequency15;
+  cF[16] = $SensorsData::C_Frequency16;
+  cF[17] = $SensorsData::C_Frequency17;
 }
 
 void LoadSensorData(double v[])
