@@ -5,119 +5,40 @@ includes
 }
 
 variables
-{
-  // g³ówny zegar
-  msTimer mainTimer;
-  
-  // zegar pomocniczy
-  msTimer auxTimer;
-  int anyone_awaiting; // wykrywanie czy ktokolwiek czeka
-  
+{  
   // sta³e
   const int inputsAmount = 18; // liczba wlotów (przejœcia dla pieszych traktowane jako wloty)
   const int outputsAmount = 4; // liczba wylotów
   const int cyclesAmount = 4; // liczba dostêpnych wariantów cykli
-  const int maxCyclePhases = 4; // maksymalna liczba faz w cyklu
+  const int cyclePhases = 4; // liczba faz w cyklu
   
   // kopie danych z czujników
-  double cI[inputsAmount];
-  double cF[inputsAmount];
-  double cO[outputsAmount];
+  int cI[inputsAmount];
+  int cO[outputsAmount];
   
   // macierze cykli
-  double B[cyclesAmount][inputsAmount][maxCyclePhases];
-  double invB[cyclesAmount][maxCyclePhases][maxCyclePhases];
+  double B[cyclesAmount][inputsAmount][cyclePhases];
+  double invB[cyclesAmount][cyclePhases][cyclePhases];
   
   // zmienne cyklu
   int currentCycle; // identyfikator wybranego cyklu
   int currentPhase; // aktualna faza cyklu
-  double x[maxCyclePhases]; // wektor wyjœciowy (czasy poszczególnych faz cyklu)
+  double x[cyclePhases]; // wektor wyjœciowy (czasy poszczególnych faz cyklu)
   
   message RequestSensorsData messege_ReqSensData;
+}
 
+double max(double a, double b)
+{
+  return a >= b ? a : b;
 }
 
 on start
 {
   currentCycle = 0;
-  currentPhase = maxCyclePhases-1;
-  anyone_awaiting = IsAnyoneAwaiting();
+  currentPhase = cyclePhases-1;
+  
   PrepareCycles();
-  SetTimer(mainTimer, 100);
-  
-}
-
-on timer mainTimer
-{ 
-  NooneAwaitingProcessing();
-  
-  if (anyone_awaiting)
-  {
-    if (IsAnyoneAwaitingOutsidePhase() || $CyclePhase::time == 0)
-      currentPhase = (currentPhase+1) % maxCyclePhases; 
-    
-    if (currentPhase == 0)
-      ChooseBestCycle();  
-    
-    TranslateCycleToMessage();
-    SetTimer(mainTimer, 1000*(int)x[currentPhase]);
-   // SetTimer(auxTimer, 200);
-    
-  }
-  else SetTimer(auxTimer, 100);
-}
-
-on timer auxTimer
-{
-  if (IsAnyoneAwaitingInPhase() == 0)
-    SetTimer(mainTimer, 0);
-  else SetTimer(auxTimer, 200);
-}
-
-on message SlaveConnectMaster
-{
-  if(this.Connect == 1)
-    SetTimer(mainTimer,0);
-}
-
-
-int IsAnyoneAwaiting()
-{
-  int i;
-  
-  LoadSensorDataKernel();
-  
-  for (i = 0; i < inputsAmount; i++)
-    if (cI[i])
-      return 1;
-    
-  return 0;
-}
-
-int IsAnyoneAwaitingInPhase()
-{
-  int i;
-  
-  LoadSensorDataKernel();
-  
-  for (i = 0; i < inputsAmount; i++)
-    if (B[currentCycle][i][currentPhase] != 0 && cI[i])
-      return 1;
-    
-  return 0;
-}
-
-int IsAnyoneAwaitingOutsidePhase()
-{
-  int i;
-  
-  LoadSensorDataKernel();
-  
-  for (i = 0; i < inputsAmount; i++)
-    if (B[currentCycle][i][currentPhase] == 0 && cI[i])
-      return 1;
-    
-  return 0;
 }
 
 void PrepareCycles()
@@ -128,7 +49,7 @@ void PrepareCycles()
   int i, j, k;
   for (i = 0; i < cyclesAmount; i++)
     for (j = 0; j < inputsAmount; j++)
-      for (k = 0; k < maxCyclePhases; k++)
+      for (k = 0; k < cyclePhases; k++)
         B[i][j][k] = 0;
   
   // zrównowa¿ony
@@ -166,7 +87,7 @@ void PrepareInversedMatrix(int mat)
   double t;
   
   // dla u³atwienia
-  const int m = maxCyclePhases;
+  const int m = cyclePhases;
   
   // macierz do odwrócenia
   double tmpM[m][m];
@@ -229,13 +150,124 @@ void PrepareInversedMatrix(int mat)
       invB[mat][i][j] /= tmpM[i][i];
 }
 
+on key*
+{
+  if (IsAnyoneAwaiting())
+  {
+    currentPhase = (currentPhase+1) % cyclePhases;
+  
+    if (currentPhase == 0)
+      ChooseBestCycle();
+    
+    TranslateCycleToMessage();
+  }
+  else
+  {
+    currentPhase = 0;
+    $CyclePhase::time = 0;
+    SetRedLights();
+  }
+}
+
+int IsAnyoneAwaiting()
+{
+  int i;
+  
+  LoadSensorDataKernel();
+  
+  for (i = 0; i < inputsAmount; i++)
+    if (cI[i])
+      return 1;
+    
+  return 0;
+}
+
+void LoadSensorDataKernel()
+{
+  $RequestSensorsData::OK = 1;
+}
+
+on message SensorsDataOutputs
+{  
+  cO[0] = $SensorsDataOutputs::C_Output0;
+  cO[1] = $SensorsDataOutputs::C_Output1;
+  cO[2] = $SensorsDataOutputs::C_Output2;
+  cO[3] = $SensorsDataOutputs::C_Output3;
+}
+
+on message SensorsDataCars
+{
+  cI[0] = (cO[2] && cO[3])  ? $SensorsDataCars::C_Input00 : 0;
+  cI[1] = cO[2]             ? $SensorsDataCars::C_Input01 : 0;
+  cI[2] = cO[1]             ? $SensorsDataCars::C_Input02 : 0;
+  cI[3] = (cO[0] && cO[3])  ? $SensorsDataCars::C_Input03 : 0;
+  cI[4] = (cO[2] && cO[3])  ? $SensorsDataCars::C_Input04 : 0;
+  cI[5] = (cO[0] && cO[1])  ? $SensorsDataCars::C_Input05 : 0;
+  cI[6] = cO[0]             ? $SensorsDataCars::C_Input06 : 0;
+  cI[7] = cO[3]             ? $SensorsDataCars::C_Input07 : 0;
+  cI[8] = (cO[1] && cO[2])  ? $SensorsDataCars::C_Input08 : 0;
+  cI[9] = (cO[0] && cO[1])  ? $SensorsDataCars::C_Input09 : 0;
+}
+
+on message SensorsDataWalkers
+{
+  cI[10] = $SensorsDataWalkers::C_Input10;
+  cI[11] = $SensorsDataWalkers::C_Input11;
+  cI[12] = $SensorsDataWalkers::C_Input12;
+  cI[13] = $SensorsDataWalkers::C_Input13;
+  cI[14] = $SensorsDataWalkers::C_Input14;
+  cI[15] = $SensorsDataWalkers::C_Input15;
+  cI[16] = $SensorsDataWalkers::C_Input16;
+  cI[17] = $SensorsDataWalkers::C_Input17;
+}
+
+void ChooseBestCycle()
+{
+  int i, j, k;
+  double tmp;
+  
+  double Tc; // czas ca³kowity cyklu
+  double Tp; // czas ¿ó³tego œwiat³a
+  double x_min; // minimalny czas zielonego œwiat³a
+  double x_max; // maksymalny czas zielonego œwiat³a
+  double deltaV = 10000000; // niedok³adnoœæ
+  double v[inputsAmount]; // wektor wspó³czynników
+  
+  Tc = getValue(Tcycle);
+  Tp = getValue(Tyellow);
+  x_min = getValue(Tmin);
+  x_max = getValue(Tmax);
+  
+  for (i = 0; i < inputsAmount; i++)
+    v[i] = (double)cI[i];
+  
+  currentCycle = 0;
+  
+  for (i = 0; i < cyclesAmount; i++)
+  {
+    tmp = Proceed(v, i, x, x_min, x_max, Tc, Tp);
+    
+    if (deltaV > tmp)
+    {
+      deltaV = tmp;
+      currentCycle = i;
+    }
+  }
+  
+  deltaV = Proceed(v, currentCycle, x, x_min, x_max, Tc, Tp);
+  
+  Write("Choosing best cycle: %d", currentCycle);
+  Write("%lf %lf %lf %lf", x[0], x[1], x[2], x[3]);
+}
+
 double Proceed(
   double v[], // wektor natê¿eñ ruchu
   int mat,  // identyfikator sprawdzanej macierzy
   double x[],
   double x_min,
   double x_max,
-  double Tc)
+  double Tc,
+  double Tp)
 {
   // iteratory
   int i, j, k;
@@ -269,13 +301,28 @@ double Proceed(
       x[i] += invB[mat][i][j]*vector[j];
   }
   
+  // obliczenie czasu trwania cyklu
+  s = 0;
+  for (j = 0; j < 4; j++)
+  {
+    tmp = 0;
+    for (i = 0; i < 10; i++)
+      if (tmp < B[mat][i][j]*2.15*v[i])
+          tmp = B[mat][i][j]*2.15*v[i];
+      
+      s += tmp;
+  }
+  
+  if (Tc > s+4*Tp)
+      Tc = s+4*Tp;
+  
   // obliczenie sta³ej s
   tmp = 0.0;
   for (i = 0; i < m; i++)
     tmp += x[i];
   
   if (tmp != 0)
-    s = Tc/tmp;
+    s = (Tc-4*Tp)/tmp;
   
   // przeskalowanie wektora i uwzglêdnienie ograniczeñ
   for (i = 0; i < m; i++)
@@ -305,156 +352,6 @@ double Proceed(
   return sqrt(deltaV);
 }
 
-double max(double a, double b)
-{
-  return a >= b ? a : b;
-}
-
-void LoadSensorDataKernel()
-{
-  $RequestSensorsData::OK = 1;
-  //output(messege_ReqSensData);
-//  cO[0] = !getValue(Check_Output0);
-//  cO[1] = !getValue(Check_Output1);
-//  cO[2] = !getValue(Check_Output2);
-//  cO[3] = !getValue(Check_Output3);
-//  
-//  cI[0] = getValue(Check_Input0) && cO[2] && cO[3];
-//  cI[1] = getValue(Check_Input1) && cO[2];
-//  cI[2] = getValue(Check_Input2) && cO[1];
-//  cI[3] = getValue(Check_Input3) && cO[0] && cO[3];
-//  cI[4] = getValue(Check_Input4) && cO[2] && cO[3];
-//  cI[5] = getValue(Check_Input5) && cO[0] && cO[1];
-//  cI[6] = getValue(Check_Input6) && cO[0];
-//  cI[7] = getValue(Check_Input7) && cO[3];
-//  cI[8] = getValue(Check_Input8) && cO[1] && cO[2];
-//  cI[9] = getValue(Check_Input9) && cO[0] && cO[1];
-//  cI[10] = getValue(Check_Input10);
-//  cI[11] = getValue(Check_Input11);
-//  cI[12] = getValue(Check_Input12);
-//  cI[13] = getValue(Check_Input13);
-//  cI[14] = getValue(Check_Input14);
-//  cI[15] = getValue(Check_Input15);
-//  cI[16] = getValue(Check_Input16);
-//  cI[17] = getValue(Check_Input17);
-//  
-//  cF[0] = getValue(Frequency0);
-//  cF[1] = getValue(Frequency1);
-//  cF[2] = getValue(Frequency2);
-//  cF[3] = getValue(Frequency3);
-//  cF[4] = getValue(Frequency4);
-//  cF[5] = getValue(Frequency5);
-//  cF[6] = getValue(Frequency6);
-//  cF[7] = getValue(Frequency7);
-//  cF[8] = getValue(Frequency8);
-//  cF[9] = getValue(Frequency9);
-//  cF[10] = getValue(Frequency10);
-//  cF[11] = getValue(Frequency11);
-//  cF[12] = getValue(Frequency12);
-//  cF[13] = getValue(Frequency13);
-//  cF[14] = getValue(Frequency14);
-//  cF[15] = getValue(Frequency15);
-//  cF[16] = getValue(Frequency16);
-//  cF[17] = getValue(Frequency17);
-}
-
-on message SensorsData 
-{
-  Write("Data From Sensors");  
-  
-  cO[0] = $SensorsData::C_Output0;
-  cO[1] = $SensorsData::C_Output1;
-  cO[2] = $SensorsData::C_Output2;
-  cO[3] = $SensorsData::C_Output3;
-  
-  cI[0] = $SensorsData::C_Input0 && cO[2] && cO[3];
-  cI[1] = $SensorsData::C_Input1 && cO[2];
-  cI[2] = $SensorsData::C_Input2 && cO[1];
-  cI[3] = $SensorsData::C_Input3 && cO[0] && cO[3];
-  cI[4] = $SensorsData::C_Input4 && cO[2] && cO[3];
-  cI[5] = $SensorsData::C_Input5 && cO[0] && cO[1];
-  cI[6] = $SensorsData::C_Input6 && cO[0];
-  cI[7] = $SensorsData::C_Input7 && cO[3];
-  cI[8] = $SensorsData::C_Input8 && cO[1] && cO[2];
-  cI[9] = $SensorsData::C_Input9 && cO[0] && cO[1];
-  cI[10] = $SensorsData::C_Input10;
-  cI[11] = $SensorsData::C_Input11;
-  cI[12] = $SensorsData::C_Input12;
-  cI[13] = $SensorsData::C_Input13;
-  cI[14] = $SensorsData::C_Input14;
-  cI[15] = $SensorsData::C_Input15;
-  cI[16] = $SensorsData::C_Input16;
-  cI[17] = $SensorsData::C_Input17;
-  
-  cF[0] = $SensorsData::C_Frequency0;
-  cF[1] = $SensorsData::C_Frequency1;
-  cF[2] = $SensorsData::C_Frequency2;
-  cF[3] = $SensorsData::C_Frequency3;
-  cF[4] = $SensorsData::C_Frequency4;
-  cF[5] = $SensorsData::C_Frequency5;
-  cF[6] = $SensorsData::C_Frequency6;
-  cF[7] = $SensorsData::C_Frequency7;
-  cF[8] = $SensorsData::C_Frequency8;
-  cF[9] = $SensorsData::C_Frequency9;
-  cF[10] = $SensorsData::C_Frequency10;
-  cF[11] = $SensorsData::C_Frequency11;
-  cF[12] = $SensorsData::C_Frequency12;
-  cF[13] = $SensorsData::C_Frequency13;
-  cF[14] = $SensorsData::C_Frequency14;
-  cF[15] = $SensorsData::C_Frequency15;
-  cF[16] = $SensorsData::C_Frequency16;
-  cF[17] = $SensorsData::C_Frequency17;
-}
-
-void LoadSensorData(double v[])
-{   
-  int i;
-  
-  double vm = 2.0;
-  
-  LoadSensorDataKernel();
-
-  for (i = 0; i < inputsAmount; i++)
-    v[i] = cI[i] ? max(vm, cF[i]) : 0;
-}
-
-void ChooseBestCycle()
-{
-  int i, j, k;
-  double tmp;
-  
-  double Tc; // czas ca³kowity cyklu
-  double Tp; // czas ¿ó³tego œwiat³a
-  double x_min; // minimalny czas zielonego œwiat³a
-  double x_max; // maksymalny czas zielonego œwiat³a
-  double deltaV = 10000000; // niedok³adnoœæ
-  double v[inputsAmount]; // wektor natê¿eñ ruchu
-  
-  Tc = getValue(Tcycle);
-  x_min = getValue(Tmin);
-  x_max = getValue(Tmax);
-  
-  LoadSensorData(v);
-  
-  currentCycle = 0;
-  
-  for (i = 0; i < cyclesAmount; i++)
-  {
-    tmp = Proceed(v, i, x, x_min, x_max, Tc);
-    
-    if (deltaV > tmp)
-    {
-      deltaV = tmp;
-      currentCycle = i;
-    }
-  }
-  
-  deltaV = Proceed(v, currentCycle, x, x_min, x_max, Tc);
-  
-  Write("Choosing best cycle: %d", currentCycle);
-  Write("%lf %lf %lf %lf", x[0], x[1], x[2], x[3]);
-}
-
 void TranslateCycleToMessage()
 { 
   int i;
@@ -482,23 +379,10 @@ void TranslateCycleToMessage()
   Write("Cycle activated: %d", currentCycle);
 }
 
-void NooneAwaitingProcessing()
-{
-  if (IsAnyoneAwaiting() == 0)
-  {
-    if (anyone_awaiting == 1)
-    {
-      anyone_awaiting = 0;
-      SetRedLights();
-      SetTimer(mainTimer, 100);
-      SetTimer(auxTimer, 1000);
-    }
-  }
-  else anyone_awaiting = 1;
-}
 
 void SetRedLights()
 {
+  Write("No incoming traffic.");
   $CyclePhase::time = 0;
   $CyclePhase::input0 = 0;
   $CyclePhase::input1 = 0;
@@ -518,6 +402,4 @@ void SetRedLights()
   $CyclePhase::input15 = 0;
   $CyclePhase::input16 = 0;
   $CyclePhase::input17 = 0;
-  
-  Write("No incoming traffic.");
 }

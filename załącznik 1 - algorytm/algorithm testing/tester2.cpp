@@ -7,7 +7,7 @@ using namespace std;
 
 double t_ps(double n)
 {
-	return 2.15*n+3.65;
+	return 2.15*n;
 }
 
 void PrepareMainMatrices(MATRIX<double> B[4])
@@ -54,12 +54,15 @@ void PrepareInversedMatrices(MATRIX<double> invB[4], const MATRIX<double> B[4])
 }
 void PrepareInputVector(MATRIX<double>& v)
 {
-	for (unsigned i = 0; i < v.rows(); i++)
+	if (true)
 	{
-		v.field(i) = static_cast<double>(rand()%6);
-
-		if (v.field(i) >= 3)
-			v.field(i) += 5;
+		for (unsigned i = 0; i < v.rows(); i++)
+			v.field(i) = static_cast<double>(rand() % 11);
+	}
+	else
+	{
+		cout << "Type input vector: ";
+		cin >> v;
 	}
 }
 
@@ -73,10 +76,10 @@ void PrepareFactorVector(MATRIX<double>& vector, const MATRIX<double>& v, const 
 			vector.field(k) += B.field(i, k)*v.field(i);
 	}
 }
-void ComputeCycleTime(double& t_cycl, const MATRIX<double>& v, const MATRIX<double>& B)
+void ComputeCycleTime(double& t_cycl, const MATRIX<double>& v, const MATRIX<double>& B, double t_z)
 {
 	double u = 0;
-	for (unsigned j = 0; j < 3; j++)
+	for (unsigned j = 0; j < 4; j++)
 	{
 		double tmp = 0;
 		for (unsigned i = 0; i < 10; i++)
@@ -86,8 +89,8 @@ void ComputeCycleTime(double& t_cycl, const MATRIX<double>& v, const MATRIX<doub
 		u += tmp;
 	}
 
-	if (t_cycl >= u)
-		t_cycl = u;
+	if (t_cycl >= u+4*t_z)
+		t_cycl  = u+4*t_z;
 }
 void PerformScaling(MATRIX<double>& x, double& s, double t_cycl, double t_z)
 {
@@ -144,7 +147,7 @@ void algorithm(
 
 		MATRIX<double> u = invB[ver]*vector;
 
-		ComputeCycleTime(t_cycl, v, B[ver]);
+		ComputeCycleTime(t_cycl, v, B[ver], t_z);
 
 		PerformScaling(u, s, t_cycl, t_z);
 		PerformLimiting(u, t_min, t_max, vector);
@@ -169,6 +172,17 @@ void WriteDataToFile(fstream& F, const MATRIX<double> v, const MATRIX<double> B,
 		F << real.field(i) << "	";
 
 	F << deltaV << "	" << s << "	" << t_cycl << endl;
+}
+void WriteOnScreen(const MATRIX<double> v, const MATRIX<double> B, const MATRIX<double> x, double deltaV, double s, unsigned id, double t_cycl)
+{
+	MATRIX<double> real = B*x;
+	for (unsigned i = 0; i < real.rows(); i++)
+		cout << "in" << i << " " << v.field(i) << " " << real.field(i) << endl;
+
+	cout << "deltaV: " << deltaV << endl;
+	cout << "s: " << s << endl;
+	cout << "id: " << id << endl;
+	cout << "t_cycl: " << t_cycl << endl;
 }
 
 int main()
@@ -202,6 +216,8 @@ int main()
 		double s;
 	
 		algorithm(v, B, invB, t_min, t_max, t_cycl, t_z, x, deltaV, id, s);
+
+		//WriteOnScreen(v, B[id], x, deltaV, s, id, t_cycl);
 
 		WriteDataToFile(F, v, B[id], x, deltaV, s, t_cycl);
 	}

@@ -1,8 +1,8 @@
 ﻿  tester2.cpp
-tester2.cpp(176): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+tester2.cpp(190): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
   Generating code
-  16 of 161 functions ( 9.9%) were compiled, the rest were copied from previous compilation.
+  9 of 162 functions ( 5.6%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    2 functions had inline decision re-evaluated but remain unchanged
+    17 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   VSFP.vcxproj -> C:\Users\Avert Second\Documents\studia\II rok - semestr 4\Automatyka pojazdowa\Projekt 1 - Sygnalizacja świetlna\załącznik 1 - algorytm\algorithm testing\x64\Release\VSFP.exe

@@ -36,51 +36,39 @@ BS_:
 BU_: sensors slave master
 
 
-BO_ 3 SlaveConnectMaster: 1 slave
+BO_ 3221225472 VECTOR__INDEPENDENT_SIG_MSG: 0 Vector__XXX
+ SG_ OK : 0|1@1+ (1,0) [0|1] "" Vector__XXX
+
+BO_ 4 SensorsDataOutputs: 1 sensors
+ SG_ C_Output3 : 3|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ C_Output2 : 2|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ C_Output1 : 1|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ C_Output0 : 0|1@1+ (1,0) [0|1] "" Vector__XXX
+
+BO_ 3 SensorsDataWalkers: 1 sensors
+ SG_ C_Input17 : 7|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ C_Input16 : 6|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ C_Input15 : 5|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ C_Input14 : 4|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ C_Input13 : 3|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ C_Input12 : 2|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ C_Input11 : 1|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ C_Input10 : 0|1@1+ (1,0) [0|1] "" Vector__XXX
+
+BO_ 6 SlaveConnectMaster: 1 slave
  SG_ Connect : 1|1@1+ (1,0) [0|1] "" Vector__XXX
 
-BO_ 2 SensorsData: 6 sensors
- SG_ OK : 40|1@1+ (1,0) [0|1] "" Vector__XXX
- SG_ C_Output3 : 39|1@1+ (1,0) [0|1] "" Vector__XXX
- SG_ C_Output2 : 38|1@1+ (1,0) [0|1] "" Vector__XXX
- SG_ C_Output1 : 37|1@1+ (1,0) [0|1] "" Vector__XXX
- SG_ C_Output0 : 36|1@1+ (1,0) [0|1] "" Vector__XXX
- SG_ C_Input9 : 35|1@1+ (1,0) [0|1] "" Vector__XXX
- SG_ C_Input8 : 34|1@1+ (1,0) [0|1] "" Vector__XXX
- SG_ C_Input7 : 33|1@1+ (1,0) [0|1] "" Vector__XXX
- SG_ C_Input6 : 32|1@1+ (1,0) [0|1] "" Vector__XXX
- SG_ C_Input5 : 31|1@1+ (1,0) [0|1] "" Vector__XXX
- SG_ C_Input4 : 30|1@1+ (1,0) [0|1] "" Vector__XXX
- SG_ C_Input3 : 29|1@1+ (1,0) [0|1] "" Vector__XXX
- SG_ C_Input2 : 28|1@1+ (1,0) [0|1] "" Vector__XXX
- SG_ C_Input17 : 27|1@1+ (1,0) [0|1] "" Vector__XXX
- SG_ C_Input16 : 26|1@1+ (1,0) [0|1] "" Vector__XXX
- SG_ C_Input15 : 25|1@1+ (1,0) [0|1] "" Vector__XXX
- SG_ C_Input14 : 24|1@1+ (1,0) [0|1] "" Vector__XXX
- SG_ C_Input13 : 23|1@1+ (1,0) [0|1] "" Vector__XXX
- SG_ C_Input12 : 22|1@1+ (1,0) [0|1] "" Vector__XXX
- SG_ C_Input11 : 21|1@1+ (1,0) [0|1] "" Vector__XXX
- SG_ C_Input10 : 20|1@1+ (1,0) [0|1] "" Vector__XXX
- SG_ C_Input1 : 19|1@1+ (1,0) [0|1] "" Vector__XXX
- SG_ C_Input0 : 18|1@1+ (1,0) [0|1] "" Vector__XXX
- SG_ C_Frequency9 : 17|1@1+ (1,0) [0|20] "" Vector__XXX
- SG_ C_Frequency8 : 16|1@1+ (1,0) [0|20] "" Vector__XXX
- SG_ C_Frequency7 : 15|1@1+ (1,0) [0|20] "" Vector__XXX
- SG_ C_Frequency6 : 14|1@1+ (1,0) [0|20] "" Vector__XXX
- SG_ C_Frequency5 : 13|1@1+ (1,0) [0|20] "" Vector__XXX
- SG_ C_Frequency4 : 12|1@1+ (1,0) [0|20] "" Vector__XXX
- SG_ C_Frequency3 : 11|1@1+ (1,0) [0|20] "" Vector__XXX
- SG_ C_Frequency2 : 10|1@1+ (1,0) [0|20] "" Vector__XXX
- SG_ C_Frequency17 : 9|1@1+ (1,0) [0|20] "" Vector__XXX
- SG_ C_Frequency16 : 8|1@1+ (1,0) [0|20] "" Vector__XXX
- SG_ C_Frequency15 : 7|1@1+ (1,0) [0|20] "" Vector__XXX
- SG_ C_Frequency14 : 6|1@1+ (1,0) [0|20] "" Vector__XXX
- SG_ C_Frequency13 : 5|1@1+ (1,0) [0|20] "" Vector__XXX
- SG_ C_Frequency12 : 4|1@1+ (1,0) [0|20] "" Vector__XXX
- SG_ C_Frequency11 : 3|1@1+ (1,0) [0|20] "" Vector__XXX
- SG_ C_Frequency10 : 2|1@1+ (1,0) [0|20] "" Vector__XXX
- SG_ C_Frequency1 : 1|1@1+ (1,0) [0|20] "" Vector__XXX
- SG_ C_Frequency0 : 0|1@1+ (1,0) [0|20] "" Vector__XXX
+BO_ 2 SensorsDataCars: 5 sensors
+ SG_ C_Input09 : 36|4@1+ (1,0) [0|15] "" Vector__XXX
+ SG_ C_Input08 : 32|4@1+ (1,0) [0|15] "" Vector__XXX
+ SG_ C_Input07 : 28|4@1+ (1,0) [0|15] "" Vector__XXX
+ SG_ C_Input06 : 24|4@1+ (1,0) [0|15] "" Vector__XXX
+ SG_ C_Input05 : 20|4@1+ (1,0) [0|15] "" Vector__XXX
+ SG_ C_Input04 : 16|4@1+ (1,0) [0|15] "" Vector__XXX
+ SG_ C_Input03 : 12|4@1+ (1,0) [0|15] "" Vector__XXX
+ SG_ C_Input02 : 8|4@1+ (1,0) [0|15] "" Vector__XXX
+ SG_ C_Input01 : 4|4@1+ (1,0) [0|15] "" Vector__XXX
+ SG_ C_Input00 : 0|4@1+ (1,0) [0|15] "" Vector__XXX
 
 BO_ 1 RequestSensorsData: 1 master
  SG_ OK : 0|1@1+ (1,0) [0|1] "" Vector__XXX
@@ -248,10 +236,11 @@ EV_ Check_Output1: 0 [0|0] "" 0 43 DUMMY_NODE_VECTOR3  sensors;
 
 EV_ Tyellow: 1 [0|0] "" 4 44 DUMMY_NODE_VECTOR3 Vector__XXX;
 
-EV_ Tmax: 1 [0|0] "" 35 45 DUMMY_NODE_VECTOR3 Vector__XXX;
+EV_ Tmax: 1 [0|0] "" 40 45 DUMMY_NODE_VECTOR3 Vector__XXX;
 
-EV_ Tmin: 1 [0|0] "" 9 46 DUMMY_NODE_VECTOR3 Vector__XXX;
+EV_ Tmin: 1 [0|0] "" 3 46 DUMMY_NODE_VECTOR3 Vector__XXX;
 
+CM_ BO_ 3221225472 "This is a message for not used signals, created by Vector CANdb++ DBC OLE DB Provider.";
 CM_ SG_ 77 time "Okreœla czas trwania danej fazy.";
 CM_ EV_ Master_On_Off "W³¹czenie/wy³¹czenie wêz³a 'master'
 ";

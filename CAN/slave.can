@@ -31,9 +31,6 @@ on start
   int i;
   int k;
   
-  Write("All Lights Red");
-  
-  
   for (i = 0; i < 10; i++)
   {
     CarLights[i][0] = 1;

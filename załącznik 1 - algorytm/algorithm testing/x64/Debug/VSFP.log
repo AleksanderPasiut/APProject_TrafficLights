@@ -1,3 +1,3 @@
 ﻿  tester2.cpp
-c:\users\avert second\documents\studia\ii rok - semestr 4\automatyka pojazdowa\projekt 1 - sygnalizacja świetlna\załącznik 1 - algorytm\algorithm testing\tester2.cpp(171): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+c:\users\avert second\documents\studia\ii rok - semestr 4\automatyka pojazdowa\projekt 1 - sygnalizacja świetlna\załącznik 1 - algorytm\algorithm testing\tester2.cpp(198): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
   VSFP.vcxproj -> C:\Users\Avert Second\Documents\studia\II rok - semestr 4\Automatyka pojazdowa\Projekt 1 - Sygnalizacja świetlna\załącznik 1 - algorytm\algorithm testing\x64\Debug\VSFP.exe
