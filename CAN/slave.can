@@ -347,7 +347,6 @@ void TranslateMessageToArray()
   RightArrows[1] = $CyclePhase::input19;
   RightArrows[2] = $CyclePhase::input20;
   RightArrows[3] = $CyclePhase::input21;
-  
 }
 
 void TranslateArray10ToMessage()
@@ -411,6 +410,7 @@ void TranslateArray8ToMessage()
 void TranslateArray4ToMessage()
 {
   //Right Arrows
+  
   $TrafficLightsControl::output0_rightArrow = RightArrows[0];
   $TrafficLightsControl::output3_rightArrow = RightArrows[1];
   $TrafficLightsControl::output5_rightArrow = RightArrows[2];
