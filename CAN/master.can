@@ -226,7 +226,10 @@ void OnKey()
   if (IsAnyoneWaiting())
   {    
     if (currentPhase == 0)
+    {
+      DisplaySensorData();
       ChooseBestCycle();
+    }
     
     if (x[currentPhase] > 0)
       TranslateCycleToMessage();
@@ -256,6 +259,16 @@ int IsAnyoneWaiting()
   return 0;
 }
 
+void DisplaySensorData()
+{
+  int i;
+  for (i = 0; i < inputsAmountCars; i++)
+    write("car input %d: %d", i, cIC[i]);
+  
+  for (i = 0; i < inputsAmountWalkers; i++)
+    write("walker input %d: %d", i, cIW[i]);
+}
+
 void ChooseBestCycle()
 {
   int i, j, k;
@@ -266,7 +279,7 @@ void ChooseBestCycle()
   double x_min; // minimalny czas zielonego œwiat³a bez pieszych
   double x_min_p; // minimalny czas zielonego œwiat³a z pieszymi
   double x_max; // maksymalny czas zielonego œwiat³a
-  double deltaV = 10000000; // niedok³adnoœæ
+  double deltaV; // niedok³adnoœæ
   double v[inputsAmountCars]; // wektor wspó³czynników
   
   Tc = getValue(Tcycle);
@@ -279,6 +292,7 @@ void ChooseBestCycle()
     v[i] = (double)cIC[i];
   
   currentCycle = 0;
+  deltaV = 10000000;
   
   for (i = 0; i < cyclesAmount; i++)
   {
@@ -312,7 +326,7 @@ double Proceed(
   
   // skrócone nazwy dla u³atwienia
   const int n = inputsAmountCars;
-  const int m = cyclesAmount;
+  const int m = cyclePhases;
   
   double tmp = 0.0;
   double s = 0.0;
@@ -367,12 +381,20 @@ double Proceed(
   {
     x[i] *= s;
     
-    if (vector[i] == 0)
-      x[i] = 0;
-    else if (x[i] < x_min)
-      x[i] = x_min;
-    else if (x[i] > x_max)
+    if (x[i] > x_max)
       x[i] = x_max;
+    else if (AreThereAnyWalkers(mat, i))
+    {
+      if (x[i] < x_min_p)
+        x[i] = x_min_p;
+    }
+    else
+    {
+       if (vector[i] == 0)
+        x[i] = 0;
+       else if (x[i] < x_min)
+        x[i] = x_min;
+    }
   }
   
   // obliczenie b³êdu
@@ -390,6 +412,18 @@ double Proceed(
     deltaV += dv[i]*dv[i];
  
   return sqrt(deltaV);
+}
+
+int AreThereAnyWalkers(int mat, int phase)
+{
+  int i;
+  
+  for (i = 0; i < inputsAmountWalkers; i++)
+    if (cIW[i] && B[mat][inputsAmountCars+i][phase] > 0)
+      return 1;
+  
+  write("walkers detected");
+  return 0;
 }
 
 void TranslateCycleToMessage()

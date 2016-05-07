@@ -397,7 +397,7 @@
       <Property Name="Name">PictureBoxControl1</Property>
       <Property Name="Size">810, 653</Property>
       <Property Name="Location">0, 0</Property>
-      <Property Name="ImageFile">..\skrzyzowanie_nowe.JPG</Property>
+      <Property Name="ImageFile">..\skrzyzowanie_nowe2.JPG</Property>
     </Object>
     <Property Name="Name">Panel</Property>
     <Property Name="Size">810, 653</Property>

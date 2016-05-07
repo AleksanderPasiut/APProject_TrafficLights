@@ -283,6 +283,7 @@ on timer timerYellowsEndPhase2
 on timer timerRightArrow
 {
   Write("Right Arrows On");
+  TranslateMessageToArray();
   TranslateArray4ToMessage();
 }
 
@@ -382,9 +383,7 @@ void TranslateArray10ToMessage()
   $TrafficLightsControl::output6_red = CarLights[6][0];
   $TrafficLightsControl::output7_red = CarLights[7][0];
   $TrafficLightsControl::output8_red = CarLights[8][0];
-  $TrafficLightsControl::output9_red = CarLights[9][0];
-  
-  
+  $TrafficLightsControl::output9_red = CarLights[9][0];  
 }
 
 void TranslateArray8ToMessage()

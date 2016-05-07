@@ -73,7 +73,7 @@ BO_ 3 SensorsDataCars: 5 sensors
 BO_ 1 RequestSensorsData: 1 master
  SG_ OK : 0|1@1+ (1,0) [0|1] "" Vector__XXX
 
-BO_ 0 TrafficLightsControl: 7 slave
+BO_ 7 TrafficLightsControl: 7 slave
  SG_ output8_rightArrow : 49|1@1+ (1,0) [0|1] "" Vector__XXX
  SG_ output5_rightArrow : 48|1@1+ (1,0) [0|1] "" Vector__XXX
  SG_ output3_rightArrow : 47|1@1+ (1,0) [0|1] "" Vector__XXX
@@ -198,19 +198,19 @@ EV_ Frequency0: 0 [0|32] "" 0 22 DUMMY_NODE_VECTOR3  sensors;
 
 EV_ Check_Input0: 0 [0|0] "" 1 23 DUMMY_NODE_VECTOR3  sensors;
 
-EV_ Check_Input10: 0 [0|0] "" 1 24 DUMMY_NODE_VECTOR3  sensors;
+EV_ Check_Input10: 0 [0|0] "" 0 24 DUMMY_NODE_VECTOR3  sensors;
 
-EV_ Check_Input11: 0 [0|0] "" 1 25 DUMMY_NODE_VECTOR3  sensors;
+EV_ Check_Input11: 0 [0|0] "" 0 25 DUMMY_NODE_VECTOR3  sensors;
 
-EV_ Check_Input12: 0 [0|0] "" 1 26 DUMMY_NODE_VECTOR3  sensors;
+EV_ Check_Input12: 0 [0|0] "" 0 26 DUMMY_NODE_VECTOR3  sensors;
 
-EV_ Check_Input13: 0 [0|0] "" 1 27 DUMMY_NODE_VECTOR3  sensors;
+EV_ Check_Input13: 0 [0|0] "" 0 27 DUMMY_NODE_VECTOR3  sensors;
 
-EV_ Check_Input14: 0 [0|0] "" 1 28 DUMMY_NODE_VECTOR3  sensors;
+EV_ Check_Input14: 0 [0|0] "" 0 28 DUMMY_NODE_VECTOR3  sensors;
 
-EV_ Check_Input15: 0 [0|0] "" 1 29 DUMMY_NODE_VECTOR3  sensors;
+EV_ Check_Input15: 0 [0|0] "" 0 29 DUMMY_NODE_VECTOR3  sensors;
 
-EV_ Check_Input16: 0 [0|0] "" 1 30 DUMMY_NODE_VECTOR3  sensors;
+EV_ Check_Input16: 0 [0|0] "" 0 30 DUMMY_NODE_VECTOR3  sensors;
 
 EV_ Check_Input5: 0 [0|0] "" 1 31 DUMMY_NODE_VECTOR3  sensors;
 
@@ -230,7 +230,7 @@ EV_ Check_Input2: 0 [0|0] "" 1 38 DUMMY_NODE_VECTOR3  sensors;
 
 EV_ Check_Input1: 0 [0|0] "" 1 39 DUMMY_NODE_VECTOR3  sensors;
 
-EV_ Check_Input17: 0 [0|0] "" 1 40 DUMMY_NODE_VECTOR3  sensors;
+EV_ Check_Input17: 0 [0|0] "" 0 40 DUMMY_NODE_VECTOR3  sensors;
 
 EV_ Check_Output0: 0 [0|0] "" 0 41 DUMMY_NODE_VECTOR3  sensors;
 
