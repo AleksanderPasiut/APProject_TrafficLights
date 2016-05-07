@@ -376,6 +376,12 @@ void TranslateCycleToMessage()
   $CyclePhase::input16 = (int)B[currentCycle][16][currentPhase] && cI[16];
   $CyclePhase::input17 = (int)B[currentCycle][17][currentPhase] && cI[17];
   
+  //Right Arrows - 0,3,5,8
+  $CyclePhase::input18 = (int)B[currentCycle][0][currentPhase] && cI[0] &&(int)B[currentCycle][7][currentPhase] && cI[7];;
+  $CyclePhase::input19 = (int)B[currentCycle][3][currentPhase] && cI[3];
+  $CyclePhase::input20 = (int)B[currentCycle][2][currentPhase] && cI[2] && (int)B[currentCycle][5][currentPhase] && cI[5];
+  $CyclePhase::input21 = (int)B[currentCycle][8][currentPhase] && cI[8];
+    
   Write("Cycle activated: %d", currentCycle);
 }
 
@@ -402,4 +408,9 @@ void SetRedLights()
   $CyclePhase::input15 = 0;
   $CyclePhase::input16 = 0;
   $CyclePhase::input17 = 0;
+  
+  $CyclePhase::input18 = 0;
+  $CyclePhase::input19 = 0;
+  $CyclePhase::input20 = 0;
+  $CyclePhase::input21 = 0;
 }

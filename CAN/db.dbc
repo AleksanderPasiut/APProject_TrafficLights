@@ -126,6 +126,10 @@ BO_ 0 TrafficLightsControl: 7 slave
  SG_ output0_red : 1|1@1+ (1,0) [0|1] "" Vector__XXX
 
 BO_ 77 CyclePhase: 8 master
+ SG_ input21 : 21|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ input20 : 20|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ input19 : 19|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ input18 : 18|1@1+ (1,0) [0|1] "" Vector__XXX
  SG_ input9 : 17|1@1+ (1,0) [0|1] "" Vector__XXX
  SG_ input8 : 16|1@1+ (1,0) [0|1] "" Vector__XXX
  SG_ input7 : 15|1@1+ (1,0) [0|1] "" Vector__XXX

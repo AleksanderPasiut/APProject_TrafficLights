@@ -16,7 +16,7 @@ variables
   msTimer timerRightArrow;
   msTimer timerRightArrowOff;
     
-  int Inputs[26][2];
+  int Inputs[22][2];
   
   int CarLights[10][3]; //red, yellow, green
   int RightArrows[4];
@@ -173,16 +173,7 @@ void SetYellow()
   TranslateArray10ToMessage();
 }
 
-void SetRightArrows()
-{
-  //Right Arrow - 0,3,5,8
-  RightArrows[0] = CarLights[0][0] && CarLights[7][0];
-  RightArrows[1] = CarLights[3][0];
-  RightArrows[2] = CarLights[2][0] && CarLights[5][0];
-  RightArrows[3] = CarLights[8][0];
-  
-  TranslateArray4ToMessage(); 
-}
+
 void DisableArrows()
 {
   int i;
@@ -292,7 +283,7 @@ on timer timerYellowsEndPhase2
 on timer timerRightArrow
 {
   Write("Right Arrows On");
-  SetRightArrows();
+  TranslateArray4ToMessage();
 }
 
 on timer timerYellowsFlashing1
@@ -351,6 +342,12 @@ void TranslateMessageToArray()
   Inputs[15][1] = $CyclePhase::input15;
   Inputs[16][1] = $CyclePhase::input16;
   Inputs[17][1] = $CyclePhase::input17;
+  
+  RightArrows[0] = $CyclePhase::input18;
+  RightArrows[1] = $CyclePhase::input19;
+  RightArrows[2] = $CyclePhase::input20;
+  RightArrows[3] = $CyclePhase::input21;
+  
 }
 
 void TranslateArray10ToMessage()
