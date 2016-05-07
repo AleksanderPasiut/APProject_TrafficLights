@@ -21,12 +21,21 @@ variables
   int CarLights[10][3]; //red, yellow, green
   int RightArrows[4];
   int WalkerLights[8][2]; //red, green
-  int future;
-  int present;
-  int YellowsFlashingActive;
+  
+  int YellowsFlashingActive; //1 - master polaczony, 0 - master odlaczony
+  int SlaveActive; //1 - slave polaczone, 0 - slave odlaczone 
 }
 
 on start
+{
+  SetAllRed();
+  
+  YellowsFlashingActive = 0;
+  SlaveActive = 1;
+  
+  DisableArrows();
+}
+void SetAllRed()
 {
   int i;
   int k;
@@ -44,11 +53,8 @@ on start
     WalkerLights[i][1] = 0;
   }
   
-  YellowsFlashingActive = 0;
-  
   TranslateArray10ToMessage();
   TranslateArray8ToMessage();
-  DisableArrows();
 }
 
 void SetYellowsPhase1()
@@ -173,7 +179,6 @@ void SetYellow()
   TranslateArray10ToMessage();
 }
 
-
 void DisableArrows()
 {
   int i;
@@ -226,7 +231,7 @@ void TurnOffWalkerLights()
 
 on message CyclePhase 
 {
-  if(YellowsFlashingActive != 1 || $CyclePhase::time != 0)
+  if((YellowsFlashingActive != 1 || $CyclePhase::time != 0)&& SlaveActive == 1 )
   {
       if(YellowsFlashingActive == 0)
       {
@@ -248,15 +253,54 @@ on envVar Master_On_Off
 {
   if(getValue(this) == 1){
     
+    cancelTimer(timerYellowsFlashing1);
+    cancelTimer(timerYellowsFlashing2);
+    
     YellowsFlashingActive = 0;
-    $SlaveConnectMaster::Connect = 1;
+    SetAllRed();
+    $SlaveConnectMaster::Reset = 1;//reset mastera
+    
+    
   }
   else{
     
-    $SlaveConnectMaster::Connect = 0;
     YellowsFlashingActive = 1;
+    
+    cancelTimer(timerRightArrow);
+    cancelTimer(timerRightArrowOff);
+    cancelTimer(timerYellowsEndPhase1);
+    cancelTimer(timerYellowsEndPhase2);
+    
+    setTimer(timerYellowsFlashing1,500*(int)getValue(Tyellow));
   }
 }
+
+on message MasterConnectSlave
+{
+  if($MasterConnectSlave::Connect_Slave == 0)
+  {
+    cancelTimer(timerYellowsFlashing1);
+    cancelTimer(timerYellowsFlashing2);
+    cancelTimer(timerRightArrow);
+    cancelTimer(timerRightArrowOff);
+    cancelTimer(timerYellowsEndPhase1);
+    cancelTimer(timerYellowsEndPhase2);
+    
+    SlaveActive = 0;
+    TurnOffLights();
+    TurnOffWalkerLights();
+    DisableArrows();
+    $CyclePhase::time = 0;
+    
+  }
+  else{
+    
+    SlaveActive = 1;
+    $SlaveConnectMaster::Reset = 1;//reset mastera
+  }
+  
+}
+
 on timer timerRightArrowOff 
 {
   Write("Right Arrows Off");
@@ -280,6 +324,7 @@ on timer timerYellowsEndPhase2
   SetWalkerLights();
   setTimer(timerRightArrow,300*(int)getValue(Tyellow));
 }
+
 on timer timerRightArrow
 {
   Write("Right Arrows On");

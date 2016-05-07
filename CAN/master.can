@@ -28,7 +28,9 @@ variables
   int currentPhase; // aktualna faza cyklu
   double x[cyclePhases]; // wektor wyjœciowy (czasy poszczególnych faz cyklu)
   
-  message RequestSensorsData messege_ReqSensData;
+  int SensorsActive; //1 - sensors polaczone, 0 - sensors odlaczone 
+  int SlaveActive; //1 - slave polaczone, 0 - slave odlaczone 
+  
 }
 
 double max(double a, double b)
@@ -42,6 +44,8 @@ on start
   currentPhase = 0;
   
   PrepareCycles();
+  SensorsActive = 1;
+  SlaveActive = 1;
 }
 
 void PrepareCycles()
@@ -167,11 +171,54 @@ void PrepareInversedMatrix(int mat)
       invB[mat][i][j] /= tmpM[i][i];
 }
 
+on envVar Sensors_On_Off
+{
+  if(getValue(this) == 1){
+    
+    SensorsActive = 1;
+  }
+  else{
+    
+    SensorsActive = 0;
+    
+    currentPhase = (currentPhase+1) % cyclePhases;
+    ChooseBestCycle();
+  }
+}
+
+
+on envVar Slave_On_Off
+{
+  if(getValue(this) == 1){
+    
+    SlaveActive = 1;
+    $MasterConnectSlave::Connect_Slave = 1;
+  }
+  else{
+    
+    $MasterConnectSlave::Connect_Slave = 0;
+    SlaveActive = 0;
+  }
+ 
+}
+//sygnal resetujacy po podlaczeniu slave
+on message SlaveConnectMaster 
+{
+  SetRedLights();
+  currentCycle = 0;
+  currentPhase = 0;
+  
+  ChooseBestCycle();
+}
+
 on key*
 {
-  if (currentPhase == 0)
-    LoadSensorDataKernel();
-  else OnKey();
+  if(SlaveActive == 1)
+  {
+    if (currentPhase == 0)
+      LoadSensorDataKernel();
+    else OnKey();
+  }
 }
 
 void LoadSensorDataKernel()
@@ -223,24 +270,27 @@ on message SensorsDataWalkers
 
 void OnKey()
 {
-  if (IsAnyoneWaiting())
-  {    
-    if (currentPhase == 0)
-    {
-      DisplaySensorData();
-      ChooseBestCycle();
-    }
-    
-    if (x[currentPhase] > 0)
-      TranslateCycleToMessage();
-    
-    currentPhase = (currentPhase+1) % cyclePhases;
-  }
-  else
+  if(SlaveActive == 1)
   {
-    currentPhase = 0;
-    SetRedLights();
-    write("Noone waiting");
+    if (IsAnyoneWaiting())
+    {    
+      if (currentPhase == 0)
+      {
+        DisplaySensorData();
+        ChooseBestCycle();
+      }
+      
+      if (x[currentPhase] > 0)
+        TranslateCycleToMessage();
+      
+      currentPhase = (currentPhase+1) % cyclePhases;
+    }
+    else
+    {
+      currentPhase = 0;
+      SetRedLights();
+      write("Noone waiting");
+    }
   }
 }
 
@@ -262,11 +312,14 @@ int IsAnyoneWaiting()
 void DisplaySensorData()
 {
   int i;
-  for (i = 0; i < inputsAmountCars; i++)
-    write("car input %d: %d", i, cIC[i]);
-  
-  for (i = 0; i < inputsAmountWalkers; i++)
-    write("walker input %d: %d", i, cIW[i]);
+  if(SensorsActive == 1){
+    
+    for (i = 0; i < inputsAmountCars; i++)
+      write("car input %d: %d", i, cIC[i]);
+    
+    for (i = 0; i < inputsAmountWalkers; i++)
+      write("walker input %d: %d", i, cIW[i]);
+  }
 }
 
 void ChooseBestCycle()
@@ -307,8 +360,20 @@ void ChooseBestCycle()
   
   deltaV = Proceed(v, currentCycle, x, x_min, x_min_p, x_max, Tc, Tp);
   
+  if(SensorsActive == 0)
+  {
+    currentCycle = 0;
+    
+    x[0] = getValue(T_faza1);
+    x[1] = getValue(T_faza2);
+    x[2] = getValue(T_faza3);
+    x[3] = getValue(T_faza4);
+  }
+  
   Write("Choosing best cycle: %d", currentCycle);
   Write("%lf %lf %lf %lf", x[0], x[1], x[2], x[3]);
+  
+  
 }
 
 double Proceed(

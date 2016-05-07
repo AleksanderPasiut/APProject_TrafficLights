@@ -36,8 +36,11 @@ BS_:
 BU_: sensors slave master
 
 
-BO_ 3221225472 VECTOR__INDEPENDENT_SIG_MSG: 0 Vector__XXX
- SG_ OK : 0|1@1+ (1,0) [0|1] "" Vector__XXX
+BO_ 5 SlaveConnectMaster: 1 slave
+ SG_ Reset : 0|1@1+ (1,0) [0|1] "" Vector__XXX
+
+BO_ 6 MasterConnectSlave: 1 master
+ SG_ Connect_Slave : 0|1@1+ (1,0) [0|1] "" Vector__XXX
 
 BO_ 2 SensorsDataOutputs: 1 sensors
  SG_ C_Output3 : 3|1@1+ (1,0) [0|1] "" Vector__XXX
@@ -55,9 +58,6 @@ BO_ 4 SensorsDataWalkers: 1 sensors
  SG_ C_Input11 : 1|1@1+ (1,0) [0|1] "" Vector__XXX
  SG_ C_Input10 : 0|1@1+ (1,0) [0|1] "" Vector__XXX
 
-BO_ 6 SlaveConnectMaster: 1 slave
- SG_ Connect : 1|1@1+ (1,0) [0|1] "" Vector__XXX
-
 BO_ 3 SensorsDataCars: 5 sensors
  SG_ C_Input09 : 36|4@1+ (1,0) [0|15] "" Vector__XXX
  SG_ C_Input08 : 32|4@1+ (1,0) [0|15] "" Vector__XXX
@@ -73,7 +73,7 @@ BO_ 3 SensorsDataCars: 5 sensors
 BO_ 1 RequestSensorsData: 1 master
  SG_ OK : 0|1@1+ (1,0) [0|1] "" Vector__XXX
 
-BO_ 7 TrafficLightsControl: 7 slave
+BO_ 9 TrafficLightsControl: 7 slave
  SG_ output8_rightArrow : 49|1@1+ (1,0) [0|1] "" Vector__XXX
  SG_ output5_rightArrow : 48|1@1+ (1,0) [0|1] "" Vector__XXX
  SG_ output3_rightArrow : 47|1@1+ (1,0) [0|1] "" Vector__XXX
@@ -152,102 +152,118 @@ BO_ 77 CyclePhase: 8 master
 
 
 
-EV_ TminP: 1 [0|0] "" 10 1 DUMMY_NODE_VECTOR3 Vector__XXX;
+EV_ T_faza4: 1 [0|0] "" 15 1 DUMMY_NODE_VECTOR3 Vector__XXX;
 
-EV_ Master_On_Off: 0 [0|1] "" 1 2 DUMMY_NODE_VECTOR3 Vector__XXX;
+EV_ T_faza3: 1 [0|0] "" 15 2 DUMMY_NODE_VECTOR3 Vector__XXX;
 
-EV_ Sensors_On_Off: 0 [0|0] "" 1 3 DUMMY_NODE_VECTOR3 Vector__XXX;
+EV_ T_faza2: 1 [0|0] "" 15 3 DUMMY_NODE_VECTOR3 Vector__XXX;
 
-EV_ Tcycle: 1 [0|0] "" 60 4 DUMMY_NODE_VECTOR3 Vector__XXX;
+EV_ T_faza1: 1 [0|0] "" 15 4 DUMMY_NODE_VECTOR3 Vector__XXX;
 
-EV_ Frequency17: 0 [0|32] "" 0 5 DUMMY_NODE_VECTOR3  sensors;
+EV_ Slave_On_Off: 0 [0|1] "" 1 5 DUMMY_NODE_VECTOR3 Vector__XXX;
 
-EV_ Frequency16: 0 [0|32] "" 0 6 DUMMY_NODE_VECTOR3  sensors;
+EV_ TminP: 1 [0|0] "" 10 6 DUMMY_NODE_VECTOR3 Vector__XXX;
 
-EV_ Frequency15: 0 [0|32] "" 0 7 DUMMY_NODE_VECTOR3  sensors;
+EV_ Master_On_Off: 0 [0|1] "" 1 7 DUMMY_NODE_VECTOR3 Vector__XXX;
 
-EV_ Frequency14: 0 [0|32] "" 0 8 DUMMY_NODE_VECTOR3  sensors;
+EV_ Sensors_On_Off: 0 [0|1] "" 1 8 DUMMY_NODE_VECTOR3 Vector__XXX;
 
-EV_ Frequency13: 0 [0|32] "" 0 9 DUMMY_NODE_VECTOR3  sensors;
+EV_ Tcycle: 1 [0|0] "" 60 9 DUMMY_NODE_VECTOR3 Vector__XXX;
 
-EV_ Frequency12: 0 [0|32] "" 0 10 DUMMY_NODE_VECTOR3  sensors;
+EV_ Frequency17: 0 [0|32] "" 0 10 DUMMY_NODE_VECTOR3  sensors;
 
-EV_ Frequency11: 0 [0|32] "" 0 11 DUMMY_NODE_VECTOR3  sensors;
+EV_ Frequency16: 0 [0|32] "" 0 11 DUMMY_NODE_VECTOR3  sensors;
 
-EV_ Frequency10: 0 [0|32] "" 0 12 DUMMY_NODE_VECTOR3  sensors;
+EV_ Frequency15: 0 [0|32] "" 0 12 DUMMY_NODE_VECTOR3  sensors;
 
-EV_ Frequency9: 0 [0|32] "" 0 13 DUMMY_NODE_VECTOR3  sensors;
+EV_ Frequency14: 0 [0|32] "" 0 13 DUMMY_NODE_VECTOR3  sensors;
 
-EV_ Frequency8: 0 [0|32] "" 0 14 DUMMY_NODE_VECTOR3  sensors;
+EV_ Frequency13: 0 [0|32] "" 0 14 DUMMY_NODE_VECTOR3  sensors;
 
-EV_ Frequency7: 0 [0|32] "" 0 15 DUMMY_NODE_VECTOR3  sensors;
+EV_ Frequency12: 0 [0|32] "" 0 15 DUMMY_NODE_VECTOR3  sensors;
 
-EV_ Frequency6: 0 [0|32] "" 0 16 DUMMY_NODE_VECTOR3  sensors;
+EV_ Frequency11: 0 [0|32] "" 0 16 DUMMY_NODE_VECTOR3  sensors;
 
-EV_ Frequency5: 0 [0|32] "" 0 17 DUMMY_NODE_VECTOR3  sensors;
+EV_ Frequency10: 0 [0|32] "" 0 17 DUMMY_NODE_VECTOR3  sensors;
 
-EV_ Frequency4: 0 [0|32] "" 0 18 DUMMY_NODE_VECTOR3  sensors;
+EV_ Frequency9: 0 [0|32] "" 0 18 DUMMY_NODE_VECTOR3  sensors;
 
-EV_ Frequency3: 0 [0|32] "" 0 19 DUMMY_NODE_VECTOR3  sensors;
+EV_ Frequency8: 0 [0|32] "" 0 19 DUMMY_NODE_VECTOR3  sensors;
 
-EV_ Frequency2: 0 [0|32] "" 0 20 DUMMY_NODE_VECTOR3  sensors;
+EV_ Frequency7: 0 [0|32] "" 0 20 DUMMY_NODE_VECTOR3  sensors;
 
-EV_ Frequency1: 0 [0|32] "" 0 21 DUMMY_NODE_VECTOR3  sensors;
+EV_ Frequency6: 0 [0|32] "" 0 21 DUMMY_NODE_VECTOR3  sensors;
 
-EV_ Frequency0: 0 [0|32] "" 0 22 DUMMY_NODE_VECTOR3  sensors;
+EV_ Frequency5: 0 [0|32] "" 0 22 DUMMY_NODE_VECTOR3  sensors;
 
-EV_ Check_Input0: 0 [0|0] "" 1 23 DUMMY_NODE_VECTOR3  sensors;
+EV_ Frequency4: 0 [0|32] "" 0 23 DUMMY_NODE_VECTOR3  sensors;
 
-EV_ Check_Input10: 0 [0|0] "" 0 24 DUMMY_NODE_VECTOR3  sensors;
+EV_ Frequency3: 0 [0|32] "" 0 24 DUMMY_NODE_VECTOR3  sensors;
 
-EV_ Check_Input11: 0 [0|0] "" 0 25 DUMMY_NODE_VECTOR3  sensors;
+EV_ Frequency2: 0 [0|32] "" 0 25 DUMMY_NODE_VECTOR3  sensors;
 
-EV_ Check_Input12: 0 [0|0] "" 0 26 DUMMY_NODE_VECTOR3  sensors;
+EV_ Frequency1: 0 [0|32] "" 0 26 DUMMY_NODE_VECTOR3  sensors;
 
-EV_ Check_Input13: 0 [0|0] "" 0 27 DUMMY_NODE_VECTOR3  sensors;
+EV_ Frequency0: 0 [0|32] "" 0 27 DUMMY_NODE_VECTOR3  sensors;
 
-EV_ Check_Input14: 0 [0|0] "" 0 28 DUMMY_NODE_VECTOR3  sensors;
+EV_ Check_Input0: 0 [0|0] "" 1 28 DUMMY_NODE_VECTOR3  sensors;
 
-EV_ Check_Input15: 0 [0|0] "" 0 29 DUMMY_NODE_VECTOR3  sensors;
+EV_ Check_Input10: 0 [0|0] "" 0 29 DUMMY_NODE_VECTOR3  sensors;
 
-EV_ Check_Input16: 0 [0|0] "" 0 30 DUMMY_NODE_VECTOR3  sensors;
+EV_ Check_Input11: 0 [0|0] "" 0 30 DUMMY_NODE_VECTOR3  sensors;
 
-EV_ Check_Input5: 0 [0|0] "" 1 31 DUMMY_NODE_VECTOR3  sensors;
+EV_ Check_Input12: 0 [0|0] "" 0 31 DUMMY_NODE_VECTOR3  sensors;
 
-EV_ Check_Input6: 0 [0|0] "" 1 32 DUMMY_NODE_VECTOR3  sensors;
+EV_ Check_Input13: 0 [0|0] "" 0 32 DUMMY_NODE_VECTOR3  sensors;
 
-EV_ Check_Input7: 0 [0|0] "" 1 33 DUMMY_NODE_VECTOR3  sensors;
+EV_ Check_Input14: 0 [0|0] "" 0 33 DUMMY_NODE_VECTOR3  sensors;
 
-EV_ Check_Input8: 0 [0|0] "" 1 34 DUMMY_NODE_VECTOR3  sensors;
+EV_ Check_Input15: 0 [0|0] "" 0 34 DUMMY_NODE_VECTOR3  sensors;
 
-EV_ Check_Input9: 0 [0|0] "" 1 35 DUMMY_NODE_VECTOR3  sensors;
+EV_ Check_Input16: 0 [0|0] "" 0 35 DUMMY_NODE_VECTOR3  sensors;
 
-EV_ Check_Input4: 0 [0|0] "" 1 36 DUMMY_NODE_VECTOR3  sensors;
+EV_ Check_Input5: 0 [0|0] "" 1 36 DUMMY_NODE_VECTOR3  sensors;
 
-EV_ Check_Input3: 0 [0|0] "" 1 37 DUMMY_NODE_VECTOR3  sensors;
+EV_ Check_Input6: 0 [0|0] "" 1 37 DUMMY_NODE_VECTOR3  sensors;
 
-EV_ Check_Input2: 0 [0|0] "" 1 38 DUMMY_NODE_VECTOR3  sensors;
+EV_ Check_Input7: 0 [0|0] "" 1 38 DUMMY_NODE_VECTOR3  sensors;
 
-EV_ Check_Input1: 0 [0|0] "" 1 39 DUMMY_NODE_VECTOR3  sensors;
+EV_ Check_Input8: 0 [0|0] "" 1 39 DUMMY_NODE_VECTOR3  sensors;
 
-EV_ Check_Input17: 0 [0|0] "" 0 40 DUMMY_NODE_VECTOR3  sensors;
+EV_ Check_Input9: 0 [0|0] "" 1 40 DUMMY_NODE_VECTOR3  sensors;
 
-EV_ Check_Output0: 0 [0|0] "" 0 41 DUMMY_NODE_VECTOR3  sensors;
+EV_ Check_Input4: 0 [0|0] "" 1 41 DUMMY_NODE_VECTOR3  sensors;
 
-EV_ Check_Output3: 0 [0|0] "" 0 42 DUMMY_NODE_VECTOR3  sensors;
+EV_ Check_Input3: 0 [0|0] "" 1 42 DUMMY_NODE_VECTOR3  sensors;
 
-EV_ Check_Output2: 0 [0|0] "" 0 43 DUMMY_NODE_VECTOR3  sensors;
+EV_ Check_Input2: 0 [0|0] "" 1 43 DUMMY_NODE_VECTOR3  sensors;
 
-EV_ Check_Output1: 0 [0|0] "" 0 44 DUMMY_NODE_VECTOR3  sensors;
+EV_ Check_Input1: 0 [0|0] "" 1 44 DUMMY_NODE_VECTOR3  sensors;
 
-EV_ Tyellow: 1 [0|0] "" 4 45 DUMMY_NODE_VECTOR3 Vector__XXX;
+EV_ Check_Input17: 0 [0|0] "" 0 45 DUMMY_NODE_VECTOR3  sensors;
 
-EV_ Tmax: 1 [0|0] "" 40 46 DUMMY_NODE_VECTOR3 Vector__XXX;
+EV_ Check_Output0: 0 [0|0] "" 0 46 DUMMY_NODE_VECTOR3  sensors;
 
-EV_ Tmin: 1 [0|0] "" 3 47 DUMMY_NODE_VECTOR3 Vector__XXX;
+EV_ Check_Output3: 0 [0|0] "" 0 47 DUMMY_NODE_VECTOR3  sensors;
 
-CM_ BO_ 3221225472 "This is a message for not used signals, created by Vector CANdb++ DBC OLE DB Provider.";
+EV_ Check_Output2: 0 [0|0] "" 0 48 DUMMY_NODE_VECTOR3  sensors;
+
+EV_ Check_Output1: 0 [0|0] "" 0 49 DUMMY_NODE_VECTOR3  sensors;
+
+EV_ Tyellow: 1 [0|0] "" 4 50 DUMMY_NODE_VECTOR3 Vector__XXX;
+
+EV_ Tmax: 1 [0|0] "" 40 51 DUMMY_NODE_VECTOR3 Vector__XXX;
+
+EV_ Tmin: 1 [0|0] "" 3 52 DUMMY_NODE_VECTOR3 Vector__XXX;
+
 CM_ SG_ 77 time "Okreœla czas trwania danej fazy.";
+CM_ EV_ T_faza4 "Czas œwiat³a zielone dla poszczegolnej fazy, gdy nie dzia³aj¹ sensory.";
+CM_ EV_ T_faza3 "Czas œwiat³a zielone dla poszczegolnej fazy, gdy nie dzia³aj¹ sensory.";
+CM_ EV_ T_faza2 "Czas œwiat³a zielone dla poszczegolnej fazy, gdy nie dzia³aj¹ sensory.";
+CM_ EV_ T_faza1 "Czas œwiat³a zielone dla poszczegolnej fazy, gdy nie dzia³aj¹ sensory.";
+CM_ EV_ Slave_On_Off "W³¹czenie/wy³¹czenie wêz³a 'slave
+'
+";
 CM_ EV_ TminP "Minimalny czas œwiat³a zielonego z pieszymi.";
 CM_ EV_ Master_On_Off "W³¹czenie/wy³¹czenie wêz³a 'master'
 ";
