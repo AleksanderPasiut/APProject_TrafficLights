@@ -173,34 +173,33 @@ void PrepareInversedMatrix(int mat)
 
 on envVar Sensors_On_Off
 {
-  if(getValue(this) == 1){
-    
+  if(getValue(this) == 1)
+  {
     SensorsActive = 1;
   }
-  else{
-    
+  else
+  {
     SensorsActive = 0;
     
-    currentPhase = (currentPhase+1) % cyclePhases;
-    ChooseBestCycle();
+    currentPhase = 0;
+    LoadSensorDataKernel();
   }
 }
-
 
 on envVar Slave_On_Off
 {
-  if(getValue(this) == 1){
-    
+  if(getValue(this) == 1)
+  {
     SlaveActive = 1;
     $MasterConnectSlave::Connect_Slave = 1;
   }
-  else{
-    
+  else
+  {
     $MasterConnectSlave::Connect_Slave = 0;
     SlaveActive = 0;
   }
- 
 }
+
 //sygnal resetujacy po podlaczeniu slave
 on message SlaveConnectMaster 
 {
@@ -208,7 +207,7 @@ on message SlaveConnectMaster
   currentCycle = 0;
   currentPhase = 0;
   
-  ChooseBestCycle();
+  LoadSensorDataKernel();
 }
 
 on key*
@@ -335,45 +334,41 @@ void ChooseBestCycle()
   double deltaV; // niedok³adnoœæ
   double v[inputsAmountCars]; // wektor wspó³czynników
   
-  Tc = getValue(Tcycle);
-  Tp = getValue(Tyellow);
-  x_min = getValue(Tmin);
-  x_min_p = getValue(TminP);
-  x_max = getValue(Tmax);
-  
-  for (i = 0; i < inputsAmountCars; i++)
-    v[i] = (double)cIC[i];
-  
-  currentCycle = 0;
-  deltaV = 10000000;
-  
-  for (i = 0; i < cyclesAmount; i++)
-  {
-    tmp = Proceed(v, i, x, x_min, x_min_p, x_max, Tc, Tp);
-    
-    if (deltaV > tmp)
-    {
-      deltaV = tmp;
-      currentCycle = i;
-    }
-  }
-  
-  deltaV = Proceed(v, currentCycle, x, x_min, x_min_p, x_max, Tc, Tp);
-  
   if(SensorsActive == 0)
   {
     currentCycle = 0;
+    x[0] = x[1] = x[2] = x[3] = getValue(T_faza_awaryjna);
+  }
+  else
+  {
+    Tc = getValue(Tcycle);
+    Tp = getValue(Tyellow);
+    x_min = getValue(Tmin);
+    x_min_p = getValue(TminP);
+    x_max = getValue(Tmax);
     
-    x[0] = getValue(T_faza1);
-    x[1] = getValue(T_faza2);
-    x[2] = getValue(T_faza3);
-    x[3] = getValue(T_faza4);
+    for (i = 0; i < inputsAmountCars; i++)
+      v[i] = (double)cIC[i];
+    
+    currentCycle = 0;
+    deltaV = 10000000;
+    
+    for (i = 0; i < cyclesAmount; i++)
+    {
+      tmp = Proceed(v, i, x, x_min, x_min_p, x_max, Tc, Tp);
+      
+      if (deltaV > tmp)
+      {
+        deltaV = tmp;
+        currentCycle = i;
+      }
+    }
+    
+    deltaV = Proceed(v, currentCycle, x, x_min, x_min_p, x_max, Tc, Tp);
   }
   
   Write("Choosing best cycle: %d", currentCycle);
   Write("%lf %lf %lf %lf", x[0], x[1], x[2], x[3]);
-  
-  
 }
 
 double Proceed(
@@ -487,7 +482,6 @@ int AreThereAnyWalkers(int mat, int phase)
     if (cIW[i] && B[mat][inputsAmountCars+i][phase] > 0)
       return 1;
   
-  write("walkers detected");
   return 0;
 }
 

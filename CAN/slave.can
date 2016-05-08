@@ -251,28 +251,27 @@ on message CyclePhase
 
 on envVar Master_On_Off
 {
-  if(getValue(this) == 1){
-    
-    cancelTimer(timerYellowsFlashing1);
-    cancelTimer(timerYellowsFlashing2);
-    
-    YellowsFlashingActive = 0;
-    SetAllRed();
-    $SlaveConnectMaster::Reset = 1;//reset mastera
-    
-    
-  }
-  else{
-    
-    YellowsFlashingActive = 1;
-    
-    cancelTimer(timerRightArrow);
-    cancelTimer(timerRightArrowOff);
-    cancelTimer(timerYellowsEndPhase1);
-    cancelTimer(timerYellowsEndPhase2);
-    
-    setTimer(timerYellowsFlashing1,500*(int)getValue(Tyellow));
-  }
+    if(getValue(this) == 1)
+    {
+      
+      cancelTimer(timerYellowsFlashing1);
+      cancelTimer(timerYellowsFlashing2);
+      
+      YellowsFlashingActive = 0;
+      SetAllRed();
+      $SlaveConnectMaster::Reset = 1;//reset mastera 
+    }
+    else
+    {
+      YellowsFlashingActive = 1;
+      
+      cancelTimer(timerRightArrow);
+      cancelTimer(timerRightArrowOff);
+      cancelTimer(timerYellowsEndPhase1);
+      cancelTimer(timerYellowsEndPhase2);
+      
+      setTimer(timerYellowsFlashing1,500*(int)getValue(Tyellow));
+    }
 }
 
 on message MasterConnectSlave
