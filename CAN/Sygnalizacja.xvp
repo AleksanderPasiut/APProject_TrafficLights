@@ -67,42 +67,6 @@
       <Property Name="SegmentStrength">4</Property>
       <Property Name="SymbolConfiguration">4;2;db;master;CyclePhase;time;2;CAN;;-1</Property>
     </Object>
-    <Object Type="Vector.CANalyzer.Panels.Design.StaticTextControl, Vector.CANalyzer.Panels.CommonControls, Version=8.5.98.0, Culture=neutral, PublicKeyToken=null" Name="StaticTextControl22" Children="Controls" ControlName="Static Text">
-      <Property Name="Name">StaticTextControl22</Property>
-      <Property Name="Size">24, 26</Property>
-      <Property Name="Location">86, 281</Property>
-      <Property Name="BackColor">DarkGray</Property>
-      <Property Name="Font">Microsoft Sans Serif, 16pt</Property>
-      <Property Name="Text">0</Property>
-      <Property Name="ForeColor">0, 0, 192</Property>
-    </Object>
-    <Object Type="Vector.CANalyzer.Panels.Design.StaticTextControl, Vector.CANalyzer.Panels.CommonControls, Version=8.5.98.0, Culture=neutral, PublicKeyToken=null" Name="StaticTextControl21" Children="Controls" ControlName="Static Text">
-      <Property Name="Name">StaticTextControl21</Property>
-      <Property Name="Size">24, 26</Property>
-      <Property Name="Location">428, 46</Property>
-      <Property Name="BackColor">DarkGray</Property>
-      <Property Name="Font">Microsoft Sans Serif, 16pt</Property>
-      <Property Name="Text">1</Property>
-      <Property Name="ForeColor">0, 0, 192</Property>
-    </Object>
-    <Object Type="Vector.CANalyzer.Panels.Design.StaticTextControl, Vector.CANalyzer.Panels.CommonControls, Version=8.5.98.0, Culture=neutral, PublicKeyToken=null" Name="StaticTextControl20" Children="Controls" ControlName="Static Text">
-      <Property Name="Name">StaticTextControl20</Property>
-      <Property Name="Size">24, 26</Property>
-      <Property Name="Location">676, 355</Property>
-      <Property Name="BackColor">DarkGray</Property>
-      <Property Name="Font">Microsoft Sans Serif, 16pt</Property>
-      <Property Name="Text">2</Property>
-      <Property Name="ForeColor">Navy</Property>
-    </Object>
-    <Object Type="Vector.CANalyzer.Panels.Design.StaticTextControl, Vector.CANalyzer.Panels.CommonControls, Version=8.5.98.0, Culture=neutral, PublicKeyToken=null" Name="StaticTextControl19" Children="Controls" ControlName="Static Text">
-      <Property Name="Name">StaticTextControl19</Property>
-      <Property Name="Size">24, 26</Property>
-      <Property Name="Location">349, 557</Property>
-      <Property Name="BackColor">DarkGray</Property>
-      <Property Name="Font">Microsoft Sans Serif, 16pt</Property>
-      <Property Name="Text">3</Property>
-      <Property Name="ForeColor">0, 0, 192</Property>
-    </Object>
     <Object Type="Vector.CANalyzer.Panels.Design.StaticTextControl, Vector.CANalyzer.Panels.CommonControls, Version=8.5.98.0, Culture=neutral, PublicKeyToken=null" Name="StaticTextControl18" Children="Controls" ControlName="Static Text">
       <Property Name="Name">StaticTextControl18</Property>
       <Property Name="Size">24, 26</Property>

@@ -7,7 +7,11 @@ using namespace std;
 
 double t_ps(double n)
 {
-	return 2.15*n;
+	return 2.15*n+3.65;
+}
+double n(double tps)
+{
+	return tps != 0 ? (tps-3.65) / 2.15 : 0;
 }
 
 void PrepareMainMatrices(MATRIX<double> B[4])
@@ -35,23 +39,6 @@ void PrepareMainMatrices(MATRIX<double> B[4])
 		B[3].field(3, 2) = B[3].field(4, 2) = 
 		B[3].field(8, 3) = B[3].field(9, 3) = 1;
 }
-void PrepareInversedMatrices(MATRIX<double> invB[4], const MATRIX<double> B[4])
-{
-	const unsigned n = 10;
-	const unsigned m = 4;
-
-	for (unsigned k = 0; k < m; k++)
-	{
-		invB[k].change_size(m, m);
-
-		for (unsigned p = 0; p < m; p++)
-			for (unsigned q = 0; q < m; q++)
-				for (unsigned i = 0; i < n; i++)
-					invB[k].field(p, q) += B[k].field(i, p)*B[k].field(i, q);
-
-		invB[k] = MATRIX_SoLE<double>::matrix_inverse(invB[k]);
-	}
-}
 void PrepareInputVector(MATRIX<double>& v)
 {
 	if (true)
@@ -66,48 +53,38 @@ void PrepareInputVector(MATRIX<double>& v)
 	}
 }
 
-void PrepareFactorVector(MATRIX<double>& vector, const MATRIX<double>& v, const MATRIX<double>& B)
+void compute_max_cars_waiting(const MATRIX<double>& B, const MATRIX<double>& v, MATRIX<double>& m)
 {
-	for (unsigned k = 0; k < 4; k++)
+	for (unsigned j = 0; j < B.cols(); j++)
 	{
-		vector.field(k) = 0;
-
-		for (unsigned i = 0; i < 10; i++)
-			vector.field(k) += B.field(i, k)*v.field(i);
+		m.field(j) = 0;
+		for (unsigned i = 0; i < B.rows(); i++)
+			if (m.field(j) < B.field(i, j)*v.field(i))
+				m.field(j) = B.field(i, j)*v.field(i);
 	}
 }
-void ComputeCycleTime(double& t_cycl, const MATRIX<double>& v, const MATRIX<double>& B, double t_z)
+double compute_desired_cycle_time(const MATRIX<double>& m)
 {
-	double u = 0;
-	for (unsigned j = 0; j < 4; j++)
-	{
-		double tmp = 0;
-		for (unsigned i = 0; i < 10; i++)
-			if (tmp < B.field(i,j)*t_ps(v.field(i)))
-				tmp = B.field(i,j)*t_ps(v.field(i));
+	double val = 0;
+	for (unsigned i = 0; i < m.rows(); i++)
+		val += t_ps(m.field(i));
 
-		u += tmp;
-	}
-
-	if (t_cycl >= u+4*t_z)
-		t_cycl  = u+4*t_z;
+	return val;
 }
-void PerformScaling(MATRIX<double>& x, double& s, double t_cycl, double t_z)
+void compute_phase_times(const MATRIX<double>& m, double u, double t_cycl, MATRIX<double>& x)
 {
-	s = t_cycl-4*t_z;
+	double sum_m = 0;
+	for (unsigned i = 0; i < m.rows(); i++)
+		sum_m += m.field(i);
 
-	double sum = 0;
-	for (unsigned i = 0; i < 4; i++)
-		sum += x.field(i);
-
-	s/= sum;
-	x*= s;
+	for (unsigned i = 0; i < m.rows(); i++)
+		x.field(i) = u*t_cycl*m.field(i) / sum_m;
 }
-void PerformLimiting(MATRIX<double>& x, double t_min, double t_max, const MATRIX<double>& vector)
+void limit_phase_times(const MATRIX<double>& m, MATRIX<double>& x, double t_min, double t_max)
 {
 	for (unsigned i = 0; i < 4; i++)
 	{
-		if (vector.field(i) == 0)
+		if (m.field(i) == 0)
 			x.field(i) = 0;
 		else if (x.field(i) < t_min)
 			x.field(i) = t_min;
@@ -115,54 +92,60 @@ void PerformLimiting(MATRIX<double>& x, double t_min, double t_max, const MATRIX
 			x.field(i) = t_max;
 	}
 }
-double ComputeError(const MATRIX<double>& B, const MATRIX<double>& x, const MATRIX<double>& v, double s)
+double compute_eff(const MATRIX<double>& B, const MATRIX<double>& v, const MATRIX<double>& x)
 {
-	MATRIX<double> dv = B*x-v*s;
-	double deltaV = 0;
-	for (unsigned i = 0; i < dv.rows(); i++)
-		deltaV += dv.field(i)*dv.field(i);
-	
-	return sqrt(deltaV);
+	double eff = 0;
+
+	for (unsigned j = 0; j < B.cols(); j++)
+		for (unsigned i = 0; i < B.rows(); i++)
+			eff += min(n(B.field(i, j)*x.field(j)), v.field(i));
+
+	return eff;
 }
 
-void algorithm(
+double algorithm(
 	const MATRIX<double>& v,
 	const MATRIX<double> B[4],
-	const MATRIX<double> invB[4],
 	double t_min,
 	double t_max,
-	double& t_cycl,
+	double& t_cm,
 	double t_z,
 	MATRIX<double>& x,
-	double& deltaV,
-	unsigned& id,
-	double& s)
+	unsigned& id)
 {
-	deltaV = HUGE_VAL;
+	MATRIX<double> tmp_x(4);
+	double eff = 0;
 
-	for (unsigned ver = 0; ver < 4; ver++)
+	for (unsigned i = 0; i < 4; i++)
 	{
-		MATRIX<double> vector(4);
-		PrepareFactorVector(vector, v, B[ver]);
 
-		MATRIX<double> u = invB[ver]*vector;
 
-		ComputeCycleTime(t_cycl, v, B[ver], t_z);
+		MATRIX<double> m(4);
+		compute_max_cars_waiting(B[i], v, m);
 
-		PerformScaling(u, s, t_cycl, t_z);
-		PerformLimiting(u, t_min, t_max, vector);
+		double t_cycl = compute_desired_cycle_time(m);
+		double u = (t_cm - 4 * t_z) < t_cycl ? (t_cm - 4 * t_z) / t_cycl : 1;
 
-		double ndV = ComputeError(B[ver], u, v, s);
-		if (ver == 0 || ndV < deltaV)
+		compute_phase_times(m, u, t_cycl, tmp_x);
+		limit_phase_times(m, tmp_x, t_min, t_max);
+
+		double tmp_eff = compute_eff(B[i], v, tmp_x);
+
+
+
+
+		if (i == 0 || eff < tmp_eff)
 		{
-			deltaV = ndV;
-			x = u;
-			id = ver;
+			x = tmp_x;
+			eff = tmp_eff;
+			id = i;
 		}
 	}
+
+	return eff;
 }
 
-void WriteDataToFile(fstream& F, const MATRIX<double> v, const MATRIX<double> B, const MATRIX<double> x, double deltaV, double s, double t_cycl)
+void WriteDataToFile(fstream& F, const MATRIX<double> v, const MATRIX<double> B, const MATRIX<double> x, double t_cycl)
 {
 	for (unsigned i = 0; i < v.rows(); i++)
 		F << v.field(i) << "	";
@@ -171,18 +154,20 @@ void WriteDataToFile(fstream& F, const MATRIX<double> v, const MATRIX<double> B,
 	for (unsigned i = 0; i < real.rows(); i++)
 		F << real.field(i) << "	";
 
-	F << deltaV << "	" << s << "	" << t_cycl << endl;
+	F << t_cycl << endl;
 }
-void WriteOnScreen(const MATRIX<double> v, const MATRIX<double> B, const MATRIX<double> x, double deltaV, double s, unsigned id, double t_cycl)
+void WriteOnScreen(const MATRIX<double> v, const MATRIX<double> B, const MATRIX<double> x, unsigned id, double t_cycl, double eff)
 {
 	MATRIX<double> real = B*x;
 	for (unsigned i = 0; i < real.rows(); i++)
 		cout << "in" << i << " " << v.field(i) << " " << real.field(i) << endl;
 
-	cout << "deltaV: " << deltaV << endl;
-	cout << "s: " << s << endl;
 	cout << "id: " << id << endl;
 	cout << "t_cycl: " << t_cycl << endl;
+	cout << "eff: " << eff << endl;
+
+	cin.get();
+	cin.ignore();
 }
 
 int main()
@@ -191,9 +176,6 @@ int main()
 
 	MATRIX<double> B[4];
 	PrepareMainMatrices(B);
-
-	MATRIX<double> invB[4];
-	PrepareInversedMatrices(invB, B);
 
 	fstream F("out.txt", fstream::out);
 
@@ -209,17 +191,15 @@ int main()
 		MATRIX<double> v(10);
 		PrepareInputVector(v);
 
-		// output vector and error value
-		MATRIX<double> x(4);
-		double deltaV;
+		// cycle id and output vector
 		unsigned id;
-		double s;
+		MATRIX<double> x(4);
 	
-		algorithm(v, B, invB, t_min, t_max, t_cycl, t_z, x, deltaV, id, s);
+		double eff = algorithm(v, B, t_min, t_max, t_cycl, t_z, x, id);
 
-		//WriteOnScreen(v, B[id], x, deltaV, s, id, t_cycl);
+		WriteOnScreen(v, B[id], x, id, t_cycl, eff);
 
-		WriteDataToFile(F, v, B[id], x, deltaV, s, t_cycl);
+		//WriteDataToFile(F, v, B[id], x, deltaV, s, t_cycl);
 	}
 
 	cout << "computing finished" << endl;

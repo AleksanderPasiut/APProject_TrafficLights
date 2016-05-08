@@ -231,6 +231,9 @@ void TurnOffWalkerLights()
 
 on message CyclePhase 
 {
+  if (@Slave_On_Off == 0)
+    return;
+  
   if((YellowsFlashingActive != 1 || $CyclePhase::time != 0)&& SlaveActive == 1 )
   {
       if(YellowsFlashingActive == 0)
@@ -251,6 +254,9 @@ on message CyclePhase
 
 on envVar Master_On_Off
 {
+  if (@Slave_On_Off == 0)
+    return;
+  
     if(getValue(this) == 1)
     {
       
@@ -395,7 +401,7 @@ void TranslateMessageToArray()
 }
 
 void TranslateArray10ToMessage()
-{
+{ 
   $TrafficLightsControl::output0_green = CarLights[0][2];
   $TrafficLightsControl::output1_green = CarLights[1][2];
   $TrafficLightsControl::output2_green = CarLights[2][2]; 
@@ -451,7 +457,7 @@ void TranslateArray8ToMessage()
 }
 
 void TranslateArray4ToMessage()
-{
+{  
   //Right Arrows
   
   $TrafficLightsControl::output0_rightArrow = RightArrows[0];

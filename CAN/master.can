@@ -38,6 +38,11 @@ double max(double a, double b)
   return a >= b ? a : b;
 }
 
+double min(double a, double b)
+{
+  return a >= b ? b : a;
+}
+
 on start
 {
   currentCycle = 0;
@@ -96,94 +101,13 @@ void PrepareCycles()
   B[1][18][0] = B[1][20][1] = B[1][19][2] = B[1][21][2] = 0;
   B[2][18][0] = B[2][20][0] = B[2][19][2] = B[2][21][3] = 0;
   B[3][18][0] = B[3][20][1] = B[3][19][2] = B[3][21][3] = 0;
-      
-  for (i = 0; i < cyclesAmount; i++)
-    PrepareInversedMatrix(i);
-}
-
-void PrepareInversedMatrix(int mat)
-{
-  // iteratory
-  int i, j, k;
-  double t;
-  
-  // dla u³atwienia
-  const int m = cyclePhases;
-  
-  // macierz do odwrócenia
-  double tmpM[m][m];
-  
-  // wype³nienie macierzy do odwrócenia
-  for (i = 0; i < m; i++)
-    for (j = 0; j < m; j++)
-    {
-      tmpM[i][j] = 0;
-      
-      for (k = 0; k < inputsAmountCars; k++)
-        tmpM[i][j] += B[mat][k][i]*B[mat][k][j];
-    }
-  
-  // przygotowanie macierzy jednostkowej
-  for (i = 0; i < m; i++)
-    for (j = 0; j < m; j++)
-      invB[mat][i][j] = (i == j ? 1 : 0);
-    
-  // odwracanie macierzy metod¹ eliminacji Gaussa
-  for (i = 0; i+1 < m; i++)
-  {
-    if (tmpM[i][i] == 0)
-      for (j = i+1; j < m; j++)
-        if (tmpM[j][i] != 0)
-          for (k = 0; k < m; k++)
-          {
-            t = tmpM[i][k];
-            tmpM[i][k] = tmpM[j][k];
-            tmpM[j][k] = t;
-            t = invB[mat][i][k];
-            invB[mat][i][k] = invB[mat][j][k];
-            invB[mat][j][k] = t;
-          }
-          
-     if (tmpM[i][i] != 0)
-      for (j = i+1; j < m; j++)
-      {
-        t = tmpM[j][i]/tmpM[i][i];
-        
-        for (k = i; k < m; k++)
-          tmpM[j][k] -= tmpM[i][k]*t;
-        
-        for (k = 0; k < m; k++)
-          invB[mat][j][k] -= invB[mat][i][k]*t;
-      }
-  }
-  
-  for (i = m-1; i > 0; i--)
-    for (j = 0; j < i; j++)
-    {
-      t = tmpM[j][i]/tmpM[i][i];
-      
-      for (k = 0; k < m; k++)
-        invB[mat][j][k] -= t*invB[mat][i][k];
-    }
-    
-  for (i = 0; i < m; i++)
-    for (j = 0; j < m; j++)
-      invB[mat][i][j] /= tmpM[i][i];
 }
 
 on envVar Sensors_On_Off
 {
   if(getValue(this) == 1)
-  {
     SensorsActive = 1;
-  }
-  else
-  {
-    SensorsActive = 0;
-    
-    currentPhase = 0;
-    LoadSensorDataKernel();
-  }
+  else SensorsActive = 0;
 }
 
 on envVar Slave_On_Off
@@ -237,16 +161,16 @@ on message SensorsDataOutputs
 
 on message SensorsDataCars
 {
-  cIC[0] = (cO[2] && cO[3])  ? $SensorsDataCars::C_Input00 : 0;
+  cIC[0] = (cO[2] || cO[3])  ? $SensorsDataCars::C_Input00 : 0;
   cIC[1] = cO[2]             ? $SensorsDataCars::C_Input01 : 0;
   cIC[2] = cO[1]             ? $SensorsDataCars::C_Input02 : 0;
-  cIC[3] = (cO[0] && cO[3])  ? $SensorsDataCars::C_Input03 : 0;
-  cIC[4] = (cO[2] && cO[3])  ? $SensorsDataCars::C_Input04 : 0;
-  cIC[5] = (cO[0] && cO[1])  ? $SensorsDataCars::C_Input05 : 0;
+  cIC[3] = (cO[0] || cO[3])  ? $SensorsDataCars::C_Input03 : 0;
+  cIC[4] = (cO[2] || cO[3])  ? $SensorsDataCars::C_Input04 : 0;
+  cIC[5] = (cO[0] || cO[1])  ? $SensorsDataCars::C_Input05 : 0;
   cIC[6] = cO[0]             ? $SensorsDataCars::C_Input06 : 0;
   cIC[7] = cO[3]             ? $SensorsDataCars::C_Input07 : 0;
-  cIC[8] = (cO[1] && cO[2])  ? $SensorsDataCars::C_Input08 : 0;
-  cIC[9] = (cO[0] && cO[1])  ? $SensorsDataCars::C_Input09 : 0;
+  cIC[8] = (cO[1] || cO[2])  ? $SensorsDataCars::C_Input08 : 0;
+  cIC[9] = (cO[0] || cO[1])  ? $SensorsDataCars::C_Input09 : 0;
   
   write("Car sensors read");
 }
@@ -331,7 +255,7 @@ void ChooseBestCycle()
   double x_min; // minimalny czas zielonego œwiat³a bez pieszych
   double x_min_p; // minimalny czas zielonego œwiat³a z pieszymi
   double x_max; // maksymalny czas zielonego œwiat³a
-  double deltaV; // niedok³adnoœæ
+  double eff; // przepustowoœæ
   double v[inputsAmountCars]; // wektor wspó³czynników
   
   if(SensorsActive == 0)
@@ -351,24 +275,34 @@ void ChooseBestCycle()
       v[i] = (double)cIC[i];
     
     currentCycle = 0;
-    deltaV = 10000000;
+    eff = 0;
     
     for (i = 0; i < cyclesAmount; i++)
     {
       tmp = Proceed(v, i, x, x_min, x_min_p, x_max, Tc, Tp);
       
-      if (deltaV > tmp)
+      if (eff < tmp)
       {
-        deltaV = tmp;
+        eff = tmp;
         currentCycle = i;
       }
     }
     
-    deltaV = Proceed(v, currentCycle, x, x_min, x_min_p, x_max, Tc, Tp);
+    eff = Proceed(v, currentCycle, x, x_min, x_min_p, x_max, Tc, Tp);
   }
   
   Write("Choosing best cycle: %d", currentCycle);
   Write("%lf %lf %lf %lf", x[0], x[1], x[2], x[3]);
+}
+
+double t_ps(double n)
+{
+  return 2.15*n+3.65;
+}
+
+double n(double tps)
+{
+  return (tps-3.65)/2.15;
 }
 
 double Proceed(
@@ -381,97 +315,86 @@ double Proceed(
   double Tc,
   double Tp)
 {
-  // iteratory
-  int i, j, k;
+  // zmienne
+  int i, j;
+  double t_cycl;
+  double u;
+  double sum_m;
+  double sum_b;
+  double eff;
   
-  // skrócone nazwy dla u³atwienia
-  const int n = inputsAmountCars;
-  const int m = cyclePhases;
+  // maksymalna liczba samochodów oczekuj¹ca 
+  // w poszczególnych fazach
+  // na pojedynczym pasie
+  double m[4];
   
-  double tmp = 0.0;
-  double s = 0.0;
-  double deltaV;
-  
-  double vector[m];
-  double dv[n];
-  
-  // przygotowanie wektora wspó³czynników
-  for (i = 0; i < m; i++)
-  {
-    vector[i] = 0;
-    
-    for (j = 0; j < n; j++)
-      vector[i] += B[mat][j][i]*v[j];
-  }
-  
-  // x = invB*vector
-  for (i = 0; i < m; i++)
-  {
-    x[i] = 0;
-    
-    for (j = 0; j < m; j++)
-      x[i] += invB[mat][i][j]*vector[j];
-  }
-  
-  // obliczenie czasu trwania cyklu
-  s = 0;
   for (j = 0; j < 4; j++)
   {
-    tmp = 0;
-    for (i = 0; i < 10; i++)
-      if (tmp < B[mat][i][j]*2.15*v[i])
-          tmp = B[mat][i][j]*2.15*v[i];
-      
-      s += tmp;
+    m[j] = 0;
+    for (i = 0; i < inputsAmountCars; i++)
+      if (m[j] < B[mat][i][j]*v[i])
+          m[j] = B[mat][i][j]*v[i];
   }
   
-  if (Tc > s+4*Tp)
-      Tc = s+4*Tp;
+  // obliczenie przewidywanego czasu cyklu
+  t_cycl = 0;
+  for (i = 0; i < 4; i++)
+    t_cycl += t_ps(m[i]);
   
-  // obliczenie sta³ej s
-  tmp = 0.0;
-  for (i = 0; i < m; i++)
-    tmp += x[i];
+  // obliczenie wspó³czynnika skalowania
+  if (t_cycl + 4*Tp > Tc)
+    u = (Tc-4*Tp)/t_cycl;
+  else u = 1;
   
-  if (tmp != 0)
-    s = (Tc-4*Tp)/tmp;
-  
-  // przeskalowanie wektora i uwzglêdnienie ograniczeñ
-  for (i = 0; i < m; i++)
+  // œrednia liczba samochodów oczekuj¹ca w poszczególnych fazach na pojedynczym pasie
+  for (j = 0; j < 4; j++)
   {
-    x[i] *= s;
+    m[j] = 0;
+    for (i = 0; i < inputsAmountCars; i++)
+      m[j] += B[mat][i][j]*v[i];
     
-    if (x[i] > x_max)
-      x[i] = x_max;
-    else if (AreThereAnyWalkers(mat, i))
+    sum_b = 0;
+    for (i = 0; i < inputsAmountCars; i++)
+      sum_b += B[mat][i][j];
+    
+    m[j] /= sum_b;
+  }
+  
+  // suma samochodów oczekuj¹cych
+  sum_m = 0;
+  for (j = 0; j < 4; j++)
+    sum_m += m[j];
+  
+  // obliczenie czasów dla faz cyklu
+  for (j = 0; j < 4; j++)
+  {
+    x[j] = u*t_cycl*m[j] / sum_m;
+    
+    // uwzglêdnienie ograniczeñ
+    if (AreThereAnyWalkers(mat, j))
     {
-      if (x[i] < x_min_p)
-        x[i] = x_min_p;
+      if (x[j] < x_min_p)
+          x[j] = x_min_p;
+      else if (x[j] > x_max)
+               x[j] = x_max;
     }
     else
     {
-       if (vector[i] == 0)
-        x[i] = 0;
-       else if (x[i] < x_min)
-        x[i] = x_min;
+      if (m[j] == 0)
+          x[j] = 0;
+      else if (x[j] < x_min)
+               x[j] = x_min;
+      else if (x[j] > x_max)
+               x[j] = x_max;
     }
   }
   
-  // obliczenie b³êdu
-  for (i = 0; i < n; i++)
-  {
-    dv[i] = 0;
-    
-    for (j = 0; j < m; j++)
-      dv[i] += B[mat][i][j]*x[j];
-    
-    dv[i] -= v[i]*s;
-  }
-  deltaV = 0;
-  for (i = 0; i < n; i++)
-    deltaV += dv[i]*dv[i];
- 
-  return sqrt(deltaV);
+  eff = 0;
+  for (j = 0; j < 4; j++)
+    for (i = 0; i < inputsAmountCars; i++)
+      eff += B[mat][i][j]*min(n(x[j]), v[i]);
+  
+  return eff;
 }
 
 int AreThereAnyWalkers(int mat, int phase)
