@@ -195,7 +195,7 @@ void OnKey()
 {
   if(SlaveActive == 1)
   {
-    if (IsAnyoneWaiting())
+    if (IsAnyoneWaiting() || SensorsActive == 0)
     {    
       if (currentPhase == 0)
       {
