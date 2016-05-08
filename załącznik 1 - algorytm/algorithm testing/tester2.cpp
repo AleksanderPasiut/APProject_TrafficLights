@@ -131,9 +131,6 @@ double algorithm(
 
 		double tmp_eff = compute_eff(B[i], v, tmp_x);
 
-
-
-
 		if (i == 0 || eff < tmp_eff)
 		{
 			x = tmp_x;
