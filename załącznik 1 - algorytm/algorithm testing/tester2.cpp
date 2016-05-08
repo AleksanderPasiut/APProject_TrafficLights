@@ -53,56 +53,6 @@ void PrepareInputVector(MATRIX<double>& v)
 	}
 }
 
-void compute_max_cars_waiting(const MATRIX<double>& B, const MATRIX<double>& v, MATRIX<double>& m)
-{
-	for (unsigned j = 0; j < B.cols(); j++)
-	{
-		m.field(j) = 0;
-		for (unsigned i = 0; i < B.rows(); i++)
-			if (m.field(j) < B.field(i, j)*v.field(i))
-				m.field(j) = B.field(i, j)*v.field(i);
-	}
-}
-double compute_desired_cycle_time(const MATRIX<double>& m)
-{
-	double val = 0;
-	for (unsigned i = 0; i < m.rows(); i++)
-		val += t_ps(m.field(i));
-
-	return val;
-}
-void compute_phase_times(const MATRIX<double>& m, double u, double t_cycl, MATRIX<double>& x)
-{
-	double sum_m = 0;
-	for (unsigned i = 0; i < m.rows(); i++)
-		sum_m += m.field(i);
-
-	for (unsigned i = 0; i < m.rows(); i++)
-		x.field(i) = u*t_cycl*m.field(i) / sum_m;
-}
-void limit_phase_times(const MATRIX<double>& m, MATRIX<double>& x, double t_min, double t_max)
-{
-	for (unsigned i = 0; i < 4; i++)
-	{
-		if (m.field(i) == 0)
-			x.field(i) = 0;
-		else if (x.field(i) < t_min)
-			x.field(i) = t_min;
-		else if (x.field(i) > t_max)
-			x.field(i) = t_max;
-	}
-}
-double compute_eff(const MATRIX<double>& B, const MATRIX<double>& v, const MATRIX<double>& x)
-{
-	double eff = 0;
-
-	for (unsigned j = 0; j < B.cols(); j++)
-		for (unsigned i = 0; i < B.rows(); i++)
-			eff += min(n(B.field(i, j)*x.field(j)), v.field(i));
-
-	return eff;
-}
-
 double algorithm(
 	const MATRIX<double>& v,
 	const MATRIX<double> B[4],
@@ -118,18 +68,65 @@ double algorithm(
 
 	for (unsigned i = 0; i < 4; i++)
 	{
-
-
 		MATRIX<double> m(4);
-		compute_max_cars_waiting(B[i], v, m);
+		for (unsigned j = 0; j < 4; j++)
+		{
+			m.field(j) = 0;
+			for (unsigned k = 0; k < v.rows(); k++)
+				if (m.field(j) < B[i].field(k, j)*v.field(k))
+					m.field(j) = B[i].field(k, j)*v.field(k);
+		}
 
-		double t_cycl = compute_desired_cycle_time(m);
-		double u = (t_cm - 4 * t_z) < t_cycl ? (t_cm - 4 * t_z) / t_cycl : 1;
+		double t_cycl = 0;
+		for (unsigned j = 0; j < 4; j++)
+			if (m.field(j) > 0)
+				t_cycl += t_ps(m.field(j));
 
-		compute_phase_times(m, u, t_cycl, tmp_x);
-		limit_phase_times(m, tmp_x, t_min, t_max);
+		double u;
+		if (t_cycl + 4 * t_z > t_cm)
+			u = (t_cm - 4 * t_z) / t_cycl;
+		else u = 1;
 
-		double tmp_eff = compute_eff(B[i], v, tmp_x);
+		for (unsigned j = 0; j < 4; j++)
+		{
+			m.field(j) = 0;
+			for (unsigned k = 0; k < v.rows(); k++)
+				m.field(j) += B[i].field(k, j)*v.field(k);
+
+			double sum_b = 0;
+			for (unsigned k = 0; k < v.rows(); k++)
+				sum_b += B[i].field(k, j);
+
+			m.field(j) /= sum_b;
+		}
+
+		double sum_m = 0;
+		for (unsigned j = 0; j < 4; j++)
+			sum_m += m.field(j);
+
+		for (unsigned j = 0; j < 4; j++)
+		{
+			tmp_x.field(j) = u*t_cycl*m.field(j) / sum_m;
+
+			if (m.field(j) == 0)
+				tmp_x.field(j) = 0;
+			else if (tmp_x.field(j) < t_min)
+				tmp_x.field(j) = t_min;
+			else if (tmp_x.field(j) > t_max)
+				tmp_x.field(j) = t_max;
+		}
+
+		double tmp_eff = 0;
+		for (unsigned j = 0; j < 4; j++)
+			for (unsigned k = 0; k < v.rows(); k++)
+				if (tmp_x.field(j) > 0)
+					tmp_eff += B[i].field(k, j)*min(n(tmp_x.field(j)), v.field(k));
+
+		double total_cycle_time = 4 * t_z;
+		for (unsigned j = 0; j < 4; j++)
+			total_cycle_time += tmp_x.field(j);
+
+		tmp_eff *= 60 / total_cycle_time;
 
 		if (i == 0 || eff < tmp_eff)
 		{
@@ -147,11 +144,14 @@ void WriteDataToFile(fstream& F, const MATRIX<double> v, const MATRIX<double> B,
 	for (unsigned i = 0; i < v.rows(); i++)
 		F << v.field(i) << "	";
 	
+	for (unsigned i = 0; i < x.rows(); i++)
+		F << x.field(i) << "	";
+
 	MATRIX<double> real = B*x;
 	for (unsigned i = 0; i < real.rows(); i++)
 		F << real.field(i) << "	";
 
-	F << t_cycl << endl;
+	F << endl;
 }
 void WriteOnScreen(const MATRIX<double> v, const MATRIX<double> B, const MATRIX<double> x, unsigned id, double t_cycl, double eff)
 {
@@ -194,9 +194,9 @@ int main()
 	
 		double eff = algorithm(v, B, t_min, t_max, t_cycl, t_z, x, id);
 
-		WriteOnScreen(v, B[id], x, id, t_cycl, eff);
+		//WriteOnScreen(v, B[id], x, id, t_cycl, eff);
 
-		//WriteDataToFile(F, v, B[id], x, deltaV, s, t_cycl);
+		WriteDataToFile(F, v, B[id], x, t_cycl);
 	}
 
 	cout << "computing finished" << endl;

@@ -1,15 +1,8 @@
 ﻿  tester2.cpp
-tester2.cpp(58): warning C4018: '<': signed/unsigned mismatch
-tester2.cpp(61): warning C4018: '<': signed/unsigned mismatch
-tester2.cpp(69): warning C4018: '<': signed/unsigned mismatch
-tester2.cpp(77): warning C4018: '<': signed/unsigned mismatch
-tester2.cpp(80): warning C4018: '<': signed/unsigned mismatch
-tester2.cpp(99): warning C4018: '<': signed/unsigned mismatch
-tester2.cpp(100): warning C4018: '<': signed/unsigned mismatch
-tester2.cpp(165): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+tester2.cpp(172): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
   Generating code
-  18 of 154 functions (11.7%) were compiled, the rest were copied from previous compilation.
-    8 functions were new in current compilation
-    8 functions had inline decision re-evaluated but remain unchanged
+  8 of 150 functions ( 5.3%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    6 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   VSFP.vcxproj -> C:\Users\Avert Second\Documents\studia\II rok - semestr 4\Automatyka pojazdowa\Projekt 1 - Sygnalizacja świetlna\załącznik 1 - algorytm\algorithm testing\x64\Release\VSFP.exe
