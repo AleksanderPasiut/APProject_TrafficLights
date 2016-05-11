@@ -70,9 +70,6 @@ BO_ 3 SensorsDataCars: 5 sensors
  SG_ C_Input01 : 4|4@1+ (1,0) [0|15] "" Vector__XXX
  SG_ C_Input00 : 0|4@1+ (1,0) [0|15] "" Vector__XXX
 
-BO_ 1 RequestSensorsData: 1 master
- SG_ OK : 0|1@1+ (1,0) [0|1] "" Vector__XXX
-
 BO_ 9 TrafficLightsControl: 7 slave
  SG_ output8_rightArrow : 49|1@1+ (1,0) [0|1] "" Vector__XXX
  SG_ output5_rightArrow : 48|1@1+ (1,0) [0|1] "" Vector__XXX

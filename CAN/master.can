@@ -10,14 +10,12 @@ variables
   const int inputsAmountCars = 10; // liczby wlotów
   const int inputsAmountWalkers = 8; 
   const int arrowsAmount = 4;
-  const int outputsAmount = 4; // liczba wylotów
   const int cyclesAmount = 4; // liczba dostêpnych wariantów cykli
   const int cyclePhases = 4; // liczba faz w cyklu
   
   // kopie danych z czujników
   int cIC[inputsAmountCars];
   int cIW[inputsAmountWalkers];
-  int cO[outputsAmount];
   
   // macierze cykli
   double B[cyclesAmount][inputsAmountCars+inputsAmountWalkers+arrowsAmount][cyclePhases];
@@ -30,18 +28,10 @@ variables
   
   int SensorsActive; //1 - sensors polaczone, 0 - sensors odlaczone 
   int SlaveActive; //1 - slave polaczone, 0 - slave odlaczone 
-  
 }
 
-double max(double a, double b)
-{
-  return a >= b ? a : b;
-}
-
-double min(double a, double b)
-{
-  return a >= b ? b : a;
-}
+double max(double a, double b) { return a >= b ? a : b; }
+double min(double a, double b) { return a >= b ? b : a; }
 
 on start
 {
@@ -67,28 +57,28 @@ void PrepareCycles()
   // wartoœci odpowiedzialne za wloty samochodowe i przejœcia dla pieszych
      
   // zrównowa¿ony
-  B[0][0][0] = B[0][1][0] = B[0][5][0] = B[0][6][0] = B[0][12][0] = B[0][16][0] = 1;
-  B[0][2][1] = B[0][7][1] = B[0][11][1] = B[0][15][1] = 1;
-  B[0][3][2] = B[0][8][2] = B[0][10][2] = B[0][14][2] = 1;
-  B[0][4][3] = B[0][9][3] = B[0][13][3] = B[0][17][3] = 1;
+  B[0][0][0] = B[0][1][0] = B[0][5][0] = B[0][6][0] = B[0][12][0] = B[0][13][0] = B[0][16][0] = B[0][17][0] = 1;
+  B[0][2][1] = B[0][7][1] = B[0][11][1] = B[0][12][1] = B[0][15][1] = B[0][16][1] = 1;
+  B[0][3][2] = B[0][8][2] = B[0][10][2] = B[0][11][2] = B[0][14][2] = B[0][15][2] = 1;
+  B[0][4][3] = B[0][9][3] = B[0][10][3] = B[0][13][3] = B[0][14][3] = B[0][17][3] = 1;
       
   // asymetryczny na g³ównej
-  B[1][0][0] = B[1][1][0] = B[1][2][0] = B[1][11][0] = B[1][12][0] = 1;
-  B[1][5][1] = B[1][6][1] = B[1][7][1] = B[1][15][1] = B[1][16][1] = 1;
-  B[1][3][2] = B[1][8][2] = B[1][10][2] = B[1][14][2] = 1;
-  B[1][4][3] = B[1][9][3] = B[1][13][3] = B[1][17][3] = 1;
+  B[1][0][0] = B[1][1][0] = B[1][2][0] = B[1][11][0] = B[1][12][0] = B[1][14][0] = B[1][16][0] = B[1][17][0] = 1;
+  B[1][5][1] = B[1][6][1] = B[1][7][1] = B[1][10][1] = B[1][12][1] = B[1][13][1] = B[1][15][1] = B[1][16][1] = 1;
+  B[1][3][2] = B[1][8][2] = B[1][10][2] = B[1][11][2] = B[1][14][2] = B[1][15][2] = 1;
+  B[1][4][3] = B[1][9][3] = B[1][10][3] = B[1][13][3] = B[1][14][3] = B[1][17][3] = 1;
       
   // asymetryczny na podrzêdnej
-  B[2][0][0] = B[2][1][0] = B[2][5][0] = B[2][6][0] = B[2][12][0] = B[2][16][0] = 1;
-  B[2][2][1] = B[2][7][1] = B[2][11][1] = B[2][15][1] = 1;
-  B[2][3][2] = B[2][4][2] = B[2][10][2] = B[2][13][2] = B[2][14][2] = 1;
-  B[2][8][3] = B[2][9][3] = B[2][10][3] = B[2][17][3] = 1;
+  B[2][0][0] = B[2][1][0] = B[2][5][0] = B[2][6][0] = B[2][12][0] = B[2][13][0] = B[2][16][0] = B[2][17][0] = 1;
+  B[2][2][1] = B[2][7][1] = B[2][11][1] = B[2][12][1] = B[2][15][1] = B[2][16][1] = 1;
+  B[2][3][2] = B[2][4][2] = B[2][10][2] = B[2][11][2] = B[2][13][2] = B[2][14][2] = B[2][16][2] = 1;
+  B[2][8][3] = B[2][9][3] = B[2][10][3] = B[2][12][3] = B[2][14][3] = B[2][15][3] = B[2][17][3] = 1;
       
   // asymetryczny zupe³ny
-  B[3][0][0] = B[3][1][0] = B[3][2][0] = B[3][11][0] = B[3][12][0] = 1;
-  B[3][5][1] = B[3][6][1] = B[3][7][1] = B[3][15][1] = B[3][16][1] = 1;
-  B[3][3][2] = B[3][4][2] = B[3][13][2] = B[3][14][2] = 1;
-  B[3][8][3] = B[3][9][3] = B[3][10][3] = B[3][17][3] = 1;
+  B[3][0][0] = B[3][1][0] = B[3][2][0] = B[3][11][0] = B[3][12][0] = B[3][14][0] = B[3][16][0] = B[3][17][0] = 1;
+  B[3][5][1] = B[3][6][1] = B[3][7][1] = B[3][10][1] = B[3][12][1] = B[3][13][1] = B[3][15][1] = B[3][16][1] = 1;
+  B[3][3][2] = B[3][4][2] = B[3][10][2] = B[3][11][2] = B[3][13][2] = B[3][14][2] = B[3][16][2] = 1;
+  B[3][8][3] = B[3][9][3] = B[3][10][3] = B[3][12][3] = B[3][14][3] = B[3][15][3] = B[3][17][3] = 1;
   
   // wartoœci odpowiedzialne za strza³ki warunkowe
       
@@ -130,91 +120,6 @@ on message SlaveConnectMaster
   SetRedLights();
   currentCycle = 0;
   currentPhase = 0;
-  
-  LoadSensorDataKernel();
-}
-
-on key*
-{
-  if(SlaveActive == 1)
-  {
-    if (currentPhase == 0)
-      LoadSensorDataKernel();
-    else OnKey();
-  }
-}
-
-void LoadSensorDataKernel()
-{
-  $RequestSensorsData::OK = 1;
-}
-
-on message SensorsDataOutputs
-{  
-  cO[0] = $SensorsDataOutputs::C_Output0;
-  cO[1] = $SensorsDataOutputs::C_Output1;
-  cO[2] = $SensorsDataOutputs::C_Output2;
-  cO[3] = $SensorsDataOutputs::C_Output3;
-  
-  write("Output sensors read");
-}
-
-on message SensorsDataCars
-{
-  cIC[0] = (cO[2] || cO[3])  ? $SensorsDataCars::C_Input00 : 0;
-  cIC[1] = cO[2]             ? $SensorsDataCars::C_Input01 : 0;
-  cIC[2] = cO[1]             ? $SensorsDataCars::C_Input02 : 0;
-  cIC[3] = (cO[0] || cO[3])  ? $SensorsDataCars::C_Input03 : 0;
-  cIC[4] = (cO[2] || cO[3])  ? $SensorsDataCars::C_Input04 : 0;
-  cIC[5] = (cO[0] || cO[1])  ? $SensorsDataCars::C_Input05 : 0;
-  cIC[6] = cO[0]             ? $SensorsDataCars::C_Input06 : 0;
-  cIC[7] = cO[3]             ? $SensorsDataCars::C_Input07 : 0;
-  cIC[8] = (cO[1] || cO[2])  ? $SensorsDataCars::C_Input08 : 0;
-  cIC[9] = (cO[0] || cO[1])  ? $SensorsDataCars::C_Input09 : 0;
-  
-  write("Car sensors read");
-}
-
-on message SensorsDataWalkers
-{
-  cIW[0] = $SensorsDataWalkers::C_Input10;
-  cIW[1] = $SensorsDataWalkers::C_Input11;
-  cIW[2] = $SensorsDataWalkers::C_Input12;
-  cIW[3] = $SensorsDataWalkers::C_Input13;
-  cIW[4] = $SensorsDataWalkers::C_Input14;
-  cIW[5] = $SensorsDataWalkers::C_Input15;
-  cIW[6] = $SensorsDataWalkers::C_Input16;
-  cIW[7] = $SensorsDataWalkers::C_Input17;
-  
-  write("Walker sensors read");
-  
-  OnKey();
-}
-
-void OnKey()
-{
-  if(SlaveActive == 1)
-  {
-    if (IsAnyoneWaiting() || SensorsActive == 0)
-    {    
-      if (currentPhase == 0)
-      {
-        DisplaySensorData();
-        ChooseBestCycle();
-      }
-      
-      if (x[currentPhase] > 0)
-        TranslateCycleToMessage();
-      
-      currentPhase = (currentPhase+1) % cyclePhases;
-    }
-    else
-    {
-      currentPhase = 0;
-      SetRedLights();
-      write("Noone waiting");
-    }
-  }
 }
 
 int IsAnyoneWaiting()
@@ -232,16 +137,46 @@ int IsAnyoneWaiting()
   return 0;
 }
 
-void DisplaySensorData()
+int AreThereAnyWalkers(int mat, int phase)
 {
   int i;
-  if(SensorsActive == 1){
-    
-    for (i = 0; i < inputsAmountCars; i++)
-      write("car input %d: %d", i, cIC[i]);
-    
-    for (i = 0; i < inputsAmountWalkers; i++)
-      write("walker input %d: %d", i, cIW[i]);
+  
+  for (i = 0; i < inputsAmountWalkers; i++)
+    if (cIW[i] && B[mat][inputsAmountCars+i][phase] > 0)
+      return 1;
+  
+  return 0;
+}
+
+void ProcessWalkers()
+{
+  if (AreThereAnyWalkers(currentCycle, currentPhase))
+    if (x[currentPhase] < getValue(TminP))
+        x[currentPhase] = getValue(TminP);
+}
+
+on key*
+{
+  if(SlaveActive == 1)
+  {
+    if (IsAnyoneWaiting() || SensorsActive == 0)
+    {    
+      if (currentPhase == 0)
+        ChooseBestCycle();
+      
+      ProcessWalkers();
+      
+      if (x[currentPhase] > 0)
+        TranslateCycleToMessage();
+      
+      currentPhase = (currentPhase+1) % cyclePhases;
+    }
+    else
+    {
+      currentPhase = 0;
+      SetRedLights();
+      write("Noone waiting");
+    }
   }
 }
 
@@ -253,7 +188,6 @@ void ChooseBestCycle()
   double Tc; // czas ca³kowity cyklu
   double Tp; // czas ¿ó³tego œwiat³a
   double x_min; // minimalny czas zielonego œwiat³a bez pieszych
-  double x_min_p; // minimalny czas zielonego œwiat³a z pieszymi
   double x_max; // maksymalny czas zielonego œwiat³a
   double eff; // przepustowoœæ
   double v[inputsAmountCars]; // wektor wspó³czynników
@@ -268,7 +202,6 @@ void ChooseBestCycle()
     Tc = getValue(Tcycle);
     Tp = getValue(Tyellow);
     x_min = getValue(Tmin);
-    x_min_p = getValue(TminP);
     x_max = getValue(Tmax);
     
     for (i = 0; i < inputsAmountCars; i++)
@@ -279,7 +212,7 @@ void ChooseBestCycle()
     
     for (i = 0; i < cyclesAmount; i++)
     {
-      tmp = Proceed(v, i, x, x_min, x_min_p, x_max, Tc, Tp);
+      tmp = Proceed(v, i, x, x_min, x_max, Tc, Tp);
       
       if (eff < tmp)
       {
@@ -288,29 +221,21 @@ void ChooseBestCycle()
       }
     }
     
-    eff = Proceed(v, currentCycle, x, x_min, x_min_p, x_max, Tc, Tp);
+    eff = Proceed(v, currentCycle, x, x_min, x_max, Tc, Tp);
   }
   
   Write("Choosing best cycle: %d", currentCycle);
   Write("%lf %lf %lf %lf %lf", x[0], x[1], x[2], x[3], eff);
 }
 
-double t_ps(double n)
-{
-  return 2.15*n+3.65;
-}
-
-double n(double tps)
-{
-  return (tps-3.65)/2.15;
-}
+double t_ps(double n) { return 2.15*n+3.65; }
+double n(double tps) { return (tps-3.65)/2.15; }
 
 double Proceed(
   double v[], // wektor natê¿eñ ruchu
   int mat,  // identyfikator sprawdzanej macierzy
   double x[],
   double x_min,
-  double x_min_p,
   double x_max,
   double Tc,
   double Tp)
@@ -373,22 +298,12 @@ double Proceed(
     x[j] = u*t_cycl*m[j] / sum_m;
     
     // uwzglêdnienie ograniczeñ
-    if (AreThereAnyWalkers(mat, j))
-    {
-      if (x[j] < x_min_p)
-          x[j] = x_min_p;
-      else if (x[j] > x_max)
-               x[j] = x_max;
-    }
-    else
-    {
       if (m[j] == 0)
           x[j] = 0;
       else if (x[j] < x_min)
                x[j] = x_min;
       else if (x[j] > x_max)
                x[j] = x_max;
-    }
   }
   
   // obliczenie przepustowoœci (liczba samochodów, która przejecha³a)
@@ -408,21 +323,39 @@ double Proceed(
   return eff;
 }
 
-int AreThereAnyWalkers(int mat, int phase)
+// komunikacja z sensorami (odczyt danych do pamiêci wewnêtrznej)
+on message SensorsDataCars
 {
-  int i;
-  
-  for (i = 0; i < inputsAmountWalkers; i++)
-    if (cIW[i] && B[mat][inputsAmountCars+i][phase] > 0)
-      return 1;
-  
-  return 0;
+  cIC[0] = $SensorsDataCars::C_Input00;
+  cIC[1] = $SensorsDataCars::C_Input01;
+  cIC[2] = $SensorsDataCars::C_Input02;
+  cIC[3] = $SensorsDataCars::C_Input03;
+  cIC[4] = $SensorsDataCars::C_Input04;
+  cIC[5] = $SensorsDataCars::C_Input05;
+  cIC[6] = $SensorsDataCars::C_Input06;
+  cIC[7] = $SensorsDataCars::C_Input07;
+  cIC[8] = $SensorsDataCars::C_Input08;
+  cIC[9] = $SensorsDataCars::C_Input09;
 }
 
+on message SensorsDataWalkers
+{
+  cIW[0] = $SensorsDataWalkers::C_Input10;
+  cIW[1] = $SensorsDataWalkers::C_Input11;
+  cIW[2] = $SensorsDataWalkers::C_Input12;
+  cIW[3] = $SensorsDataWalkers::C_Input13;
+  cIW[4] = $SensorsDataWalkers::C_Input14;
+  cIW[5] = $SensorsDataWalkers::C_Input15;
+  cIW[6] = $SensorsDataWalkers::C_Input16;
+  cIW[7] = $SensorsDataWalkers::C_Input17;
+}
+
+// komunikacja ze slavem (wysy³ane rozkazów)
 void TranslateCycleToMessage()
-{ 
-  int i;
+{
+  int tmp;
   
+  // sygna³y dla samochodów
   $CyclePhase::time = x[currentPhase];
   $CyclePhase::input0 = (int)B[currentCycle][0][currentPhase];
   $CyclePhase::input1 = (int)B[currentCycle][1][currentPhase];
@@ -435,16 +368,29 @@ void TranslateCycleToMessage()
   $CyclePhase::input8 = (int)B[currentCycle][8][currentPhase];
   $CyclePhase::input9 = (int)B[currentCycle][9][currentPhase];
   
-  $CyclePhase::input10 = (int)B[currentCycle][10][currentPhase];
-  $CyclePhase::input11 = (int)B[currentCycle][11][currentPhase];
-  $CyclePhase::input12 = (int)B[currentCycle][12][currentPhase];
-  $CyclePhase::input13 = (int)B[currentCycle][13][currentPhase];
-  $CyclePhase::input14 = (int)B[currentCycle][14][currentPhase];
-  $CyclePhase::input15 = (int)B[currentCycle][15][currentPhase];
-  $CyclePhase::input16 = (int)B[currentCycle][16][currentPhase];
-  $CyclePhase::input17 = (int)B[currentCycle][17][currentPhase];
+  // sygna³y dla pieszych
+  $CyclePhase::input10 = tmp = (int)B[currentCycle][10][currentPhase] && cIW[0]; if (tmp) putValue(Check_Input10, 0);
+  $CyclePhase::input11 = tmp = (int)B[currentCycle][11][currentPhase] && cIW[1]; if (tmp) putValue(Check_Input11, 0);
+  $CyclePhase::input12 = tmp = (int)B[currentCycle][12][currentPhase] && cIW[2]; if (tmp) putValue(Check_Input12, 0);
+  $CyclePhase::input13 = tmp = (int)B[currentCycle][13][currentPhase] && cIW[3]; if (tmp) putValue(Check_Input13, 0);
+  $CyclePhase::input14 = tmp = (int)B[currentCycle][14][currentPhase] && cIW[4]; if (tmp) putValue(Check_Input14, 0);
+  $CyclePhase::input15 = tmp = (int)B[currentCycle][15][currentPhase] && cIW[5]; if (tmp) putValue(Check_Input15, 0);
+  $CyclePhase::input16 = tmp = (int)B[currentCycle][16][currentPhase] && cIW[6]; if (tmp) putValue(Check_Input16, 0);
+  $CyclePhase::input17 = tmp = (int)B[currentCycle][17][currentPhase] && cIW[7]; if (tmp) putValue(Check_Input17, 0);
   
-  //Right Arrows - 0,3,5,8
+  // dodatkowe sygna³y dla pieszych
+  /*
+  $CyclePhase::input10 = tmp[0] = (int)B[currentCycle][10][currentPhase] && tmp[1]; if (tmp[0]) putValue(Check_Input10, 0);
+  $CyclePhase::input11 = tmp[1] = (int)B[currentCycle][11][currentPhase] && tmp[0]; if (tmp[1]) putValue(Check_Input11, 0);
+  $CyclePhase::input12 = tmp[2] = (int)B[currentCycle][12][currentPhase] && tmp[3]; if (tmp[2]) putValue(Check_Input12, 0);
+  $CyclePhase::input13 = tmp[3] = (int)B[currentCycle][13][currentPhase] && tmp[2]; if (tmp[3]) putValue(Check_Input13, 0);
+  $CyclePhase::input14 = tmp[4] = (int)B[currentCycle][14][currentPhase] && tmp[5]; if (tmp[4]) putValue(Check_Input14, 0);
+  $CyclePhase::input15 = tmp[5] = (int)B[currentCycle][15][currentPhase] && tmp[4]; if (tmp[5]) putValue(Check_Input15, 0);
+  $CyclePhase::input16 = tmp[6] = (int)B[currentCycle][16][currentPhase] && tmp[7]; if (tmp[6]) putValue(Check_Input16, 0);
+  $CyclePhase::input17 = tmp[7] = (int)B[currentCycle][17][currentPhase] && tmp[6]; if (tmp[7]) putValue(Check_Input17, 0);
+  */
+  
+  // sygna³y dla strza³ek warunkowych - 0,3,5,8
   $CyclePhase::input18 = (int)B[currentCycle][18][currentPhase];
   $CyclePhase::input19 = (int)B[currentCycle][19][currentPhase];
   $CyclePhase::input20 = (int)B[currentCycle][20][currentPhase];

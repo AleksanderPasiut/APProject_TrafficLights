@@ -9,38 +9,26 @@ variables
   
 }
 
-on message RequestSensorsData
-{
-  write("Request Sensors Data");
-  LoadSensorDataR();
-}
+on envVar Frequency0 { $SensorsDataCars::C_Input00  = getValue(Frequency0); }
+on envVar Frequency1 { $SensorsDataCars::C_Input01  = getValue(Frequency1); }
+on envVar Frequency2 { $SensorsDataCars::C_Input02  = getValue(Frequency2); }
+on envVar Frequency3 { $SensorsDataCars::C_Input03  = getValue(Frequency3); }
+on envVar Frequency4 { $SensorsDataCars::C_Input04  = getValue(Frequency4); }
+on envVar Frequency5 { $SensorsDataCars::C_Input05  = getValue(Frequency5); }
+on envVar Frequency6 { $SensorsDataCars::C_Input06  = getValue(Frequency6); }
+on envVar Frequency7 { $SensorsDataCars::C_Input07  = getValue(Frequency7); }
+on envVar Frequency8 { $SensorsDataCars::C_Input08  = getValue(Frequency8); }
+on envVar Frequency9 { $SensorsDataCars::C_Input09  = getValue(Frequency9); }
 
-void LoadSensorDataR()
-{
-  $SensorsDataOutputs::C_Output0 = !getValue(Check_Output0);
-  $SensorsDataOutputs::C_Output1 = !getValue(Check_Output1);
-  $SensorsDataOutputs::C_Output2 = !getValue(Check_Output2);
-  $SensorsDataOutputs::C_Output3 = !getValue(Check_Output3);
-  
-  $SensorsDataCars::C_Input00  = getValue(Frequency0);
-  $SensorsDataCars::C_Input01  = getValue(Frequency1);
-  $SensorsDataCars::C_Input02  = getValue(Frequency2);
-  $SensorsDataCars::C_Input03  = getValue(Frequency3);
-  $SensorsDataCars::C_Input04  = getValue(Frequency4);
-  $SensorsDataCars::C_Input05  = getValue(Frequency5);
-  $SensorsDataCars::C_Input06  = getValue(Frequency6);
-  $SensorsDataCars::C_Input07  = getValue(Frequency7);
-  $SensorsDataCars::C_Input08  = getValue(Frequency8);
-  $SensorsDataCars::C_Input09  = getValue(Frequency9);
-  
-  $SensorsDataWalkers::C_Input10 = getValue(Check_Input10);
-  $SensorsDataWalkers::C_Input11 = getValue(Check_Input11);
-  $SensorsDataWalkers::C_Input12 = getValue(Check_Input12);
-  $SensorsDataWalkers::C_Input13 = getValue(Check_Input13);
-  $SensorsDataWalkers::C_Input14 = getValue(Check_Input14);
-  $SensorsDataWalkers::C_Input15 = getValue(Check_Input15);
-  $SensorsDataWalkers::C_Input16 = getValue(Check_Input16);
-  $SensorsDataWalkers::C_Input17 = getValue(Check_Input17);
-}
+on envVar Check_Input10 { $SensorsDataWalkers::C_Input10 = getValue(Check_Input10); }
+on envVar Check_Input11 { $SensorsDataWalkers::C_Input11 = getValue(Check_Input11); }
+on envVar Check_Input12 { $SensorsDataWalkers::C_Input12 = getValue(Check_Input12); }
+on envVar Check_Input13 { $SensorsDataWalkers::C_Input13 = getValue(Check_Input13); }
+on envVar Check_Input14 { $SensorsDataWalkers::C_Input14 = getValue(Check_Input14); }
+on envVar Check_Input15 { $SensorsDataWalkers::C_Input15 = getValue(Check_Input15); }
+on envVar Check_Input16 { $SensorsDataWalkers::C_Input16 = getValue(Check_Input16); }
+on envVar Check_Input17 { $SensorsDataWalkers::C_Input17 = getValue(Check_Input17); }
+
+
 
   
