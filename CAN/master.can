@@ -269,9 +269,7 @@ double Proceed(
       t_cycl += t_ps(m[i]);
   
   // obliczenie wspó³czynnika skalowania
-  if (t_cycl + 4*Tp > Tc)
-    u = (Tc-4*Tp)/t_cycl;
-  else u = 1;
+  u = min((Tc-4*Tp)/t_cycl, 1);
   
   // œrednia liczba samochodów oczekuj¹ca w poszczególnych fazach na pojedynczym pasie
   for (j = 0; j < 4; j++)
