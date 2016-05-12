@@ -102,16 +102,7 @@ on envVar Sensors_On_Off
 
 on envVar Slave_On_Off
 {
-  if(getValue(this) == 1)
-  {
-    SlaveActive = 1;
-    $MasterConnectSlave::Connect_Slave = 1;
-  }
-  else
-  {
-    $MasterConnectSlave::Connect_Slave = 0;
-    SlaveActive = 0;
-  }
+  $MasterConnectSlave::Connect_Slave = SlaveActive = getValue(this);
 }
 
 //sygnal resetujacy po podlaczeniu slave
@@ -351,7 +342,7 @@ on message SensorsDataWalkers
 // komunikacja ze slavem (wysy豉ne rozkaz闚)
 void TranslateCycleToMessage()
 {
-  int tmp;
+  int tmp[8];
   
   // sygna造 dla samochod闚
   $CyclePhase::time = x[currentPhase];
@@ -367,26 +358,24 @@ void TranslateCycleToMessage()
   $CyclePhase::input9 = (int)B[currentCycle][9][currentPhase];
   
   // sygna造 dla pieszych
-  $CyclePhase::input10 = tmp = (int)B[currentCycle][10][currentPhase] && cIW[0]; if (tmp) putValue(Check_Input10, 0);
-  $CyclePhase::input11 = tmp = (int)B[currentCycle][11][currentPhase] && cIW[1]; if (tmp) putValue(Check_Input11, 0);
-  $CyclePhase::input12 = tmp = (int)B[currentCycle][12][currentPhase] && cIW[2]; if (tmp) putValue(Check_Input12, 0);
-  $CyclePhase::input13 = tmp = (int)B[currentCycle][13][currentPhase] && cIW[3]; if (tmp) putValue(Check_Input13, 0);
-  $CyclePhase::input14 = tmp = (int)B[currentCycle][14][currentPhase] && cIW[4]; if (tmp) putValue(Check_Input14, 0);
-  $CyclePhase::input15 = tmp = (int)B[currentCycle][15][currentPhase] && cIW[5]; if (tmp) putValue(Check_Input15, 0);
-  $CyclePhase::input16 = tmp = (int)B[currentCycle][16][currentPhase] && cIW[6]; if (tmp) putValue(Check_Input16, 0);
-  $CyclePhase::input17 = tmp = (int)B[currentCycle][17][currentPhase] && cIW[7]; if (tmp) putValue(Check_Input17, 0);
+  $CyclePhase::input10 = tmp[0] = (int)B[currentCycle][10][currentPhase] && cIW[0]; if (tmp[0]) putValue(Check_Input10, 0);
+  $CyclePhase::input11 = tmp[1] = (int)B[currentCycle][11][currentPhase] && cIW[1]; if (tmp[1]) putValue(Check_Input11, 0);
+  $CyclePhase::input12 = tmp[2] = (int)B[currentCycle][12][currentPhase] && cIW[2]; if (tmp[2]) putValue(Check_Input12, 0);
+  $CyclePhase::input13 = tmp[3] = (int)B[currentCycle][13][currentPhase] && cIW[3]; if (tmp[3]) putValue(Check_Input13, 0);
+  $CyclePhase::input14 = tmp[4] = (int)B[currentCycle][14][currentPhase] && cIW[4]; if (tmp[4]) putValue(Check_Input14, 0);
+  $CyclePhase::input15 = tmp[5] = (int)B[currentCycle][15][currentPhase] && cIW[5]; if (tmp[5]) putValue(Check_Input15, 0);
+  $CyclePhase::input16 = tmp[6] = (int)B[currentCycle][16][currentPhase] && cIW[6]; if (tmp[6]) putValue(Check_Input16, 0);
+  $CyclePhase::input17 = tmp[7] = (int)B[currentCycle][17][currentPhase] && cIW[7]; if (tmp[7]) putValue(Check_Input17, 0);
   
   // dodatkowe sygna造 dla pieszych
-  /*
-  $CyclePhase::input10 = tmp[0] = (int)B[currentCycle][10][currentPhase] && tmp[1]; if (tmp[0]) putValue(Check_Input10, 0);
-  $CyclePhase::input11 = tmp[1] = (int)B[currentCycle][11][currentPhase] && tmp[0]; if (tmp[1]) putValue(Check_Input11, 0);
-  $CyclePhase::input12 = tmp[2] = (int)B[currentCycle][12][currentPhase] && tmp[3]; if (tmp[2]) putValue(Check_Input12, 0);
-  $CyclePhase::input13 = tmp[3] = (int)B[currentCycle][13][currentPhase] && tmp[2]; if (tmp[3]) putValue(Check_Input13, 0);
-  $CyclePhase::input14 = tmp[4] = (int)B[currentCycle][14][currentPhase] && tmp[5]; if (tmp[4]) putValue(Check_Input14, 0);
-  $CyclePhase::input15 = tmp[5] = (int)B[currentCycle][15][currentPhase] && tmp[4]; if (tmp[5]) putValue(Check_Input15, 0);
-  $CyclePhase::input16 = tmp[6] = (int)B[currentCycle][16][currentPhase] && tmp[7]; if (tmp[6]) putValue(Check_Input16, 0);
-  $CyclePhase::input17 = tmp[7] = (int)B[currentCycle][17][currentPhase] && tmp[6]; if (tmp[7]) putValue(Check_Input17, 0);
-  */
+  if ((int)B[currentCycle][10][currentPhase] && tmp[1]) { $CyclePhase::input10 = 1; putValue(Check_Input10, 0); }
+  if ((int)B[currentCycle][11][currentPhase] && tmp[0]) { $CyclePhase::input11 = 1; putValue(Check_Input11, 0); }
+  if ((int)B[currentCycle][12][currentPhase] && tmp[3]) { $CyclePhase::input12 = 1; putValue(Check_Input12, 0); }
+  if ((int)B[currentCycle][13][currentPhase] && tmp[2]) { $CyclePhase::input13 = 1; putValue(Check_Input13, 0); }
+  if ((int)B[currentCycle][14][currentPhase] && tmp[5]) { $CyclePhase::input14 = 1; putValue(Check_Input14, 0); }
+  if ((int)B[currentCycle][15][currentPhase] && tmp[4]) { $CyclePhase::input15 = 1; putValue(Check_Input15, 0); }
+  if ((int)B[currentCycle][16][currentPhase] && tmp[7]) { $CyclePhase::input16 = 1; putValue(Check_Input16, 0); }
+  if ((int)B[currentCycle][17][currentPhase] && tmp[6]) { $CyclePhase::input17 = 1; putValue(Check_Input17, 0); }
   
   // sygna造 dla strza貫k warunkowych - 0,3,5,8
   $CyclePhase::input18 = (int)B[currentCycle][18][currentPhase];
