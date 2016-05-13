@@ -240,8 +240,8 @@ on message CyclePhase
       {
         TranslateMessageToArray();
         
-        SetYellowsPhase1();  
-        setTimer(timerRightArrowOff, 500*(int)getValue(Tyellow));
+        //SetYellowsPhase1();  
+        setTimer(timerRightArrowOff, 250*(int)getValue(Tyellow));
       }
       if(YellowsFlashingActive == 1){
         
@@ -310,16 +310,17 @@ on timer timerRightArrowOff
 {
   Write("Right Arrows Off");
   DisableArrows();
-  setTimer(timerYellowsEndPhase1,500*(int)getValue(Tyellow));
+  SetYellowsPhase1();
+  setTimer(timerYellowsEndPhase1,625*(int)getValue(Tyellow));
 }
 
 on timer timerYellowsEndPhase1
 {
   Write("Yellows phase 1 ended");
-  
-  SetYellowsPhase2();
   SetRed();
-  setTimer(timerYellowsEndPhase2, 500*(int)getValue(Tyellow));
+  SetYellowsPhase2();
+  
+  setTimer(timerYellowsEndPhase2, 375*(int)getValue(Tyellow));
 }
 
 on timer timerYellowsEndPhase2
@@ -327,7 +328,7 @@ on timer timerYellowsEndPhase2
   Write("Yellows phase 2 ended");
   SetGreen();
   SetWalkerLights();
-  setTimer(timerRightArrow,300*(int)getValue(Tyellow));
+  setTimer(timerRightArrow,250*(int)getValue(Tyellow));
 }
 
 on timer timerRightArrow
