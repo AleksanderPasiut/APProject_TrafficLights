@@ -298,8 +298,9 @@ on message MasterConnectSlave
     $CyclePhase::time = 0;
     
   }
-  else{
-    
+  else
+  {
+    SetAllRed();
     SlaveActive = 1;
     $SlaveConnectMaster::Reset = 1;//reset mastera
   }

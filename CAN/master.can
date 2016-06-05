@@ -6,6 +6,11 @@ includes
 
 variables
 {  
+  // timery
+  msTimer main_timer;
+  int noone_waiting_time = 250;
+  int red_lights_set = 0;
+  
   // sta³e
   const int inputsAmountCars = 10; // liczby wlotów
   const int inputsAmountWalkers = 8; 
@@ -41,6 +46,8 @@ on start
   PrepareCycles();
   SensorsActive = 1;
   SlaveActive = 1;
+  
+  SetTimer(main_timer, noone_waiting_time); // TIMER!!
 }
 
 void PrepareCycles()
@@ -111,6 +118,9 @@ on message SlaveConnectMaster
   SetRedLights();
   currentCycle = 0;
   currentPhase = 0;
+  
+  CancelTimer(main_timer);
+  SetTimer(main_timer, noone_waiting_time); // TIMER!!
 }
 
 int IsAnyoneWaiting()
@@ -146,19 +156,26 @@ void ProcessWalkers()
         x[currentPhase] = getValue(TminP);
 }
 
-on key*
+on timer main_timer
 {
   if(SlaveActive == 1)
   {
     if (IsAnyoneWaiting() || SensorsActive == 0)
-    {    
+    {          
       if (currentPhase == 0)
         ChooseBestCycle();
       
       ProcessWalkers();
       
       if (x[currentPhase] > 0)
+      {
         TranslateCycleToMessage();
+        SetTimer(main_timer, (int)((x[currentPhase]+getValue(Tyellow))*1000)); // TIMER!!
+      }
+      else
+      {
+        SetTimer(main_timer, noone_waiting_time); // TIMER!!
+      }
       
       currentPhase = (currentPhase+1) % cyclePhases;
     }
@@ -166,6 +183,7 @@ on key*
     {
       currentPhase = 0;
       SetRedLights();
+      SetTimer(main_timer, noone_waiting_time); // TIMER!!
       write("Noone waiting");
     }
   }
@@ -383,11 +401,17 @@ void TranslateCycleToMessage()
   $CyclePhase::input20 = (int)B[currentCycle][20][currentPhase];
   $CyclePhase::input21 = (int)B[currentCycle][21][currentPhase];
     
+  red_lights_set = 0;
+  
   Write("Cycle activated: %d, phase %d", currentCycle, currentPhase);
 }
 
 void SetRedLights()
 {
+  if (red_lights_set)
+    return;
+  else red_lights_set = 1;
+  
   $CyclePhase::time = 0;
   $CyclePhase::input0 = 0;
   $CyclePhase::input1 = 0;
